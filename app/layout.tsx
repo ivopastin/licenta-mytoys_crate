@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Figtree, Geist } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
+import AppShell from "./components/AppShell";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -26,10 +26,7 @@ export default function RootLayout({
       <body
         className={`${figtree.variable} ${figtree.className} antialiased bg-white px-[10px] py-[10px]`}
       >
-        <div className="bg-background-primary text-font-primary px-[120px] py-[50px] rounded-[16px] h-[calc(100vh-20px)]">
-          <Navbar />
-          {children}
-        </div>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
