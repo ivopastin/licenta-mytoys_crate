@@ -2,7 +2,16 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@font-face {
+  font-family: "DTCCozy";
+  src: url("/fonts/DTCCozy.ttf") format("truetype");
+}
+
 @custom-variant dark (&:is(.dark *));
+
+.font-cozy {
+  font-family: var(--font-pacifico), "Pacifico", serif !important;
+}
 
 :root {
   --background-primary: #417c9c;
@@ -92,16 +101,66 @@ body {
   font-family: var(--font-figtree), sans-serif;
 }
 
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
 .glass-navbar {
   position: relative;
   isolation: isolate;
   border-radius: 9999px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background-color: rgb(255 255 255 / 15%);
   box-shadow:
-    inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7),
-    inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.15),
+    inset 2px 0 0 rgba(255, 255, 255, 0.1),
+    inset -2px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* blur + tint layer */
+.glass-navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: 9999px;
+  backdrop-filter: blur(16px) saturate(1.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  background-color: rgb(255 255 255 / 8%);
+}
+
+/* animated shimmer highlight */
+.glass-navbar::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0.06) 30%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  background-size: 200% 100%;
+  animation: glass-shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glass-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes moveBackground {
