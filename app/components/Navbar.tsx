@@ -50,7 +50,7 @@ export default function Navbar() {
       </div>
       <div className="ml-auto flex flex-row items-center gap-3">
         <div
-          className="overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+          className="transition-all duration-900 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
           style={{
             maxWidth: pastHero ? "160px" : "0px",
             opacity: pastHero ? 1 : 0,

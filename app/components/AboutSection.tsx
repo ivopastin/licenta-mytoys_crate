@@ -9,12 +9,22 @@ function AboutSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ended, setEnded] = useState(false);
   const [zoomed, setZoomed] = useState(false);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   useEffect(() => {
     if (!ended) return;
     const timer = setTimeout(() => setZoomed(true), 3000);
     return () => clearTimeout(timer);
   }, [ended]);
+
+  useEffect(() => {
+    if (!zoomed) return;
+    const cycle = setInterval(() => {
+      setTooltipVisible(true);
+      setTimeout(() => setTooltipVisible(false), 3000);
+    }, 5000);
+    return () => clearInterval(cycle);
+  }, [zoomed]);
 
   return (
     <div className="relative overflow-hidden h-[calc(100vh-20px)] flex flex-col items-center justify-center">
@@ -32,6 +42,16 @@ function AboutSection() {
           warpStrength={0.001}
           timeSpeed={0}
           zoom={1}
+        />
+      </div>
+
+      <div className="absolute right-0 -top-20 z-[1] pointer-events-none">
+        <Image
+          src="/images/bunny.png"
+          alt="bear"
+          width={800}
+          height={800}
+          className="opacity-2"
         />
       </div>
 
@@ -114,6 +134,42 @@ function AboutSection() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div
+        className="absolute z-11 transition-opacity duration-700 cursor-pointer"
+        style={{
+          opacity: zoomed ? 1 : 0,
+          pointerEvents: zoomed ? "auto" : "none",
+          height: "220px",
+          width: "220px",
+          left: "calc(60vw - 120px)",
+          top: "40%",
+          transform: "translateY(-50%)",
+          clipPath: "inset(0 0 0 35.5%)",
+        }}
+        onMouseEnter={() => setTooltipVisible(true)}
+        onMouseLeave={() => setTooltipVisible(false)}
+      >
+        <Image
+          src="/images/bear-with-bee.png"
+          alt=""
+          height={200}
+          width={200}
+          className="object-contain"
+          style={{ transform: "rotate(70deg)", transformOrigin: "center" }}
+        />
+      </div>
+      <div
+        className="absolute z-11 pointer-events-none transition-opacity duration-500 bg-white text-black text-xs font-medium text-center px-3 py-1.5 rounded-md max-w-[150px]"
+        style={{
+          opacity: tooltipVisible ? 1 : 0,
+          left: "calc(60vw - 20px)",
+          top: "calc(40% - 100px)",
+          transform: "translateY(-50%)",
+        }}
+      >
+        Scroll down to meet my friends!
       </div>
 
       <div className="relative z-10 flex flex-col pt-[194px] pb-[60px] px-[150px] w-full h-full">
