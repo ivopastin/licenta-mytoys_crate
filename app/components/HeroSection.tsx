@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Grainient from "@/components/Grainient";
 import Magnet from "@/components/Magnet";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,21 @@ export default function HeroSection({
           zoom={0.9}
         />
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-48 z-10 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, #417c9c)" }} />
+      <div className="absolute right-0 -top-20 z-[1] pointer-events-none">
+        <Image
+          src="/images/bear.png"
+          alt="bear"
+          width={800}
+          height={800}
+          className="opacity-2"
+        />
+      </div>
+      <div
+        className="absolute bottom-0 left-0 right-0 h-48 z-10 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, transparent, #417c9c)",
+        }}
+      />
       <div className="relative z-10 h-full w-full flex flex-col items-end justify-center pt-[164px] pb-[60px] px-[120px]">
         <div className="flex flex-col gap-[20px] max-w-[800px]">
           <p className="text-[64px] font-semibold leading-[76px]">
@@ -51,6 +66,11 @@ export default function HeroSection({
             The only platform you need to design custom plushies and get the
             crochet pattern to make them yourself.
           </p>
+          <div className="w-full flex flex-row justify-end">
+            <Button className="w-fit px-6 py-2.5 h-auto bg-[#fff1b5]/90 text-[#716458] text-[18px] font-bold rounded-[16px] hover:bg-[#fff1b5] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
+              Try now
+            </Button>
+          </div>
         </div>
       </div>
       <div
