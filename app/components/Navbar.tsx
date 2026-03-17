@@ -56,7 +56,7 @@ export default function Navbar() {
             opacity: pastHero ? 1 : 0,
           }}
         >
-          <Button className="whitespace-nowrap px-6 py-2.5 h-auto bg-[#fff1b5]/90 text-[#716458] text-[18px] font-bold rounded-[16px] hover:bg-[#fff1b5] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
+          <Button className="whitespace-nowrap px-6 py-2.5 h-auto bg-[#fff1b5] text-[#716458] text-[18px] font-bold rounded-[16px] hover:bg-[#fff1b5] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
             Try now
           </Button>
         </div>

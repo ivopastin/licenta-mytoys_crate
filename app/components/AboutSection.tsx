@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { useScrollStore } from "@/app/store/useScrollStore";
 import Image from "next/image";
 import Grainient from "@/components/Grainient";
 import BlurText from "@/components/BlurText";
@@ -17,6 +18,36 @@ function AboutSection() {
     return () => clearTimeout(timer);
   }, [ended]);
 
+  const setScrollLocked = useScrollStore((s) => s.setScrollLocked);
+  const setAboutZoomed = useScrollStore((s) => s.setAboutZoomed);
+
+  useEffect(() => {
+    if (zoomed) {
+      setScrollLocked(false);
+      setAboutZoomed(true);
+    }
+  }, [zoomed, setScrollLocked, setAboutZoomed]);
+
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    if (!zoomed) return;
+    const onScroll = () => {
+      // sticky about section sits at scrollY=heroHeight
+      // progress goes from 0 → 1 over the next heroHeight px of scroll
+      const heroHeight = window.innerHeight;
+      const scrolledPast = window.scrollY - heroHeight;
+      const progress = Math.min(
+        Math.max(scrolledPast / (heroHeight * 0.6), 0),
+        1,
+      );
+      setScrollProgress(progress);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [zoomed]);
+
   useEffect(() => {
     if (!zoomed) return;
     const cycle = setInterval(() => {
@@ -27,7 +58,16 @@ function AboutSection() {
   }, [zoomed]);
 
   return (
-    <div className="relative overflow-hidden h-[calc(100vh-20px)] flex flex-col items-center justify-center">
+    <div
+      ref={sectionRef}
+      className="relative overflow-hidden h-[calc(100vh-20px)] flex flex-col items-center justify-center"
+      style={{
+        transform: `scale(${1 - scrollProgress * 0.08})`,
+        filter: `blur(${scrollProgress * 8}px)`,
+        opacity: 1 - scrollProgress * 0.7,
+        transition: "transform 0.05s, filter 0.05s, opacity 0.05s",
+      }}
+    >
       <div className="absolute inset-0">
         <Grainient
           color1="#417c9c"
@@ -44,6 +84,13 @@ function AboutSection() {
           zoom={1}
         />
       </div>
+
+      <div
+        className="absolute top-0 left-0 right-0 h-48 z-10 pointer-events-none"
+        style={{
+          background: "linear-gradient(to top, transparent, #417c9c)",
+        }}
+      />
 
       <div className="absolute right-0 -top-20 z-[1] pointer-events-none">
         <Image
