@@ -22,11 +22,11 @@ function ShowcaseSection() {
   const aboutZoomed = useScrollStore((s) => s.aboutZoomed);
 
   useEffect(() => {
-    if (!aboutZoomed) return;
-    items.forEach((_, i) => {
-      setTimeout(() => setVisibleCount((n) => Math.max(n, i + 1)), i * 150);
-    });
-  }, [aboutZoomed]);
+    const timers = items.map((_, i) =>
+      setTimeout(() => setVisibleCount((n) => Math.max(n, i + 1)), i * 150),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, []);
 
   if (!aboutZoomed) return null;
 
@@ -36,8 +36,22 @@ function ShowcaseSection() {
       style={{
         boxShadow:
           "0 -40px 100px rgba(0,0,0,0.45), 0 -8px 40px rgba(0,0,0,0.3)",
+        clipPath: "inset(-200px 0 0 0)",
       }}
     >
+      <div
+        className="absolute bottom-0 left-0 w-full h-64 pointer-events-none z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 100% at 0% 100%, #591427 0%, transparent 90%)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-48 z-10 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, transparent, #591427)",
+        }}
+      />
       <div className="relative">
         <div
           className="absolute inset-0 pointer-events-none z-0 mix-blend-screen opacity-20"

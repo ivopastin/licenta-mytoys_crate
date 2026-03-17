@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import GlassSurface from "@/components/GlassSurface";
 
 export default function Navbar() {
   const [pastHero, setPastHero] = useState(false);
@@ -35,19 +36,33 @@ export default function Navbar() {
           height={64}
         />
       </div>
-      <div className="fixed left-1/2 -translate-x-1/2 glass-navbar min-w-[200px] h-[64px] rounded-full flex flex-row px-[36px] gap-[40px] py-[6px] items-center">
-        {["About", "Showcase", "Testimonials", "Pricing", "Contact Us"].map(
-          (label) => (
-            <a
-              key={label}
-              href={`#${label.toLowerCase().replace(/\s+/g, "-")}`}
-              className="text-[18px] text-white font-semibold hover:text-white/80 transition-colors"
-            >
-              {label}
-            </a>
-          ),
-        )}
-      </div>
+      <GlassSurface
+        borderRadius={999}
+        width="auto"
+        height={64}
+        distortionScale={-40}
+        redOffset={0}
+        greenOffset={3}
+        blueOffset={6}
+        displace={1.5}
+        blur={18}
+        mixBlendMode="normal"
+        className="fixed left-1/2 -translate-x-1/2"
+      >
+        <div className="flex flex-row items-center gap-10 px-9">
+          {["About", "Showcase", "Testimonials", "Pricing", "Contact Us"].map(
+            (label) => (
+              <a
+                key={label}
+                href={`#${label.toLowerCase().replace(/\s+/g, "-")}`}
+                className="text-[18px] text-white font-semibold hover:text-white/80 transition-colors"
+              >
+                {label}
+              </a>
+            ),
+          )}
+        </div>
+      </GlassSurface>
       <div className="ml-auto flex flex-row items-center gap-3">
         <div
           className="transition-all duration-900 ease-[cubic-bezier(0.34,1.56,0.64,1)]"

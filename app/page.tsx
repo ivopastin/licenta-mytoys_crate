@@ -2,6 +2,7 @@ import HeroSection from "./components/HeroSection";
 import AboutSection from "./components/AboutSection";
 import ShowcaseSection from "./components/ShowcaseSection";
 import ScrollBlocker from "./components/ScrollBlocker";
+import TestimonialsSection from "./components/TestimonialsSection";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <AboutSection />
       </div>
       <ShowcaseSection />
+      <TestimonialsSection />
     </div>
   );
 }
