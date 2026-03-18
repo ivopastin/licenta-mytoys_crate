@@ -1,26 +1,28 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useScrollStore } from "@/app/store/useScrollStore";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const items = [
-  { id: "1", img: "/images/showcase/plushie1.png", height: 300 },
-  { id: "2", img: "/images/showcase/plushie2.png", height: 300 },
-  { id: "3", img: "/images/showcase/plushie3.png", height: 300 },
-  { id: "4", img: "/images/showcase/plushie4.png", height: 375 },
-  { id: "5", img: "/images/showcase/plushie5.png", height: 375 },
-  { id: "6", img: "/images/showcase/plushie6.png", height: 375 },
-  { id: "7", img: "/images/showcase/plushie7.png", height: 450 },
-  { id: "8", img: "/images/showcase/plushie8.png", height: 300 },
-  { id: "9", img: "/images/showcase/plushie9.png", height: 400 },
-  { id: "10", img: "/images/showcase/plushie10.png", height: 450 },
+  { id: "1", img: "/images/showcase/plushie1.webp", height: 300 },
+  { id: "2", img: "/images/showcase/plushie2.webp", height: 300 },
+  { id: "3", img: "/images/showcase/plushie3.webp", height: 300 },
+  { id: "4", img: "/images/showcase/plushie4.webp", height: 375 },
+  { id: "5", img: "/images/showcase/plushie5.webp", height: 375 },
+  { id: "6", img: "/images/showcase/plushie6.webp", height: 375 },
+  { id: "7", img: "/images/showcase/plushie7.webp", height: 450 },
+  { id: "8", img: "/images/showcase/plushie8.webp", height: 300 },
+  { id: "9", img: "/images/showcase/plushie9.webp", height: 400 },
+  { id: "10", img: "/images/showcase/plushie10.webp", height: 450 },
 ];
 
 function ShowcaseSection() {
   const [visibleCount, setVisibleCount] = useState(0);
-  const aboutZoomed = useScrollStore((s) => s.aboutZoomed);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timers = items.map((_, i) =>
@@ -29,17 +31,51 @@ function ShowcaseSection() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  if (!aboutZoomed) return null;
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const scroller = document.getElementById("scroll-container");
+    if (!scroller) return;
+
+    gsap.fromTo(
+      card,
+      { y: "100vh" },
+      {
+        y: "0vh",
+        ease: "none",
+        scrollTrigger: {
+          id: "showcase-slide",
+          trigger: card,
+          scroller,
+          start: "top bottom",
+          end: "top top",
+          scrub: true,
+        },
+      },
+    );
+
+    return () => {
+      ScrollTrigger.getById("showcase-slide")?.kill();
+    };
+  }, []);
 
   return (
     <div
+      ref={cardRef}
       className="relative flex flex-col min-h-[calc(100vh - 120px)] items-center justify-center z-20 bg-[#d5bb93] rounded-t-[24px] px-30 pt-20 pb-30"
       style={{
-        boxShadow:
-          "0 -40px 100px rgba(0,0,0,0.45), 0 -8px 40px rgba(0,0,0,0.3)",
-        clipPath: "inset(-200px 0 0 0)",
+        willChange: "transform",
       }}
     >
+      {/* Shadow simulation — cheaper than boxShadow during transform animation */}
+      <div
+        className="absolute -top-20 left-0 right-0 h-20 pointer-events-none z-10"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent, rgba(0,0,0,0.45))",
+        }}
+      />
       <div
         className="absolute bottom-0 left-0 w-full h-64 pointer-events-none z-10"
         style={{
