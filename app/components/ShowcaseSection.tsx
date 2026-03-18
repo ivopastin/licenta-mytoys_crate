@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScrollStore } from "@/app/store/useScrollStore";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const items = [
   { id: "1", img: "/images/showcase/plushie1.png", height: 300 },

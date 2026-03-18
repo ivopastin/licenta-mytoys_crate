@@ -4,10 +4,12 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Grainient from "@/components/Grainient";
 import ReviewCard from "./testimonials/ReviewCard";
+import { useScrollStore } from "../store/useScrollStore";
 
 function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const aboutZoomed = useScrollStore((s) => s.aboutZoomed);
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -64,6 +66,8 @@ function TestimonialsSection() {
       rating: 5,
     },
   ];
+
+  if (!aboutZoomed) return null;
 
   return (
     <div className="relative h-[calc(100vh-20px)] overflow-hidden">
@@ -132,7 +136,7 @@ function TestimonialsSection() {
         <div className="flex flex-row gap-[20px] w-full justify-between">
           <div className="flex flex-col gap-[55px]">
             <div className="flex flex-col gap-[10px] max-w-[300px]">
-              <p className="text-[48px] font-bold text-font-primary leading-[50px]">
+              <p className="text-[42px] font-bold text-font-primary leading-[50px]">
                 85%
               </p>
               <p className="text-[20px] text-semibold leading-[22px] opacity-70">
@@ -141,7 +145,7 @@ function TestimonialsSection() {
             </div>
 
             <div className="flex flex-col gap-[10px] max-w-[300px]">
-              <p className="text-[48px] font-bold text-font-primary leading-[50px]">
+              <p className="text-[42px] font-bold text-font-primary leading-[50px]">
                 +2.2k
               </p>
               <p className="text-[20px] text-semibold leading-[22px] opacity-70">
@@ -151,7 +155,7 @@ function TestimonialsSection() {
             </div>
 
             <div className="flex flex-col gap-[10px] max-w-[300px]">
-              <p className="text-[48px] font-bold text-font-primary leading-[50px]">
+              <p className="text-[42px] font-bold text-font-primary leading-[50px]">
                 &gt;800
               </p>
               <p className="text-[20px] text-semibold leading-[22px] opacity-70">
@@ -178,16 +182,23 @@ function TestimonialsSection() {
                 scrollSnapType: "x mandatory",
                 paddingLeft: "calc(50% - 200px)",
                 paddingRight: "calc(50% - 200px)",
+                paddingTop: "20px",
+                paddingBottom: "20px",
               }}
             >
               {reviews.map((review, i) => (
                 <div
                   key={review.id}
-                  className="shrink-0 transition-transform duration-500 ease-out"
+                  className="shrink-0 transition-all duration-500 ease-out"
                   style={{
                     scrollSnapAlign: "center",
                     transform: i === activeIndex ? "scale(1)" : "scale(0.88)",
                     transformOrigin: "center center",
+                    boxShadow:
+                      i === activeIndex
+                        ? "0 10px 17px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.15)"
+                        : "none",
+                    borderRadius: "16px",
                   }}
                 >
                   <ReviewCard review={review} />
@@ -204,7 +215,8 @@ function TestimonialsSection() {
                   style={{
                     width: i === activeIndex ? 16 : 8,
                     height: 8,
-                    background: i === activeIndex ? "white" : "rgba(255,255,255,0.4)",
+                    background:
+                      i === activeIndex ? "white" : "rgba(255,255,255,0.4)",
                   }}
                 />
               ))}
