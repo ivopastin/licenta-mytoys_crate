@@ -29,7 +29,7 @@ function ShowcaseSection() {
   }, []);
 
   return (
-    <div className="relative flex flex-col items-center justify-center z-20 bg-[#d5bb93] rounded-t-[24px] px-30 pt-20 pb-30">
+    <div className="relative flex flex-col items-center justify-center z-20 bg-[#d5bb93] px-30 pt-20 pb-30">
       <div
         className="absolute bottom-0 left-0 w-full h-64 pointer-events-none z-10"
         style={{

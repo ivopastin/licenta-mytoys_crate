@@ -41,8 +41,10 @@ function PricingCard({
   return (
     <FadeUp delay={delay}>
       <div
-        className={`w-full flex flex-col gap-4 rounded-[20px] border border-white/20 backdrop-blur-md ${
-          featured ? "p-4 scale-105 bg-white/15 shadow-[8px_12px_40px_rgba(0,0,0,0.45)]" : "p-3 bg-white/10 shadow-[6px_10px_30px_rgba(0,0,0,0.35)]"
+        className={`w-full flex flex-col gap-4 rounded-[20px] border border-white/20 backdrop-blur-sm ${
+          featured
+            ? "p-4 scale-105 bg-white/15 shadow-[8px_12px_40px_rgba(0,0,0,0.45)]"
+            : "p-3 bg-white/10 shadow-[6px_10px_30px_rgba(0,0,0,0.35)]"
         }`}
       >
         <div className="flex flex-col gap-4 w-full">
@@ -138,6 +140,14 @@ export default function PricingSection() {
         className="absolute top-0 left-0 right-0 h-32 pointer-events-none z-10"
         style={{
           background: "linear-gradient(to bottom, #591427, transparent)",
+        }}
+      />
+
+      {/* bottom fade into footer */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-10"
+        style={{
+          background: "linear-gradient(to top, #417c9c, transparent)",
         }}
       />
 
