@@ -87,9 +87,9 @@ function TestimonialsSection() {
         className="absolute inset-0 pointer-events-none z-1"
         style={{
           maskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, black 0%, transparent 100%)",
+            "radial-gradient(ellipse 60% 55% at 50% 38%, black 0%, transparent 100%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, black 0%, transparent 100%)",
+            "radial-gradient(ellipse 60% 55% at 50% 38%, black 0%, transparent 100%)",
         }}
       >
         <Image
