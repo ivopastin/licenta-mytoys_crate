@@ -4,13 +4,18 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import GlassSurface from "@/components/GlassSurface";
+import { motion, AnimatePresence } from "motion/react";
+
+const LINKS = ["About", "Showcase", "Testimonials", "Pricing", "Contact Us"];
 
 export default function Navbar() {
   const [pastHero, setPastHero] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [underline, setUnderline] = useState<{ left: number; width: number } | null>(null);
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const scrollContainerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    // The scroll container is the overflow-y-auto div wrapping the content
     const container = document.querySelector<HTMLElement>(
       ".fixed.inset-2\\.5 > div.overflow-y-auto",
     );
@@ -18,13 +23,19 @@ export default function Navbar() {
     scrollContainerRef.current = container;
 
     const onScroll = () => {
-      // Hero is ~100vh tall, trigger when scrolled past ~80% of it
       setPastHero(container.scrollTop > container.clientHeight * 0.8);
     };
 
     container.addEventListener("scroll", onScroll, { passive: true });
     return () => container.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!hoveredLink) return;
+    const el = linkRefs.current[hoveredLink];
+    if (!el) return;
+    setUnderline({ left: el.offsetLeft, width: el.offsetWidth });
+  }, [hoveredLink]);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 w-full flex flex-row items-center px-[120px] py-[50px]">
@@ -49,18 +60,35 @@ export default function Navbar() {
         mixBlendMode="normal"
         className="fixed left-1/2 -translate-x-1/2"
       >
-        <div className="flex flex-row items-center gap-10 px-9">
-          {["About", "Showcase", "Testimonials", "Pricing", "Contact Us"].map(
-            (label) => (
-              <a
-                key={label}
-                href={`#${label.toLowerCase().replace(/\s+/g, "-")}`}
-                className="text-[18px] text-white font-semibold hover:text-white/80 transition-colors"
-              >
-                {label}
-              </a>
-            ),
-          )}
+        <div
+          className="relative flex flex-row items-center gap-10 px-9 h-full"
+          onMouseLeave={() => setHoveredLink(null)}
+        >
+          {LINKS.map((label) => (
+            <motion.a
+              key={label}
+              ref={(el) => { linkRefs.current[label] = el; }}
+              href={`#${label.toLowerCase().replace(/\s+/g, "-")}`}
+              className="text-[18px] text-white font-semibold"
+              onHoverStart={() => setHoveredLink(label)}
+              animate={{ opacity: hoveredLink && hoveredLink !== label ? 0.5 : 1 }}
+              transition={{ duration: 0.15 }}
+            >
+              {label}
+            </motion.a>
+          ))}
+
+          <AnimatePresence>
+            {hoveredLink && underline && (
+              <motion.span
+                className="absolute bottom-3 h-[2px] rounded-full bg-white pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, left: underline.left, width: underline.width }}
+                exit={{ opacity: 0 }}
+                transition={{ type: "spring", bounce: 0.2, visualDuration: 0.25 }}
+              />
+            )}
+          </AnimatePresence>
         </div>
       </GlassSurface>
       <div className="ml-auto flex flex-row items-center gap-3">

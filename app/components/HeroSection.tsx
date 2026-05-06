@@ -5,6 +5,8 @@ import Image from "next/image";
 import Grainient from "@/components/Grainient";
 import Magnet from "@/components/Magnet";
 import { Button } from "@/components/ui/button";
+import SplitText from "@/components/SplitText";
+import FadeUp from "@/components/FadeUp";
 
 export default function HeroSection({
   children,
@@ -58,14 +60,26 @@ export default function HeroSection({
       />
       <div className="relative z-10 h-full w-full flex flex-col items-end justify-center pt-[164px] pb-[60px] px-[120px]">
         <div className="flex flex-col gap-[20px] max-w-[800px]">
-          <p className="text-[64px] font-semibold leading-[76px]">
-            <span className="font-bold font-cozy">MyToys Crate</span> - Turn
-            Your Plush Toy Idea into Reality
-          </p>
-          <p className="text-[24px] font-medium leading-[36px]">
-            The only platform you need to design custom plushies and get the
-            crochet pattern to make them yourself.
-          </p>
+          <SplitText
+            text="MyToys Crate — Turn Your Plush Toy Idea into Reality"
+            tag="p"
+            className="text-[62px] font-semibold leading-[80px] font-cozy h-[180px]"
+            splitType="words"
+            from={{ opacity: 0, y: 32 }}
+            to={{ opacity: 1, y: 0 }}
+            duration={0.8}
+            delay={60}
+            ease="power3.out"
+            textAlign="left"
+            threshold={0.1}
+            rootMargin="0px"
+          />
+          <FadeUp delay={400}>
+            <p className="text-[24px] font-medium leading-[36px]">
+              The only platform you need to design custom plushies and get the
+              crochet pattern to make them yourself.
+            </p>
+          </FadeUp>
           <div className="w-full flex flex-row justify-end">
             <Button className="w-fit px-6 py-2.5 h-auto bg-[#fff1b5]/90 text-[#716458] text-[18px] font-bold rounded-[16px] hover:bg-[#fff1b5] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
               Try now

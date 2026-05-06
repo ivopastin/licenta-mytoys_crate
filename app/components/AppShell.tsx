@@ -1,6 +1,5 @@
 import Navbar from "./Navbar";
 import BottomBlur from "./BottomBlur";
-import SmoothScroll from "./SmoothScroll";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +16,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           {children}
         </div>
         <BottomBlur />
-        <SmoothScroll />
       </div>
     </>
   );

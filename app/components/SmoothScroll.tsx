@@ -15,18 +15,16 @@ export default function SmoothScroll() {
     const lenis = new Lenis({
       wrapper: scroller,
       content: scroller.firstElementChild as HTMLElement,
-      lerp: 0.1,
+      lerp: 0.08,
       smoothWheel: true,
+      syncTouch: false,
     });
 
-    // Sync Lenis scroll position to GSAP ScrollTrigger
-    lenis.on("scroll", () => ScrollTrigger.update());
-
-    // Tell ScrollTrigger how to get/set scroll position on the custom scroller
+    // Tell ScrollTrigger how to read scroll position from the custom scroller
     ScrollTrigger.scrollerProxy(scroller, {
       scrollTop(value) {
-        if (arguments.length && value !== undefined) {
-          lenis.scrollTo(value, { immediate: true });
+        if (arguments.length) {
+          lenis.scrollTo(value as number, { immediate: true });
         }
         return scroller.scrollTop;
       },
@@ -38,16 +36,17 @@ export default function SmoothScroll() {
           height: window.innerHeight,
         };
       },
+      pinType: scroller.style.transform ? "transform" : "fixed",
     });
 
-    // Drive Lenis via gsap ticker
+    lenis.on("scroll", ScrollTrigger.update);
+
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => lenis.raf(time * 1000));
-      ScrollTrigger.clearScrollMemory();
+      ScrollTrigger.scrollerProxy(scroller, undefined as never);
     };
   }, []);
 

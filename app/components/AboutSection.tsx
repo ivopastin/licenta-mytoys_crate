@@ -326,7 +326,7 @@ function AboutSection() {
               {ended && (
                 <BlurText
                   text="It's as easy as that!"
-                  className="text-font-primary text-[83px] font-semibold text-center max-w-[500px] leading-[82px]"
+                  className="text-font-primary text-[83px] justify-center font-semibold max-w-[500px] leading-[82px]"
                   delay={120}
                   animateBy="words"
                   direction="bottom"
