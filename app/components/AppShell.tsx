@@ -1,5 +1,6 @@
 import Navbar from "./Navbar";
 import BottomBlur from "./BottomBlur";
+import SmoothScroll from "./SmoothScroll";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -11,6 +12,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="fixed top-0 right-0 bottom-0 w-2.5 bg-white z-100 pointer-events-none" />
 
       <div className="fixed inset-2.5 text-font-primary overflow-hidden rounded-[16px]">
+        <SmoothScroll />
         <div id="scroll-container" className="h-full overflow-y-auto">
           <Navbar />
           {children}
