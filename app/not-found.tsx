@@ -5,7 +5,12 @@ import Grainient from "@/components/Grainient";
 
 export default function NotFound() {
   return (
-    <div className="relative h-[calc(100vh-20px)] overflow-hidden flex flex-col items-center justify-center gap-6">
+    <>
+      <div className="fixed top-0 left-0 right-0 h-2.5 bg-white z-[100] pointer-events-none" />
+      <div className="fixed bottom-0 left-0 right-0 h-2.5 bg-white z-[100] pointer-events-none" />
+      <div className="fixed top-0 left-0 bottom-0 w-2.5 bg-white z-[100] pointer-events-none" />
+      <div className="fixed top-0 right-0 bottom-0 w-2.5 bg-white z-[100] pointer-events-none" />
+    <div className="fixed inset-2.5 rounded-[16px] overflow-hidden flex flex-col items-center justify-center gap-6">
       <div className="absolute inset-0">
         <Grainient
           color1="#417c9c"
@@ -49,5 +54,6 @@ export default function NotFound() {
         </Link>
       </div>
     </div>
+    </>
   );
 }
