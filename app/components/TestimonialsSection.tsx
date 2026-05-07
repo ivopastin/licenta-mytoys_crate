@@ -56,7 +56,7 @@ const logoItems = reviews.map((review) => ({
 
 function TestimonialsSection() {
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div id="testimonials" className="relative min-h-screen overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <Grainient
           color1="#591427"
@@ -103,6 +103,12 @@ function TestimonialsSection() {
         className="absolute top-0 left-0 right-0 h-48 z-10 pointer-events-none"
         style={{
           background: "linear-gradient(to top, transparent, #591427)",
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-48 z-10 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, transparent, #591427)",
         }}
       />
       <div className="absolute right-0 -top-20 z-1 pointer-events-none">

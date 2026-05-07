@@ -39,7 +39,7 @@ const animals = [
 export default function Footer() {
   return (
     <div
-      id="footer"
+      id="contact-us"
       className="relative w-full h-[calc(100vh-20px)] flex flex-col"
     >
       {/* top 2/3: colored section with rounded bottom corners */}
@@ -178,7 +178,7 @@ export default function Footer() {
             <SplitText
               text="Your next plushie is waiting to be made."
               tag="p"
-              className="text-[54px] font-bold text-white leading-15 font-cozy h-[140px]"
+              className="text-[54px] font-bold text-white leading-15 font-cozy h-35"
               splitType="words"
               from={{ opacity: 0, y: 30 }}
               to={{ opacity: 1, y: 0 }}

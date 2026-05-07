@@ -10,7 +10,7 @@ export default function Home() {
     <div className="relative flex flex-col w-full">
       <HeroSection />
       <AboutSection />
-      <div className="relative z-20">
+      <div id="showcase" className="relative z-20">
         <ShowcaseSection />
       </div>
       <TestimonialsSection />

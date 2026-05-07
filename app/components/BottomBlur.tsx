@@ -7,7 +7,7 @@ export default function BottomBlur() {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const footer = document.getElementById("footer");
+    const footer = document.getElementById("contact-us");
     const container = document.getElementById("scroll-container");
     if (!footer || !container) return;
 

@@ -14,8 +14,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <div className="fixed inset-2.5 text-font-primary overflow-hidden rounded-[16px]">
         <SmoothScroll />
         <div id="scroll-container" className="h-full overflow-y-auto">
-          <Navbar />
-          {children}
+          <div id="scroll-content">
+            <Navbar />
+            {children}
+          </div>
         </div>
         <BottomBlur />
       </div>

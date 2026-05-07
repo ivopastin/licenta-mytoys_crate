@@ -136,7 +136,7 @@ function AboutSection() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-[500vh]">
+    <div id="about" ref={containerRef} className="relative h-[500vh]">
       <div
         ref={stickyRef}
         className="sticky top-0 overflow-hidden h-[calc(100vh-20px)] flex flex-col items-center justify-center"
