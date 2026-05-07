@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import GlassSurface from "@/components/GlassSurface";
@@ -136,9 +137,11 @@ export default function Navbar() {
             Try now
           </Button>
         </div>
-        <Button className="px-6 py-2.5 h-auto bg-transparent border border-font-primary bg-white/30 backdrop-blur-sm text-white text-[18px] font-bold rounded-[16px] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
-          Login
-        </Button>
+        <Link href="/login">
+          <Button className="px-6 py-2.5 h-auto bg-transparent border border-font-primary bg-white/30 backdrop-blur-sm text-white text-[18px] font-bold rounded-[16px] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
+            Login
+          </Button>
+        </Link>
       </div>
     </div>
   );
