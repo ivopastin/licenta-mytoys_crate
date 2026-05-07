@@ -50,18 +50,20 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible="icon" className="border-none bg-white">
       {/* Logo */}
-      <SidebarHeader className="px-4 py-5 border-none">
+      <SidebarHeader className="border-none group-data-[collapsible=icon]:p-0">
         <Link
           href="/app"
-          className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+          className="flex items-center gap-3 px-4 py-5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:py-5"
         >
-          <Image
-            src="/images/logos/logo-black.png"
-            alt="MyToys Crate"
-            width={32}
-            height={32}
-            className="object-contain shrink-0"
-          />
+          <div className="shrink-0 w-9 h-9 flex items-center justify-center">
+            <Image
+              src="/images/logos/logo-black.png"
+              alt="MyToys Crate"
+              width={36}
+              height={36}
+              className="object-contain"
+            />
+          </div>
           <span className="font-bold text-[16px] text-[#1a1a1a] group-data-[collapsible=icon]:hidden">
             MyToys Crate
           </span>
