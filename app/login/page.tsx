@@ -37,15 +37,28 @@ export default function LoginPage() {
           />
         </div>
 
-        {/* Logo — top left */}
-        <div className="absolute top-6 left-6 z-10">
+        {/* Child plushie photo */}
+        <div className="absolute inset-0 pointer-events-none">
+          <Image
+            src="/images/clients/child-plushie.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-15 mix-blend-screen"
+          />
+        </div>
+
+        {/* Logo + wordmark — top left */}
+        <div className="absolute top-6 left-6 z-10 flex items-center gap-3">
           <Image
             src="/images/logos/logo-alb-deschis.png"
             alt="MyToys Crate"
-            width={64}
-            height={64}
+            width={48}
+            height={48}
             className="object-contain"
           />
+          <span className="text-white font-bold text-[18px] leading-tight">
+            MyToys Crate
+          </span>
         </div>
 
         {/* Bottom text block */}
