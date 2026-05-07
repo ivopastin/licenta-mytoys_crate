@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Home, Wand2, BookMarked, Settings, LogOut } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Home, Wand2, BookMarked, Settings, LogOut, ChevronUp } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,9 +13,7 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
 const NAV_ITEMS = [
@@ -25,11 +24,23 @@ const NAV_ITEMS = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-none bg-white">
       {/* Logo */}
-      <SidebarHeader className="px-4 py-5">
+      <SidebarHeader className="px-4 py-5 border-none">
         <Link href="/app" className="flex items-center gap-3">
           <Image
             src="/images/logos/logo-black.png"
@@ -45,7 +56,7 @@ export default function AppSidebar() {
       </SidebarHeader>
 
       {/* Nav items */}
-      <SidebarContent>
+      <SidebarContent className="border-none">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -56,20 +67,17 @@ export default function AppSidebar() {
                     : pathname.startsWith(href);
                 return (
                   <SidebarMenuItem key={label}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      className={`rounded-[12px] font-semibold text-[14px] ${
+                    <Link
+                      href={href}
+                      className={`flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-[12px] font-semibold text-[14px] transition-colors ${
                         isActive
-                          ? "bg-[#417c9c] text-white hover:bg-[#417c9c] hover:text-white"
+                          ? "bg-[#417c9c] text-white"
                           : "text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c]"
                       }`}
                     >
-                      <Link href={href}>
-                        <Icon size={18} />
-                        <span>{label}</span>
-                      </Link>
-                    </SidebarMenuButton>
+                      <Icon size={18} className="shrink-0" />
+                      <span className="group-data-[collapsible=icon]:hidden">{label}</span>
+                    </Link>
                   </SidebarMenuItem>
                 );
               })}
@@ -78,46 +86,52 @@ export default function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* User account + actions */}
-      <SidebarFooter className="px-3 py-4 border-t border-[#e0d9d5]">
-        {/* User card */}
-        <div className="flex items-center gap-3 px-2 py-2 group-data-[collapsible=icon]:justify-center">
-          <div className="w-8 h-8 rounded-full bg-[#417c9c] flex items-center justify-center shrink-0">
-            <span className="text-white text-[12px] font-bold">MP</span>
-          </div>
-          <div className="flex flex-col min-w-0 group-data-[collapsible=icon]:hidden">
-            <span className="text-[13px] font-semibold text-[#1a1a1a] truncate">
-              Maria Pastin
-            </span>
-            <span className="text-[11px] text-[#716458] truncate">
-              ivo.pastin@gmail.com
-            </span>
-          </div>
-        </div>
-
-        {/* Settings + logout */}
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="rounded-[12px] text-[13px] font-medium text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c]"
-            >
-              <Link href="/app/settings">
-                <Settings size={16} />
-                <span>Settings</span>
+      {/* User account with dropdown */}
+      <SidebarFooter className="px-3 py-4 border-none">
+        <div ref={dropdownRef} className="relative">
+          {/* Dropdown menu */}
+          {dropdownOpen && (
+            <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-[12px] border border-[#e0d9d5] shadow-lg overflow-hidden py-1 z-50">
+              <Link
+                href="/app/settings"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c] transition-colors"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <Settings size={15} />
+                <span className="group-data-[collapsible=icon]:hidden">Settings</span>
               </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="rounded-[12px] text-[13px] font-medium text-[#716458] hover:bg-red-50 hover:text-red-500 cursor-pointer">
-              <LogOut size={16} />
-              <span>Log out</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+              <button
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <LogOut size={15} />
+                <span className="group-data-[collapsible=icon]:hidden">Log out</span>
+              </button>
+            </div>
+          )}
 
-        {/* Collapse toggle */}
-        <SidebarTrigger className="mt-2 w-full justify-center text-[#716458] hover:text-[#417c9c]" />
+          {/* User card button */}
+          <button
+            onClick={() => setDropdownOpen((v) => !v)}
+            className="w-full flex items-center gap-3 px-2 py-2 rounded-[12px] hover:bg-[#417c9c]/10 transition-colors cursor-pointer group-data-[collapsible=icon]:justify-center"
+          >
+            <div className="w-8 h-8 rounded-full bg-[#417c9c] flex items-center justify-center shrink-0">
+              <span className="text-white text-[12px] font-bold">MP</span>
+            </div>
+            <div className="flex flex-col min-w-0 text-left group-data-[collapsible=icon]:hidden flex-1">
+              <span className="text-[13px] font-semibold text-[#1a1a1a] truncate">
+                Maria Pastin
+              </span>
+              <span className="text-[11px] text-[#716458] truncate">
+                ivo.pastin@gmail.com
+              </span>
+            </div>
+            <ChevronUp
+              size={14}
+              className={`text-[#716458] shrink-0 transition-transform group-data-[collapsible=icon]:hidden ${dropdownOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
