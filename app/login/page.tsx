@@ -34,7 +34,7 @@ export default function LoginPage() {
             src="/images/textures/waves.jpg"
             alt=""
             fill
-            className="object-cover opacity-20 mix-blend-screen"
+            className="object-cover opacity-15 mix-blend-screen"
           />
         </div>
 
@@ -44,7 +44,7 @@ export default function LoginPage() {
             src="/images/clients/child-plushie.jpg"
             alt=""
             fill
-            className="object-cover opacity-15 mix-blend-screen"
+            className="object-cover opacity-20 mix-blend-screen"
           />
         </div>
 
@@ -82,7 +82,13 @@ export default function LoginPage() {
           className="absolute top-6 left-6 z-10 flex items-center gap-1.5 px-4 py-2 rounded-[12px] border border-[#e0d9d5] bg-white text-[13px] font-semibold text-[#716458] hover:border-[#417c9c] hover:text-[#417c9c] transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            <path
+              d="M10 3L5 8l5 5"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           Back
         </Link>
