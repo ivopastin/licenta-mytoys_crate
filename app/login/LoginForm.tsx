@@ -39,9 +39,19 @@ export default function LoginForm() {
 
         {/* Password */}
         <div className="flex flex-col gap-1">
-          <label className="text-[13px] font-semibold text-[#716458]">
-            Password
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-[13px] font-semibold text-[#716458]">
+              Password
+            </label>
+            {isLogin && (
+              <button
+                type="button"
+                className="text-[12px] text-[#417c9c] font-medium hover:underline cursor-pointer"
+              >
+                Forgot password?
+              </button>
+            )}
+          </div>
           <input
             type="password"
             required
