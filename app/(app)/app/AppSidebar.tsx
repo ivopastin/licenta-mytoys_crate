@@ -8,7 +8,9 @@ import {
   Home,
   Wand2,
   BookMarked,
+  GraduationCap,
   Settings,
+  CreditCard,
   LogOut,
   ChevronUp,
 } from "lucide-react";
@@ -27,6 +29,7 @@ const NAV_ITEMS = [
   { label: "Home", href: "/app", icon: Home },
   { label: "Studio", href: "/app/studio", icon: Wand2 },
   { label: "My Patterns", href: "/app/my-patterns", icon: BookMarked },
+  { label: "Tutorials", href: "/app/tutorials", icon: GraduationCap },
 ];
 
 export default function AppSidebar() {
@@ -115,9 +118,15 @@ export default function AppSidebar() {
                 onClick={() => setDropdownOpen(false)}
               >
                 <Settings size={15} />
-                <span className="group-data-[collapsible=icon]:hidden">
-                  Settings
-                </span>
+                <span>Settings</span>
+              </Link>
+              <Link
+                href="/app/billing"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c] transition-colors"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <CreditCard size={15} />
+                <span>Billing</span>
               </Link>
               <button
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
