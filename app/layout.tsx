@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree, Geist, Pacifico } from "next/font/google";
 import "./globals.css";
-import AppShell from "./components/AppShell";
 import { cn } from "@/lib/utils";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -32,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${figtree.variable} ${figtree.className} ${pacifico.variable} antialiased bg-white`}
       >
-        <AppShell>{children}</AppShell>
+        {children}
       </body>
     </html>
   );
