@@ -1,0 +1,26 @@
+[
+  {
+    "id": "new-animal",
+    "title": "New Animal Pattern: The Fox",
+    "summary": "A brand-new fox pattern has been added to the collection — complete with bushy tail, pointy ears, and optional scarf accessory.",
+    "image": "/images/news/new-animal.png",
+    "date": "2026-05-05",
+    "tag": "New Pattern"
+  },
+  {
+    "id": "new-pattern",
+    "title": "Starter Kit Pattern Now Available",
+    "summary": "We've released a beginner-friendly starter kit pattern with simplified shapes and extra-detailed photo instructions. Perfect for your first plushie.",
+    "image": "/images/news/new-pattern.png",
+    "date": "2026-04-28",
+    "tag": "Update"
+  },
+  {
+    "id": "new-rabbit",
+    "title": "Spring Bunny Limited Edition",
+    "summary": "Celebrate spring with the limited-edition bunny pattern — floppy ears, rosy cheeks, and a tiny carrot accessory included in the download.",
+    "image": "/images/news/new-rabbit.png",
+    "date": "2026-04-15",
+    "tag": "Limited Edition"
+  }
+]

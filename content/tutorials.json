@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "magic-ring",
+    "title": "The Magic Ring",
+    "description": "The foundation of almost every amigurumi plushie. Learn to create a tight, adjustable center ring that closes with no hole.",
+    "difficulty": "Beginner",
+    "readTime": "5 min",
+    "order": 1
+  },
+  {
+    "slug": "single-crochet",
+    "title": "Single Crochet (sc)",
+    "description": "The most-used stitch in amigurumi. Build a firm, dense fabric that holds its shape perfectly for stuffed toys.",
+    "difficulty": "Beginner",
+    "readTime": "6 min",
+    "order": 2
+  },
+  {
+    "slug": "double-crochet",
+    "title": "Double Crochet (dc)",
+    "description": "A taller stitch that creates a looser, more flexible fabric — great for decorative elements, ears, and accessories.",
+    "difficulty": "Beginner",
+    "readTime": "5 min",
+    "order": 3
+  },
+  {
+    "slug": "half-double-crochet",
+    "title": "Half Double Crochet (hdc)",
+    "description": "Between a single and double crochet in height, the hdc creates a soft fabric with a subtle third loop — perfect for textured details.",
+    "difficulty": "Beginner",
+    "readTime": "5 min",
+    "order": 4
+  },
+  {
+    "slug": "increase",
+    "title": "Increase (inc)",
+    "description": "Add two stitches into one to widen your fabric. Increases are how you shape rounds from a flat circle into a sphere.",
+    "difficulty": "Beginner",
+    "readTime": "4 min",
+    "order": 5
+  },
+  {
+    "slug": "decrease",
+    "title": "Invisible Decrease (dec)",
+    "description": "Combine two stitches into one without leaving gaps. The invisible decrease is the secret to clean, professional-looking amigurumi.",
+    "difficulty": "Beginner",
+    "readTime": "5 min",
+    "order": 6
+  },
+  {
+    "slug": "front-loop-only",
+    "title": "Front Loop Only (FLO)",
+    "description": "Working through only the front loop creates a ridge on your fabric — ideal for adding borders, ruffles, or color-change details.",
+    "difficulty": "Intermediate",
+    "readTime": "4 min",
+    "order": 7
+  },
+  {
+    "slug": "back-loop-only",
+    "title": "Back Loop Only (BLO)",
+    "description": "Crocheting through the back loop leaves the front loop exposed, creating a neat horizontal ridge often used at color joins or brim edges.",
+    "difficulty": "Intermediate",
+    "readTime": "4 min",
+    "order": 8
+  },
+  {
+    "slug": "sewing-safety-eyes",
+    "title": "Attaching Safety Eyes",
+    "description": "Position and lock safety eyes correctly before stuffing — placement makes or breaks your plushie's expression. No sewing required.",
+    "difficulty": "Beginner",
+    "readTime": "5 min",
+    "order": 9
+  },
+  {
+    "slug": "assembling-plushie-parts",
+    "title": "Assembling Plushie Parts",
+    "description": "Sew arms, legs, ears, and tails onto the body securely. Learn positioning tricks, ladder stitch, and how to hide yarn ends cleanly.",
+    "difficulty": "Intermediate",
+    "readTime": "8 min",
+    "order": 10
+  }
+]
