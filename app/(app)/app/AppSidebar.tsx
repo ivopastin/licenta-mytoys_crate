@@ -4,7 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import { Home, Wand2, BookMarked, Settings, LogOut, ChevronUp } from "lucide-react";
+import {
+  Home,
+  Wand2,
+  BookMarked,
+  Settings,
+  LogOut,
+  ChevronUp,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -29,7 +36,10 @@ export default function AppSidebar() {
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setDropdownOpen(false);
       }
     }
@@ -41,12 +51,15 @@ export default function AppSidebar() {
     <Sidebar collapsible="icon" className="border-none bg-white">
       {/* Logo */}
       <SidebarHeader className="px-4 py-5 border-none">
-        <Link href="/app" className="flex items-center gap-3">
+        <Link
+          href="/app"
+          className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+        >
           <Image
             src="/images/logos/logo-black.png"
             alt="MyToys Crate"
-            width={36}
-            height={36}
+            width={32}
+            height={32}
             className="object-contain shrink-0"
           />
           <span className="font-bold text-[16px] text-[#1a1a1a] group-data-[collapsible=icon]:hidden">
@@ -59,7 +72,7 @@ export default function AppSidebar() {
       <SidebarContent className="border-none">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-[5px]">
               {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
                 const isActive =
                   href === "/app"
@@ -69,14 +82,16 @@ export default function AppSidebar() {
                   <SidebarMenuItem key={label}>
                     <Link
                       href={href}
-                      className={`flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-[12px] font-semibold text-[14px] transition-colors ${
+                      className={`flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-[12px] font-semibold text-[14px] transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:mx-auto ${
                         isActive
                           ? "bg-[#417c9c] text-white"
                           : "text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c]"
                       }`}
                     >
                       <Icon size={18} className="shrink-0" />
-                      <span className="group-data-[collapsible=icon]:hidden">{label}</span>
+                      <span className="group-data-[collapsible=icon]:hidden">
+                        {label}
+                      </span>
                     </Link>
                   </SidebarMenuItem>
                 );
@@ -98,14 +113,18 @@ export default function AppSidebar() {
                 onClick={() => setDropdownOpen(false)}
               >
                 <Settings size={15} />
-                <span className="group-data-[collapsible=icon]:hidden">Settings</span>
+                <span className="group-data-[collapsible=icon]:hidden">
+                  Settings
+                </span>
               </Link>
               <button
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
                 onClick={() => setDropdownOpen(false)}
               >
                 <LogOut size={15} />
-                <span className="group-data-[collapsible=icon]:hidden">Log out</span>
+                <span className="group-data-[collapsible=icon]:hidden">
+                  Log out
+                </span>
               </button>
             </div>
           )}
