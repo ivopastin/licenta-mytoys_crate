@@ -9,7 +9,7 @@ export default function LoginPage() {
   return (
     <div className="h-[calc(100vh-20px)] grid grid-cols-2">
       {/* ── Left panel: blue branded area ── */}
-      <div className="relative m-2 rounded-[16px] overflow-hidden bg-[#417c9c]">
+      <div className="relative m-2 rounded-[16px] overflow-hidden bg-[var(--color-brand)]">
         {/* Grainient background */}
         <div className="absolute inset-0">
           <Grainient
@@ -79,7 +79,7 @@ export default function LoginPage() {
         {/* Back button */}
         <Link
           href="/"
-          className="absolute top-6 left-6 z-10 flex items-center gap-1.5 px-4 py-2 rounded-[12px] border border-[#e0d9d5] bg-white text-[13px] font-semibold text-[#716458] hover:border-[#417c9c] hover:text-[#417c9c] transition-colors"
+          className="absolute top-6 left-6 z-10 flex items-center gap-1.5 px-4 py-2 rounded-[12px] border border-[var(--color-border-soft)] bg-white text-[13px] font-semibold text-[var(--color-warm)] hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path

@@ -196,7 +196,7 @@ export default function Footer() {
               </p>
             </FadeUp>
             <FadeUp delay={350}>
-              <button className="px-8 py-3 rounded-[14px] bg-[#fff1b5] text-[#591427] text-[16px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95 cursor-pointer">
+              <button className="px-8 py-3 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[16px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95 cursor-pointer">
                 Create your plushie
               </button>
             </FadeUp>
@@ -227,35 +227,35 @@ export default function Footer() {
           {/* links columns */}
           <div className="flex flex-row gap-16">
             <div className="flex flex-col gap-3">
-              <p className="text-[12px] font-bold uppercase tracking-widest text-[#716458]">
+              <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
                 Product
               </p>
               {["How it works", "Pricing", "Examples", "FAQ"].map((l) => (
                 <a
                   key={l}
                   href="#"
-                  className="text-[14px] text-[#1a1a1a]/60 hover:text-[#591427] font-medium transition-colors"
+                  className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
                 >
                   {l}
                 </a>
               ))}
             </div>
             <div className="flex flex-col gap-3">
-              <p className="text-[12px] font-bold uppercase tracking-widest text-[#716458]">
+              <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
                 Company
               </p>
               {["About us", "Blog", "Press", "Careers"].map((l) => (
                 <a
                   key={l}
                   href="#"
-                  className="text-[14px] text-[#1a1a1a]/60 hover:text-[#591427] font-medium transition-colors"
+                  className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
                 >
                   {l}
                 </a>
               ))}
             </div>
             <div className="flex flex-col gap-3">
-              <p className="text-[12px] font-bold uppercase tracking-widest text-[#716458]">
+              <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
                 Legal
               </p>
               {[
@@ -267,21 +267,21 @@ export default function Footer() {
                 <a
                   key={l}
                   href="#"
-                  className="text-[14px] text-[#1a1a1a]/60 hover:text-[#591427] font-medium transition-colors"
+                  className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
                 >
                   {l}
                 </a>
               ))}
             </div>
             <div className="flex flex-col gap-3">
-              <p className="text-[12px] font-bold uppercase tracking-widest text-[#716458]">
+              <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
                 Support
               </p>
               {["Contact us", "Help center", "Community", "Status"].map((l) => (
                 <a
                   key={l}
                   href="#"
-                  className="text-[14px] text-[#1a1a1a]/60 hover:text-[#591427] font-medium transition-colors"
+                  className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
                 >
                   {l}
                 </a>
@@ -298,7 +298,7 @@ export default function Footer() {
               height={40}
               className="object-contain opacity-80"
             />
-            <p className="text-[12px] text-[#1a1a1a]/35 font-medium">
+            <p className="text-[12px] text-[var(--color-ink)]/35 font-medium">
               © 2026 MyToys Crate. All rights reserved.
             </p>
           </div>

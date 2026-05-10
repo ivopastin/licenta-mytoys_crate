@@ -49,7 +49,7 @@ export default function NotFound() {
           </p>
           <Link
             href="/"
-            className="mt-4 px-6 py-3 rounded-[14px] bg-[#fff1b5] text-[#591427] text-[15px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95"
+            className="mt-4 px-6 py-3 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[15px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95"
           >
             Back to home
           </Link>

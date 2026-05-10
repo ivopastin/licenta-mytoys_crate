@@ -47,7 +47,7 @@ export default function StudioPage() {
             colors, and accessories. Your pattern will be ready in minutes.
           </p>
         </div>
-        <button className="px-8 py-3.5 rounded-[14px] bg-[#fff1b5] text-[#591427] text-[16px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-white hover:scale-105 active:scale-95 cursor-pointer">
+        <button className="px-8 py-3.5 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[16px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-white hover:scale-105 active:scale-95 cursor-pointer">
           Start designing
         </button>
       </div>

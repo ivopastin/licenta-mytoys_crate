@@ -122,7 +122,7 @@ function ShowcaseSection() {
           rootMargin="0px"
         />
         <FadeUp delay={500}>
-          <p className="z-10 text-[#716458]/80 text-[18px] font-semibold tracking-tight pt-4">
+          <p className="z-10 text-[var(--color-warm)]/80 text-[18px] font-semibold tracking-tight pt-4">
             - that&apos;s what we have learned from you, our customers -
           </p>
         </FadeUp>

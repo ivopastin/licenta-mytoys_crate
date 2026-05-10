@@ -102,7 +102,7 @@ export default async function TutorialPage({ params }: Props) {
                 ),
                 li: ({ children }) => (
                   <li className="flex gap-2 text-[15px] text-white/75 leading-relaxed">
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[#fff1b5] shrink-0" />
+                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] shrink-0" />
                     <span>{children}</span>
                   </li>
                 ),
@@ -125,7 +125,7 @@ export default async function TutorialPage({ params }: Props) {
                   </td>
                 ),
                 blockquote: ({ children }) => (
-                  <blockquote className="border-l-4 border-[#fff1b5] pl-4 my-4 text-white/60 italic">
+                  <blockquote className="border-l-4 border-[var(--color-accent)] pl-4 my-4 text-white/60 italic">
                     {children}
                   </blockquote>
                 ),
@@ -151,7 +151,7 @@ export default async function TutorialPage({ params }: Props) {
             {next ? (
               <Link
                 href={`/app/tutorials/${next.slug}`}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-[12px] bg-[#fff1b5] text-[#591427] text-[13px] font-semibold hover:bg-white transition-colors ml-auto"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-[12px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[13px] font-semibold hover:bg-white transition-colors ml-auto"
               >
                 {next.title}
                 <GraduationCap size={14} />

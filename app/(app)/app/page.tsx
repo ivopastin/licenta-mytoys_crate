@@ -59,7 +59,7 @@ export default function AppHomePage() {
             </div>
             <Link
               href="/app/studio"
-              className="shrink-0 px-6 py-2.5 rounded-[14px] bg-[#fff1b5] text-[#591427] text-[14px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-white hover:scale-105 active:scale-95"
+              className="shrink-0 px-6 py-2.5 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[14px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-white hover:scale-105 active:scale-95"
             >
               Go to Studio
             </Link>
@@ -97,7 +97,7 @@ export default function AppHomePage() {
               </div>
               <Link
                 href={`/app/tutorials/${firstTutorial.slug}`}
-                className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-[12px] bg-white text-[#417c9c] text-[13px] font-semibold hover:bg-white/90 transition-colors"
+                className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-[12px] bg-white text-[var(--color-brand)] text-[13px] font-semibold hover:bg-white/90 transition-colors"
               >
                 Start Learning
                 <ArrowRight size={14} />

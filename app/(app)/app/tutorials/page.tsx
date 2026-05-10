@@ -8,7 +8,7 @@ import tutorialsData from "@/content/tutorials.json";
 
 const DIFFICULTY_COLORS: Record<string, string> = {
   Beginner: "bg-white/15 text-white",
-  Intermediate: "bg-[#fff1b5]/20 text-[#fff1b5]",
+  Intermediate: "bg-[var(--color-accent)]/20 text-[var(--color-accent)]",
   Advanced: "bg-white/15 text-white",
 };
 
@@ -84,7 +84,7 @@ export default function TutorialsPage() {
 
                 {/* Title + description */}
                 <div className="flex flex-col gap-1 flex-1">
-                  <p className="text-[15px] font-semibold text-white group-hover:text-[#fff1b5] transition-colors leading-snug">
+                  <p className="text-[15px] font-semibold text-white group-hover:text-[var(--color-accent)] transition-colors leading-snug">
                     {tutorial.title}
                   </p>
                   <p className="text-[13px] text-white/60 leading-relaxed line-clamp-2">

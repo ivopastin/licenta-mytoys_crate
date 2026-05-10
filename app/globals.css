@@ -14,6 +14,14 @@
 }
 
 :root {
+  /* Brand palette */
+  --color-brand: #417c9c;
+  --color-warm: #716458;
+  --color-deep: #591427;
+  --color-accent: #fff1b5;
+  --color-ink: #1a1a1a;
+  --color-border-soft: #e0d9d5;
+
   --background-primary: #417c9c;
   --font-primary: #d8ccc5;
   --background: oklch(1 0 0);
@@ -52,6 +60,13 @@
 }
 
 @theme inline {
+  --color-brand: var(--color-brand);
+  --color-warm: var(--color-warm);
+  --color-deep: var(--color-deep);
+  --color-accent: var(--color-accent);
+  --color-ink: var(--color-ink);
+  --color-border-soft: var(--color-border-soft);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);

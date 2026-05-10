@@ -51,35 +51,35 @@ function PricingCard({
           {/* white inset panel */}
           <div className="flex flex-col gap-4 bg-white rounded-[12px] px-5 py-5">
             {badge && (
-              <span className="self-start text-[11px] font-bold uppercase tracking-widest bg-[#591427]/10 text-[#591427] border border-[#591427]/20 rounded-full px-3 py-1">
+              <span className="self-start text-[11px] font-bold uppercase tracking-widest bg-[var(--color-deep)]/10 text-[var(--color-deep)] border border-[var(--color-deep)]/20 rounded-full px-3 py-1">
                 {badge}
               </span>
             )}
             <div className="flex flex-col gap-1">
               <p
-                className={`font-bold text-[#1a1a1a] ${featured ? "text-[20px]" : "text-[17px]"}`}
+                className={`font-bold text-[var(--color-ink)] ${featured ? "text-[20px]" : "text-[17px]"}`}
               >
                 {title}
               </p>
-              <p className="text-[#716458] text-[12px] font-medium leading-snug">
+              <p className="text-[var(--color-warm)] text-[12px] font-medium leading-snug">
                 {description}
               </p>
             </div>
             <div className="flex items-end gap-1.5">
               <p
-                className={`font-bold text-[#591427] leading-none ${featured ? "text-[48px]" : "text-[36px]"}`}
+                className={`font-bold text-[var(--color-deep)] leading-none ${featured ? "text-[48px]" : "text-[36px]"}`}
               >
                 {price}
               </p>
-              <p className="text-[#716458] text-[13px] font-medium mb-1.5">
+              <p className="text-[var(--color-warm)] text-[13px] font-medium mb-1.5">
                 {priceUnit}
               </p>
             </div>
             <button
               className={`w-full rounded-[10px] py-2.5 text-[14px] font-bold cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95 ${
                 featured
-                  ? "bg-[#591427] text-[#fff1b5] hover:bg-[#7a1c35]"
-                  : "bg-[#591427]/10 text-[#591427] border border-[#591427]/20 hover:bg-[#591427]/20"
+                  ? "bg-[var(--color-deep)] text-[var(--color-accent)] hover:bg-[#7a1c35]"
+                  : "bg-[var(--color-deep)]/10 text-[var(--color-deep)] border border-[var(--color-deep)]/20 hover:bg-[var(--color-deep)]/20"
               }`}
             >
               {cta}
@@ -107,7 +107,7 @@ export default function PricingSection() {
   return (
     <div id="pricing" className="relative h-[calc(100vh-20px)] overflow-hidden flex flex-col items-center justify-center">
       {/* warm neutral base */}
-      <div className="absolute inset-0 bg-[#fff1b5]/60" />
+      <div className="absolute inset-0 bg-[var(--color-accent)]/60" />
 
       {/* purple paint texture covering right 2/3 */}
       <div

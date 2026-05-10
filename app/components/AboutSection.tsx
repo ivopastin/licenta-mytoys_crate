@@ -305,7 +305,7 @@ function AboutSection() {
         <div className="relative z-10 flex flex-col pt-[194px] pb-[60px] px-[150px] w-full h-full">
           <div
             ref={videoWrapRef}
-            className="relative flex flex-col w-full h-full bg-[#716458]/30 border border-white/40 rounded-[16px] overflow-hidden p-[10px]"
+            className="relative flex flex-col w-full h-full bg-[var(--color-warm)]/30 border border-white/40 rounded-[16px] overflow-hidden p-[10px]"
             style={{ transformOrigin: "top left" }}
           >
             <video

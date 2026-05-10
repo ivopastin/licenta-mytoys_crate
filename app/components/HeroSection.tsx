@@ -81,7 +81,7 @@ export default function HeroSection({
             </p>
           </FadeUp>
           <div className="w-full flex flex-row justify-end">
-            <Button className="w-fit px-6 py-2.5 h-auto bg-[#fff1b5]/90 text-[#716458] text-[18px] font-bold rounded-[16px] hover:bg-[#fff1b5] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
+            <Button className="w-fit px-6 py-2.5 h-auto bg-[var(--color-accent)]/90 text-[var(--color-warm)] text-[18px] font-bold rounded-[16px] hover:bg-[var(--color-accent)] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
               Try now
             </Button>
           </div>

@@ -27,12 +27,12 @@ export default function HelpButton() {
   return (
     <div ref={ref} className="absolute bottom-5 right-5 z-30 flex flex-col items-end gap-2">
       {open && (
-        <div className="bg-white rounded-[12px] border border-[#e0d9d5] shadow-lg py-1 w-48 mb-1">
+        <div className="bg-white rounded-[12px] border border-[var(--color-border-soft)] shadow-lg py-1 w-48 mb-1">
           {HELP_ITEMS.map(({ label, icon: Icon, href }) => (
             <a
               key={label}
               href={href}
-              className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c] transition-colors"
+              className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[var(--color-warm)] hover:bg-[var(--color-brand)]/10 hover:text-[var(--color-brand)] transition-colors"
               onClick={() => setOpen(false)}
             >
               <Icon size={15} />

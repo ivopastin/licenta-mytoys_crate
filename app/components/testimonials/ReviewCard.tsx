@@ -12,7 +12,7 @@ type Review = {
 function ReviewCard({ review }: { review: Review }) {
   return (
     <div className="flex flex-col w-[400px] h-[380px] rounded-[16px] bg-white p-[10px] gap-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-      <div className="relative h-[280px] w-full bg-[#716458] rounded-[12px] flex flex-col p-[14px]">
+      <div className="relative h-[280px] w-full bg-[var(--color-warm)] rounded-[12px] flex flex-col p-[14px]">
         <p className="text-[20px] font-medium tracking-tight leading-[22px]">
           &quot;{review.review}&quot;
         </p>
