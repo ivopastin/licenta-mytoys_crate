@@ -1,17 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { GraduationCap, ArrowRight } from "lucide-react";
 import GrainientFade from "./components/GrainientFade";
+import NewsCard from "./components/NewsCard";
 import newsData from "@/content/news.json";
 import tutorialsData from "@/content/tutorials.json";
-
-const TAG_COLORS: Record<string, string> = {
-  "New Pattern": "bg-white/20 text-white",
-  Update: "bg-white/20 text-white",
-  "Limited Edition": "bg-white/20 text-white",
-};
+import Image from "next/image";
 
 export default function AppHomePage() {
   const firstTutorial = tutorialsData[0];
@@ -77,41 +72,7 @@ export default function AppHomePage() {
             </h2>
             <div className="grid grid-cols-3 gap-4">
               {newsData.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white/10 backdrop-blur-sm rounded-[16px] border border-white/20 overflow-hidden flex flex-col"
-                >
-                  {/* Image */}
-                  <div className="relative w-full aspect-4/3 bg-white/10">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  {/* Content */}
-                  <div className="p-4 flex flex-col gap-2 flex-1">
-                    <span
-                      className={`self-start text-[11px] font-semibold px-2 py-0.5 rounded-full ${TAG_COLORS[item.tag] ?? "bg-white/20 text-white"}`}
-                    >
-                      {item.tag}
-                    </span>
-                    <p className="text-[14px] font-semibold text-white leading-snug">
-                      {item.title}
-                    </p>
-                    <p className="text-[12px] text-white/65 leading-relaxed line-clamp-3 flex-1">
-                      {item.summary}
-                    </p>
-                    <p className="text-[11px] text-white/40 mt-1">
-                      {new Date(item.date).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </div>
+                <NewsCard key={item.id} item={item} />
               ))}
             </div>
           </section>
