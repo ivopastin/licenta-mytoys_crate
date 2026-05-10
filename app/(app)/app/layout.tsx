@@ -1,5 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "./AppSidebar";
+import HelpButton from "./components/HelpButton";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <SidebarTrigger className="text-white/70 hover:text-white hover:bg-white/15 rounded-[8px]" />
             </div>
             {children}
+            <HelpButton />
           </div>
         </main>
       </SidebarProvider>
