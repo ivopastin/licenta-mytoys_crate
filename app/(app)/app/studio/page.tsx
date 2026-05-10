@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import LeaveConfirmDialog from "./components/LeaveConfirmDialog";
+import PatternReadyToast from "./components/PatternReadyToast";
 import Image from "next/image";
 import GrainientFade from "../components/GrainientFade";
 import { PlushieConfig, EMPTY_CONFIG } from "./types";
@@ -13,6 +16,7 @@ import StepName from "./components/StepName";
 import StepAccessory from "./components/StepAccessory";
 import StepGenerating from "./components/StepGenerating";
 import StepResult from "./components/StepResult";
+import WizardPlushiesBg from "./components/WizardPlushiesBg";
 
 type WizardStepId =
   | "mode"
@@ -39,9 +43,13 @@ function buildSteps(config: PlushieConfig): WizardStepId[] {
 }
 
 export default function StudioPage() {
+  const router = useRouter();
   const [wizardActive, setWizardActive] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [config, setConfig] = useState<PlushieConfig>(EMPTY_CONFIG);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [direction, setDirection] = useState<"forward" | "backward">("forward");
 
   const steps = buildSteps(config);
   const navigableStepCount = steps.length - 2; // exclude generating and result
@@ -49,6 +57,7 @@ export default function StudioPage() {
   const stepLabel = `Step ${stepIndex + 1} of ${navigableStepCount}`;
 
   const handleNext = useCallback((partial: Partial<PlushieConfig>) => {
+    setDirection("forward");
     const newConfig = { ...config, ...partial };
     setConfig(newConfig);
     const newSteps = buildSteps(newConfig);
@@ -56,6 +65,7 @@ export default function StudioPage() {
   }, [config]);
 
   const handleBack = useCallback(() => {
+    setDirection("backward");
     setStepIndex((i) => Math.max(i - 1, 0));
   }, []);
 
@@ -65,7 +75,46 @@ export default function StudioPage() {
     setWizardActive(false);
   }, []);
 
-  const stepProps = { config, onNext: handleNext, onBack: handleBack, stepLabel };
+  const isInProgress = wizardActive && currentStep !== "result";
+
+  // Warn on browser-level navigation (refresh, tab close)
+  useEffect(() => {
+    if (!isInProgress) return;
+    const handler = (e: BeforeUnloadEvent) => { e.preventDefault(); };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [isInProgress]);
+
+  // Intercept Next.js client-side navigation (sidebar links, etc.)
+  useEffect(() => {
+    if (!isInProgress) return;
+    const handler = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest("a");
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href || href.startsWith("/app/studio")) return;
+      e.preventDefault();
+      setPendingHref(href);
+    };
+    document.addEventListener("click", handler, true);
+    return () => document.removeEventListener("click", handler, true);
+  }, [isInProgress]);
+
+  const handleGeneratingDone = useCallback(() => {
+    setStepIndex((i) => i + 1);
+    setShowToast(true);
+  }, []);
+
+  const handleLeaveConfirm = useCallback(() => {
+    if (pendingHref) router.push(pendingHref);
+    setPendingHref(null);
+  }, [pendingHref, router]);
+
+  const handleLeaveCancel = useCallback(() => {
+    setPendingHref(null);
+  }, []);
+
+  const stepProps = { config, onNext: handleNext, onBack: handleBack, stepLabel, direction };
 
   return (
     <div className="relative h-full w-full overflow-hidden flex flex-col items-center justify-center">
@@ -125,6 +174,7 @@ export default function StudioPage() {
         {/* Wizard */}
         {wizardActive && (
           <>
+            <WizardPlushiesBg />
             {currentStep === "mode"          && <StepMode      {...stepProps} />}
             {currentStep === "animal"        && <StepAnimal    {...stepProps} />}
             {currentStep === "size"          && <StepSize      {...stepProps} />}
@@ -133,11 +183,22 @@ export default function StudioPage() {
             {currentStep === "name"          && <StepName      {...stepProps} />}
             {currentStep === "accessory"     && <StepAccessory {...stepProps} />}
             {currentStep === "accessoryColor"&& <StepColor     {...stepProps} field="accessoryColor" title="What color should the accessory be?" />}
-            {currentStep === "generating"    && <StepGenerating onDone={() => setStepIndex((i) => i + 1)} />}
+            {currentStep === "generating"    && <StepGenerating onDone={handleGeneratingDone} />}
             {currentStep === "result"        && <StepResult    config={config} onReset={handleReset} />}
           </>
         )}
       </div>
+
+      {showToast && (
+        <PatternReadyToast onDismiss={() => setShowToast(false)} />
+      )}
+
+      {pendingHref && (
+        <LeaveConfirmDialog
+          onConfirm={handleLeaveConfirm}
+          onCancel={handleLeaveCancel}
+        />
+      )}
     </div>
   );
 }

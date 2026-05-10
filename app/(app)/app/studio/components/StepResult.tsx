@@ -24,20 +24,20 @@ const SUMMARY_ROWS: { label: string; getValue: (c: PlushieConfig) => string | nu
 
 export default function StepResult({ config, onReset }: StepResultProps) {
   return (
-    <div className="w-full max-w-lg flex flex-col gap-6">
+    <div className="w-full max-w-lg bg-white rounded-[24px] p-8 shadow-2xl flex flex-col gap-6">
       <div>
-        <h2 className="text-[26px] font-bold text-white">Your pattern is ready!</h2>
-        <p className="text-[14px] text-white/60 mt-1">Here&apos;s a summary of your design.</p>
+        <h2 className="text-[26px] font-bold text-ink">Your pattern is ready!</h2>
+        <p className="text-[14px] text-black/40 mt-1">Here&apos;s a summary of your design.</p>
       </div>
 
-      <div className="bg-white/10 border border-white/20 rounded-[16px] overflow-hidden">
+      <div className="bg-black/5 border border-black/10 rounded-[16px] overflow-hidden">
         {SUMMARY_ROWS.filter(({ getValue }) => getValue(config) !== null).map(({ label, getValue }) => (
           <div
             key={label}
-            className="flex items-center justify-between px-4 py-3 border-b border-white/10 last:border-0"
+            className="flex items-center justify-between px-4 py-3 border-b border-black/5 last:border-0"
           >
-            <span className="text-[13px] text-white/50">{label}</span>
-            <span className="text-[13px] font-semibold text-white capitalize">{getValue(config)}</span>
+            <span className="text-[13px] text-black/40">{label}</span>
+            <span className="text-[13px] font-semibold text-ink capitalize">{getValue(config)}</span>
           </div>
         ))}
       </div>
@@ -45,14 +45,14 @@ export default function StepResult({ config, onReset }: StepResultProps) {
       <div className="flex flex-col gap-3">
         <button
           onClick={() => alert("PDF download coming soon")}
-          className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-[12px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[15px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-white hover:scale-[1.02] active:scale-95 cursor-pointer"
+          className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-[12px] bg-deep text-white text-[15px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-black hover:scale-[1.02] active:scale-95 cursor-pointer"
         >
           <Download size={16} />
           Download PDF
         </button>
         <button
           onClick={onReset}
-          className="w-full text-[14px] text-white/60 hover:text-white transition-colors py-2 cursor-pointer"
+          className="w-full text-[14px] text-black/40 hover:text-ink transition-colors py-2 cursor-pointer"
         >
           Design another
         </button>

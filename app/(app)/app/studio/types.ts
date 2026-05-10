@@ -31,6 +31,7 @@ export interface StepProps {
   onNext: (partial: Partial<PlushieConfig>) => void;
   onBack: () => void;
   stepLabel: string;
+  direction: "forward" | "backward";
 }
 
 export const COLOR_PALETTE: { name: string; hex: string }[] = [

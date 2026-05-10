@@ -10,13 +10,14 @@ const SIZES: { value: SizeType; label: string; height: string; description: stri
   { value: "large",  label: "Large",  height: "30 cm", description: "Big and huggable" },
 ];
 
-export default function StepSize({ config, onNext, onBack, stepLabel }: StepProps) {
+export default function StepSize({ config, onNext, onBack, stepLabel, direction }: StepProps) {
   const [selected, setSelected] = useState<SizeType | null>(config.size);
 
   return (
     <WizardShell
       title="What size should it be?"
       stepLabel={stepLabel}
+      direction={direction}
       onBack={onBack}
       onNext={() => selected && onNext({ size: selected })}
       nextDisabled={!selected}
@@ -28,13 +29,13 @@ export default function StepSize({ config, onNext, onBack, stepLabel }: StepProp
             onClick={() => setSelected(value)}
             className={`flex-1 flex flex-col items-center gap-1 p-4 rounded-[16px] border text-center cursor-pointer transition-all ${
               selected === value
-                ? "bg-white/20 border-white"
-                : "bg-white/10 border-white/20 hover:bg-white/15"
+                ? "bg-deep/10 border-deep"
+                : "bg-black/5 border-black/10 hover:bg-black/8"
             }`}
           >
-            <span className="text-[16px] font-bold text-white">{label}</span>
-            <span className="text-[13px] text-[var(--color-accent)] font-semibold">{height}</span>
-            <span className="text-[12px] text-white/60">{description}</span>
+            <span className="text-[16px] font-bold text-ink">{label}</span>
+            <span className="text-[13px] text-deep font-semibold">{height}</span>
+            <span className="text-[12px] text-black/40">{description}</span>
           </button>
         ))}
       </div>

@@ -10,13 +10,13 @@ interface StepColorProps extends StepProps {
   title: string;
 }
 
-export default function StepColor({ config, onNext, onBack, stepLabel, field, title }: StepColorProps) {
+export default function StepColor({ config, onNext, onBack, stepLabel, direction, field, title }: StepColorProps) {
   const [selected, setSelected] = useState<string | null>(config[field]);
 
   const selectedName = COLOR_PALETTE.find((c) => c.hex === selected)?.name ?? null;
 
   return (
-    <div className="w-full flex gap-6 items-stretch">
+    <div className="flex gap-6 items-stretch">
       {/* Preview panel — left side */}
       <AnimalPreview animal={config.animal} color={selected ?? config.color} />
 
@@ -25,6 +25,7 @@ export default function StepColor({ config, onNext, onBack, stepLabel, field, ti
         <WizardShell
           title={title}
           stepLabel={stepLabel}
+      direction={direction}
           onBack={onBack}
           onNext={() => selected && onNext({ [field]: selected })}
           nextDisabled={!selected}
@@ -46,7 +47,7 @@ export default function StepColor({ config, onNext, onBack, stepLabel, field, ti
               ))}
             </div>
             {selectedName && (
-              <p className="text-[13px] text-white/70 font-medium">{selectedName}</p>
+              <p className="text-[13px] text-black/50 font-medium">{selectedName}</p>
             )}
           </div>
         </WizardShell>
