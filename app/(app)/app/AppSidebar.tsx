@@ -91,48 +91,57 @@ export default function AppSidebar() {
                     ? pathname === "/app"
                     : pathname.startsWith(href);
                 return (
-                  <SidebarMenuItem key={label}>
-                    <Link
-                      href={href}
-                      className={`flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-[12px] font-semibold text-[14px] transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:mx-auto ${
-                        isActive
-                          ? "bg-[#417c9c] text-white"
-                          : "text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c]"
-                      }`}
-                    >
-                      <Icon size={18} className="shrink-0" />
-                      <span className="group-data-[collapsible=icon]:hidden">
-                        {label}
-                      </span>
-                    </Link>
+                  <>
+                    <SidebarMenuItem key={label}>
+                      <Link
+                        href={href}
+                        className={`flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-[12px] font-semibold text-[14px] transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:mx-auto ${
+                          isActive
+                            ? "bg-[#417c9c] text-white"
+                            : "text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c]"
+                        }`}
+                      >
+                        <Icon size={18} className="shrink-0" />
+                        <span className="group-data-[collapsible=icon]:hidden">
+                          {label}
+                        </span>
+                      </Link>
 
-                    {/* Sidebar preview items — only in expanded mode */}
-                    {label === "My Patterns" && (
-                      <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
-                        {[0, 1, 2].map((i) => (
-                          <div
-                            key={i}
-                            className="h-3 rounded-[6px] bg-[#716458]/15 animate-pulse my-1"
-                            style={{ width: i === 0 ? "70%" : i === 1 ? "55%" : "65%" }}
-                          />
-                        ))}
-                      </div>
-                    )}
+                      {/* Sidebar preview items — only in expanded mode */}
+                      {label === "My Patterns" && (
+                        <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
+                          {[0, 1, 2].map((i) => (
+                            <div
+                              key={i}
+                              className="h-3 rounded-[6px] bg-[#716458]/15 animate-pulse my-1"
+                              style={{ width: i === 0 ? "70%" : i === 1 ? "55%" : "65%" }}
+                            />
+                          ))}
+                        </div>
+                      )}
 
-                    {label === "Tutorials" && (
-                      <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
-                        {PREVIEW_TUTORIALS.map((t) => (
-                          <Link
-                            key={t.slug}
-                            href={`/app/tutorials/${t.slug}`}
-                            className="text-[12px] text-[#716458] hover:text-[#417c9c] truncate py-1 transition-colors"
-                          >
-                            {t.title}
-                          </Link>
-                        ))}
-                      </div>
+                      {label === "Tutorials" && (
+                        <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
+                          {PREVIEW_TUTORIALS.map((t) => (
+                            <Link
+                              key={t.slug}
+                              href={`/app/tutorials/${t.slug}`}
+                              className="text-[12px] text-[#716458] hover:text-[#417c9c] truncate py-1 transition-colors"
+                            >
+                              {t.title}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </SidebarMenuItem>
+
+                    {(label === "Studio" || label === "My Patterns") && (
+                      <div
+                        key={`divider-${label}`}
+                        className="mx-3 my-1 h-px bg-[#e0d9d5] group-data-[collapsible=icon]:mx-1"
+                      />
                     )}
-                  </SidebarMenuItem>
+                  </>
                 );
               })}
             </SidebarMenu>
