@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -91,8 +92,8 @@ export default function AppSidebar() {
                     ? pathname === "/app"
                     : pathname.startsWith(href);
                 return (
-                  <>
-                    <SidebarMenuItem key={label}>
+                  <React.Fragment key={label}>
+                    <SidebarMenuItem>
                       <Link
                         href={href}
                         className={`flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-[12px] font-semibold text-[14px] transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:mx-auto ${
@@ -141,7 +142,7 @@ export default function AppSidebar() {
                         className="mx-3 my-1 h-px bg-[var(--color-border-soft)] group-data-[collapsible=icon]:mx-1"
                       />
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })}
             </SidebarMenu>
