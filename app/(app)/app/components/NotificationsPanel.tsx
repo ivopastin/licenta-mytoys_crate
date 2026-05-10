@@ -1,3 +1,5 @@
+import { ChevronLeft } from "lucide-react";
+
 interface Notification {
   id: string;
   message: string;
@@ -12,18 +14,26 @@ const PLACEHOLDER_NOTIFICATIONS: Notification[] = [
 ];
 
 interface Props {
+  onBack: () => void;
   onClose: () => void;
 }
 
-export default function NotificationsPanel({ onClose }: Props) {
+export default function NotificationsPanel({ onBack, onClose }: Props) {
   const notifications = PLACEHOLDER_NOTIFICATIONS;
 
   return (
     <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-[12px] border border-[#e0d9d5] shadow-lg overflow-hidden z-50">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#e0d9d5]">
-        <span className="text-[13px] font-semibold text-[#1a1a1a]">Notifications</span>
-        <button className="text-[11px] text-[#716458] hover:text-[#417c9c] transition-colors cursor-pointer">
+      <div className="flex items-center gap-1 px-2 py-2 border-b border-[#e0d9d5]">
+        <button
+          onClick={onBack}
+          className="p-1 rounded-[8px] text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c] transition-colors cursor-pointer"
+          aria-label="Back"
+        >
+          <ChevronLeft size={15} />
+        </button>
+        <span className="flex-1 text-[13px] font-semibold text-[#1a1a1a]">Notifications</span>
+        <button className="text-[11px] text-[#716458] hover:text-[#417c9c] transition-colors cursor-pointer px-1">
           Mark all read
         </button>
       </div>

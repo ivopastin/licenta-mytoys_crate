@@ -145,7 +145,10 @@ export default function AppSidebar() {
         <div ref={dropdownRef} className="relative">
           {/* Notifications panel */}
           {notificationsOpen && (
-            <NotificationsPanel onClose={() => setNotificationsOpen(false)} />
+            <NotificationsPanel
+              onBack={() => { setNotificationsOpen(false); setDropdownOpen(true); }}
+              onClose={() => setNotificationsOpen(false)}
+            />
           )}
 
           {/* User dropdown menu */}
