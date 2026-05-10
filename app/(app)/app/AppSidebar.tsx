@@ -13,6 +13,7 @@ import {
   CreditCard,
   LogOut,
   ChevronUp,
+  Bell,
 } from "lucide-react";
 import {
   Sidebar,
@@ -24,6 +25,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import NotificationsPanel from "./components/NotificationsPanel";
+import tutorialsData from "@/content/tutorials.json";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/app", icon: Home },
@@ -32,9 +35,12 @@ const NAV_ITEMS = [
   { label: "Tutorials", href: "/app/tutorials", icon: GraduationCap },
 ];
 
+const PREVIEW_TUTORIALS = tutorialsData.slice(0, 3);
+
 export default function AppSidebar() {
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,6 +50,7 @@ export default function AppSidebar() {
         !dropdownRef.current.contains(e.target as Node)
       ) {
         setDropdownOpen(false);
+        setNotificationsOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -98,6 +105,33 @@ export default function AppSidebar() {
                         {label}
                       </span>
                     </Link>
+
+                    {/* Sidebar preview items — only in expanded mode */}
+                    {label === "My Patterns" && (
+                      <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
+                        {[0, 1, 2].map((i) => (
+                          <div
+                            key={i}
+                            className="h-3 rounded-[6px] bg-[#716458]/15 animate-pulse my-1"
+                            style={{ width: i === 0 ? "70%" : i === 1 ? "55%" : "65%" }}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    {label === "Tutorials" && (
+                      <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
+                        {PREVIEW_TUTORIALS.map((t) => (
+                          <Link
+                            key={t.slug}
+                            href={`/app/tutorials/${t.slug}`}
+                            className="text-[12px] text-[#716458] hover:text-[#417c9c] truncate py-1 transition-colors"
+                          >
+                            {t.title}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                   </SidebarMenuItem>
                 );
               })}
@@ -109,9 +143,24 @@ export default function AppSidebar() {
       {/* User account with dropdown */}
       <SidebarFooter className="px-3 py-4 border-none">
         <div ref={dropdownRef} className="relative">
-          {/* Dropdown menu */}
+          {/* Notifications panel */}
+          {notificationsOpen && (
+            <NotificationsPanel onClose={() => setNotificationsOpen(false)} />
+          )}
+
+          {/* User dropdown menu */}
           {dropdownOpen && (
             <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-[12px] border border-[#e0d9d5] shadow-lg overflow-hidden py-1 z-50">
+              <button
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c] transition-colors cursor-pointer"
+                onClick={() => {
+                  setDropdownOpen(false);
+                  setNotificationsOpen(true);
+                }}
+              >
+                <Bell size={15} />
+                <span>Notifications</span>
+              </button>
               <Link
                 href="/app/settings"
                 className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[#716458] hover:bg-[#417c9c]/10 hover:text-[#417c9c] transition-colors"
