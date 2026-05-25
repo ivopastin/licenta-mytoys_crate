@@ -41,6 +41,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/app", request.url));
   }
 
+  // Always allow reset-password page (user arrives here authenticated via callback)
+  if (pathname === "/reset-password") {
+    return supabaseResponse;
+  }
+
   return supabaseResponse;
 }
 
