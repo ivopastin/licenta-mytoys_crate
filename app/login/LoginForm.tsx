@@ -39,9 +39,17 @@ export default function LoginForm() {
         router.push("/app");
       }
     } else {
-      const { error } = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
       if (error) {
         setError(error.message);
+      } else if (data.session) {
+        router.push("/app");
       } else {
         setEmailSent(true);
       }
