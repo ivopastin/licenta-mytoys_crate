@@ -3,8 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
 import {
   Home,
   Wand2,
@@ -37,12 +38,21 @@ const NAV_ITEMS = [
 ];
 
 const PREVIEW_TUTORIALS = tutorialsData.slice(0, 3);
+const supabase = createClient();
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setUserEmail(data.user?.email ?? null);
+    });
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -57,6 +67,15 @@ export default function AppSidebar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
+  const initials = userEmail
+    ? userEmail.slice(0, 2).toUpperCase()
+    : "?";
 
   return (
     <Sidebar collapsible="icon" className="border-none bg-white">
@@ -192,7 +211,7 @@ export default function AppSidebar() {
               </Link>
               <button
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[var(--color-warm)] hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
-                onClick={() => setDropdownOpen(false)}
+                onClick={handleLogout}
               >
                 <LogOut size={15} />
                 <span className="group-data-[collapsible=icon]:hidden">
@@ -208,14 +227,11 @@ export default function AppSidebar() {
             className="w-full flex items-center gap-3 px-2 py-2 rounded-[12px] hover:bg-[var(--color-brand)]/10 transition-colors cursor-pointer group-data-[collapsible=icon]:justify-center"
           >
             <div className="w-8 h-8 rounded-full bg-[var(--color-brand)] flex items-center justify-center shrink-0">
-              <span className="text-white text-[12px] font-bold">MP</span>
+              <span className="text-white text-[12px] font-bold">{initials}</span>
             </div>
             <div className="flex flex-col min-w-0 text-left group-data-[collapsible=icon]:hidden flex-1">
-              <span className="text-[13px] font-semibold text-[var(--color-ink)] truncate">
-                Maria Pastin
-              </span>
               <span className="text-[11px] text-[var(--color-warm)] truncate">
-                ivo.pastin@gmail.com
+                {userEmail ?? "Loading..."}
               </span>
             </div>
             <ChevronUp
