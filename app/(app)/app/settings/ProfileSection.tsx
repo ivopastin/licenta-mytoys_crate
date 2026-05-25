@@ -69,6 +69,7 @@ export default function ProfileSection({
         display_name: displayName.trim(),
         avatar_color: avatarColor,
         experience_level: experienceLevel,
+        onboarding_completed: true,
       })
       .eq("id", userId);
 
