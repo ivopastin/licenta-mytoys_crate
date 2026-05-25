@@ -7,25 +7,12 @@ export default function BillingSection({ displayName }: BillingSectionProps) {
     <div className="flex flex-col gap-8">
       <h2 className="text-[18px] font-bold text-ink">Billing</h2>
 
-      {/* Current Plan */}
+      {/* Order History */}
       <div className="flex flex-col gap-3">
-        <h3 className="text-[15px] font-semibold text-ink">Current Plan</h3>
-        <div className="flex items-center justify-between p-4 border border-border-soft rounded-[14px]">
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[15px] font-bold text-ink">Free Plan</span>
-            <span className="text-[13px] text-warm">Access to all core features.</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold px-2 py-1 rounded-full bg-amber-100 text-amber-600">
-              Coming soon
-            </span>
-            <button
-              disabled
-              className="px-4 py-2 rounded-[10px] text-[13px] font-semibold bg-deep text-(--color-accent) opacity-50 cursor-not-allowed"
-            >
-              Upgrade
-            </button>
-          </div>
+        <h3 className="text-[15px] font-semibold text-ink">Order History</h3>
+        <div className="flex flex-col items-center justify-center py-10 border border-border-soft rounded-[14px] gap-2">
+          <span className="text-[15px] font-semibold text-ink">No orders yet</span>
+          <span className="text-[13px] text-warm">Your purchased patterns will appear here.</span>
         </div>
       </div>
 
