@@ -11,7 +11,6 @@ import {
   BookMarked,
   GraduationCap,
   Settings,
-  CreditCard,
   LogOut,
   ChevronUp,
   Bell,
@@ -206,14 +205,6 @@ export default function AppSidebar({ displayName, avatarColor, email }: AppSideb
               >
                 <Settings size={15} />
                 <span>Settings</span>
-              </Link>
-              <Link
-                href="/app/billing"
-                className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-warm hover:bg-brand/10 hover:text-brand transition-colors"
-                onClick={() => setDropdownOpen(false)}
-              >
-                <CreditCard size={15} />
-                <span>Billing</span>
               </Link>
               <button
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-warm hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
