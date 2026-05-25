@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 import {
   Home,
   Wand2,
@@ -29,6 +28,7 @@ import {
 } from "@/components/ui/sidebar";
 import NotificationsPanel from "./components/NotificationsPanel";
 import tutorialsData from "@/content/tutorials.json";
+import { createClient } from "@/lib/supabase/client";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/app", icon: Home },
@@ -40,19 +40,31 @@ const NAV_ITEMS = [
 const PREVIEW_TUTORIALS = tutorialsData.slice(0, 3);
 const supabase = createClient();
 
-export default function AppSidebar() {
+function getInitials(displayName: string | null, email: string | null): string {
+  if (displayName?.trim()) {
+    return displayName
+      .trim()
+      .split(/\s+/)
+      .map((w) => w[0].toUpperCase())
+      .slice(0, 2)
+      .join("");
+  }
+  if (email) return email.slice(0, 2).toUpperCase();
+  return "?";
+}
+
+interface AppSidebarProps {
+  displayName: string | null;
+  avatarColor: string | null;
+  email: string | null;
+}
+
+export default function AppSidebar({ displayName, avatarColor, email }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUserEmail(data.user?.email ?? null);
-    });
-  }, []);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -73,9 +85,9 @@ export default function AppSidebar() {
     router.push("/login");
   }
 
-  const initials = userEmail
-    ? userEmail.slice(0, 2).toUpperCase()
-    : "?";
+  const initials = getInitials(displayName, email);
+  const color = avatarColor ?? "#417c9c";
+  const label = displayName?.trim() || email || "Your account";
 
   return (
     <Sidebar collapsible="icon" className="border-none bg-white">
@@ -94,7 +106,7 @@ export default function AppSidebar() {
               className="object-contain"
             />
           </div>
-          <span className="font-bold text-[16px] text-[var(--color-ink)] group-data-[collapsible=icon]:hidden">
+          <span className="font-bold text-[16px] text-ink group-data-[collapsible=icon]:hidden">
             MyToys Crate
           </span>
         </Link>
@@ -104,49 +116,48 @@ export default function AppSidebar() {
       <SidebarContent className="border-none">
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-[5px]">
-              {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
+            <SidebarMenu className="gap-1.25">
+              {NAV_ITEMS.map(({ label: navLabel, href, icon: Icon }) => {
                 const isActive =
                   href === "/app"
                     ? pathname === "/app"
                     : pathname.startsWith(href);
                 return (
-                  <React.Fragment key={label}>
+                  <React.Fragment key={navLabel}>
                     <SidebarMenuItem>
                       <Link
                         href={href}
                         className={`flex flex-row items-center gap-3 w-full px-3 py-2.5 rounded-[12px] font-semibold text-[14px] transition-colors group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:mx-auto ${
                           isActive
-                            ? "bg-[var(--color-brand)] text-white"
-                            : "text-[var(--color-warm)] hover:bg-[var(--color-brand)]/10 hover:text-[var(--color-brand)]"
+                            ? "bg-brand text-white"
+                            : "text-warm hover:bg-brand/10 hover:text-brand"
                         }`}
                       >
                         <Icon size={18} className="shrink-0" />
                         <span className="group-data-[collapsible=icon]:hidden">
-                          {label}
+                          {navLabel}
                         </span>
                       </Link>
 
-                      {/* Sidebar preview items — only in expanded mode */}
-                      {label === "My Patterns" && (
+                      {navLabel === "My Patterns" && (
                         <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
                           {[0, 1, 2].map((i) => (
                             <div
                               key={i}
-                              className="h-3 rounded-[6px] bg-[var(--color-warm)]/15 animate-pulse my-1"
+                              className="h-3 rounded-[6px] bg-warm/15 animate-pulse my-1"
                               style={{ width: i === 0 ? "70%" : i === 1 ? "55%" : "65%" }}
                             />
                           ))}
                         </div>
                       )}
 
-                      {label === "Tutorials" && (
+                      {navLabel === "Tutorials" && (
                         <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
                           {PREVIEW_TUTORIALS.map((t) => (
                             <Link
                               key={t.slug}
                               href={`/app/tutorials/${t.slug}`}
-                              className="text-[12px] text-[var(--color-warm)] hover:text-[var(--color-brand)] truncate py-1 transition-colors"
+                              className="text-[12px] text-warm hover:text-brand truncate py-1 transition-colors"
                             >
                               {t.title}
                             </Link>
@@ -155,10 +166,10 @@ export default function AppSidebar() {
                       )}
                     </SidebarMenuItem>
 
-                    {(label === "Studio" || label === "My Patterns") && (
+                    {(navLabel === "Studio" || navLabel === "My Patterns") && (
                       <div
-                        key={`divider-${label}`}
-                        className="mx-3 my-1 h-px bg-[var(--color-border-soft)] group-data-[collapsible=icon]:mx-1"
+                        key={`divider-${navLabel}`}
+                        className="mx-3 my-1 h-px bg-border-soft group-data-[collapsible=icon]:mx-1"
                       />
                     )}
                   </React.Fragment>
@@ -172,7 +183,6 @@ export default function AppSidebar() {
       {/* User account with dropdown */}
       <SidebarFooter className="px-3 py-4 border-none">
         <div ref={dropdownRef} className="relative">
-          {/* Notifications panel */}
           {notificationsOpen && (
             <NotificationsPanel
               onBack={() => { setNotificationsOpen(false); setDropdownOpen(true); }}
@@ -180,22 +190,18 @@ export default function AppSidebar() {
             />
           )}
 
-          {/* User dropdown menu */}
           {dropdownOpen && (
-            <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-[12px] border border-[var(--color-border-soft)] shadow-lg overflow-hidden py-1 z-50">
+            <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-[12px] border border-border-soft shadow-lg overflow-hidden py-1 z-50">
               <button
-                className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[var(--color-warm)] hover:bg-[var(--color-brand)]/10 hover:text-[var(--color-brand)] transition-colors cursor-pointer"
-                onClick={() => {
-                  setDropdownOpen(false);
-                  setNotificationsOpen(true);
-                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-warm hover:bg-brand/10 hover:text-brand transition-colors cursor-pointer"
+                onClick={() => { setDropdownOpen(false); setNotificationsOpen(true); }}
               >
                 <Bell size={15} />
                 <span>Notifications</span>
               </button>
               <Link
                 href="/app/settings"
-                className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[var(--color-warm)] hover:bg-[var(--color-brand)]/10 hover:text-[var(--color-brand)] transition-colors"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-warm hover:bg-brand/10 hover:text-brand transition-colors"
                 onClick={() => setDropdownOpen(false)}
               >
                 <Settings size={15} />
@@ -203,20 +209,18 @@ export default function AppSidebar() {
               </Link>
               <Link
                 href="/app/billing"
-                className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[var(--color-warm)] hover:bg-[var(--color-brand)]/10 hover:text-[var(--color-brand)] transition-colors"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-warm hover:bg-brand/10 hover:text-brand transition-colors"
                 onClick={() => setDropdownOpen(false)}
               >
                 <CreditCard size={15} />
                 <span>Billing</span>
               </Link>
               <button
-                className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-[var(--color-warm)] hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 text-[13px] font-medium text-warm hover:bg-red-50 hover:text-red-500 transition-colors cursor-pointer"
                 onClick={handleLogout}
               >
                 <LogOut size={15} />
-                <span className="group-data-[collapsible=icon]:hidden">
-                  Log out
-                </span>
+                <span className="group-data-[collapsible=icon]:hidden">Log out</span>
               </button>
             </div>
           )}
@@ -224,19 +228,25 @@ export default function AppSidebar() {
           {/* User card button */}
           <button
             onClick={() => setDropdownOpen((v) => !v)}
-            className="w-full flex items-center gap-3 px-2 py-2 rounded-[12px] hover:bg-[var(--color-brand)]/10 transition-colors cursor-pointer group-data-[collapsible=icon]:justify-center"
+            className="w-full flex items-center gap-3 px-2 py-2 rounded-[12px] hover:bg-brand/10 transition-colors cursor-pointer group-data-[collapsible=icon]:justify-center"
           >
-            <div className="w-8 h-8 rounded-full bg-[var(--color-brand)] flex items-center justify-center shrink-0">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+              style={{ backgroundColor: color }}
+            >
               <span className="text-white text-[12px] font-bold">{initials}</span>
             </div>
             <div className="flex flex-col min-w-0 text-left group-data-[collapsible=icon]:hidden flex-1">
-              <span className="text-[11px] text-[var(--color-warm)] truncate">
-                {userEmail ?? "Loading..."}
+              <span className="text-[13px] font-semibold text-ink truncate">
+                {label}
               </span>
+              {displayName && (
+                <span className="text-[11px] text-warm truncate">{email}</span>
+              )}
             </div>
             <ChevronUp
               size={14}
-              className={`text-[var(--color-warm)] shrink-0 transition-transform group-data-[collapsible=icon]:hidden ${dropdownOpen ? "rotate-180" : ""}`}
+              className={`text-warm shrink-0 transition-transform group-data-[collapsible=icon]:hidden ${dropdownOpen ? "rotate-180" : ""}`}
             />
           </button>
         </div>
