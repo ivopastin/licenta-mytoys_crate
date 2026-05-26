@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Heart, Download } from "lucide-react";
 import { toggleFavourite } from "./actions";
-import { downloadPatternPDF } from "@/app/(app)/app/studio/components/PatternPDF";
+import { openPatternPDF } from "@/app/(app)/app/studio/components/PatternPDF";
 import type { PatternData } from "@/lib/pattern/types";
 
 export type PatternRow = {
@@ -70,7 +70,7 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
     if (downloading) return;
     setDownloading(true);
     try {
-      await downloadPatternPDF(pattern.pattern_data, `${pattern.name}-pattern.pdf`);
+      await openPatternPDF(pattern.pattern_data);
     } finally {
       setDownloading(false);
     }
@@ -109,7 +109,7 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
             className="mt-0.5 flex items-center justify-center gap-1 w-full py-1.5 rounded-[8px] border border-border-soft text-[10px] font-semibold text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50"
           >
             <Download size={10} />
-            {downloading ? "…" : "PDF"}
+            {downloading ? "…" : "View"}
           </button>
         </div>
       </div>
@@ -153,7 +153,7 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
           className="mt-1 flex items-center justify-center gap-1.5 w-full py-2 rounded-[10px] border border-border-soft text-[13px] font-semibold text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Download size={13} />
-          {downloading ? "Generating…" : "Download PDF"}
+          {downloading ? "Generating…" : "View PDF"}
         </button>
       </div>
     </div>

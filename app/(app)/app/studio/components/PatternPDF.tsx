@@ -515,3 +515,11 @@ export async function downloadPatternPDF(data: PatternData, filename: string) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+export async function openPatternPDF(data: PatternData) {
+  const blob = await pdf(<PatternDocument data={data} />).toBlob();
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+  // Don't revoke immediately — the new tab needs time to load it
+  setTimeout(() => URL.revokeObjectURL(url), 60_000);
+}
