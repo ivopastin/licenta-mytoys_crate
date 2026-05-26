@@ -15,6 +15,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     onboarding_completed: boolean;
   } | null = null;
 
+  let recentPatterns: { id: string; name: string; animal: string }[] = [];
+
   if (user) {
     const { data } = await supabase
       .from("profiles")
@@ -22,6 +24,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       .eq("id", user.id)
       .single();
     profile = data;
+
+    const { data: patternsData } = await supabase
+      .from("patterns")
+      .select("id, name, animal")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(3);
+
+    recentPatterns = patternsData ?? [];
   }
 
   const showOnboarding = profile !== null && !profile.onboarding_completed;
@@ -33,6 +44,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           displayName={profile?.display_name ?? null}
           avatarColor={profile?.avatar_color ?? null}
           email={user?.email ?? null}
+          recentPatterns={recentPatterns}
         />
 
         <main className="flex-1 overflow-hidden p-2">

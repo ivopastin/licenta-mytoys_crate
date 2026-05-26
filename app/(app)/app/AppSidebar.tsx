@@ -56,9 +56,10 @@ interface AppSidebarProps {
   displayName: string | null;
   avatarColor: string | null;
   email: string | null;
+  recentPatterns: { id: string; name: string; animal: string }[];
 }
 
-export default function AppSidebar({ displayName, avatarColor, email }: AppSidebarProps) {
+export default function AppSidebar({ displayName, avatarColor, email, recentPatterns }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -140,13 +141,25 @@ export default function AppSidebar({ displayName, avatarColor, email }: AppSideb
 
                       {navLabel === "My Patterns" && (
                         <div className="pl-9 pb-1 flex flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
-                          {[0, 1, 2].map((i) => (
-                            <div
-                              key={i}
-                              className="h-3 rounded-[6px] bg-warm/15 animate-pulse my-1"
-                              style={{ width: i === 0 ? "70%" : i === 1 ? "55%" : "65%" }}
-                            />
-                          ))}
+                          {recentPatterns.length === 0 ? (
+                            [0, 1, 2].map((i) => (
+                              <div
+                                key={i}
+                                className="h-3 rounded-[6px] bg-warm/15 animate-pulse my-1"
+                                style={{ width: i === 0 ? "70%" : i === 1 ? "55%" : "65%" }}
+                              />
+                            ))
+                          ) : (
+                            recentPatterns.map((p) => (
+                              <Link
+                                key={p.id}
+                                href="/app/my-patterns"
+                                className="text-[12px] text-warm hover:text-brand truncate py-1 transition-colors"
+                              >
+                                {p.name} the {p.animal.charAt(0).toUpperCase() + p.animal.slice(1)}
+                              </Link>
+                            ))
+                          )}
                         </div>
                       )}
 
