@@ -26,6 +26,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import NotificationsPanel from "./components/NotificationsPanel";
+import SidebarPatternLink from "./components/SidebarPatternLink";
 import tutorialsData from "@/content/tutorials.json";
 import { createClient } from "@/lib/supabase/client";
 
@@ -151,13 +152,11 @@ export default function AppSidebar({ displayName, avatarColor, email, recentPatt
                             ))
                           ) : (
                             recentPatterns.map((p) => (
-                              <Link
+                              <SidebarPatternLink
                                 key={p.id}
-                                href="/app/my-patterns"
-                                className="text-[12px] text-warm hover:text-brand truncate py-1 transition-colors"
-                              >
-                                {p.name} the {p.animal.charAt(0).toUpperCase() + p.animal.slice(1)}
-                              </Link>
+                                patternId={p.id}
+                                label={`${p.name} the ${p.animal.charAt(0).toUpperCase() + p.animal.slice(1)}`}
+                              />
                             ))
                           )}
                         </div>
