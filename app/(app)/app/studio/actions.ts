@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { buildPatternData } from "@/lib/pattern/buildPatternData";
 import type { PlushieConfig } from "./types";
@@ -65,6 +66,9 @@ export async function generatePattern(
   if (insertError || !inserted) {
     throw new Error("Failed to save pattern");
   }
+
+  // Invalidate the app layout so the sidebar re-fetches recent patterns
+  revalidatePath("/app", "layout");
 
   return { patternId: inserted.id, patternData };
 }

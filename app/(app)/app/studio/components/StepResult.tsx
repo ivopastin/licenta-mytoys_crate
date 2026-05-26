@@ -42,13 +42,11 @@ export default function StepResult({ config, patternData, onReset }: StepResultP
       await downloadPatternPDF(patternData, `${name}-pattern.pdf`);
     } finally {
       setDownloading(false);
-      router.refresh();
       router.push("/app/my-patterns");
     }
   }
 
   function handleSave() {
-    router.refresh();
     router.push("/app/my-patterns");
   }
 
