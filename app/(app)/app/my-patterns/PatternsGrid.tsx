@@ -6,11 +6,12 @@ import PatternCard, { type PatternRow } from "./PatternCard";
 
 interface PatternsGridProps {
   patterns: PatternRow[];
+  onToggleFavourite: (patternId: string, isFavourite: boolean) => void;
 }
 
 const PAGE_SIZE = 9;
 
-export default function PatternsGrid({ patterns }: PatternsGridProps) {
+export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGridProps) {
   const [query, setQuery] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
@@ -81,7 +82,7 @@ export default function PatternsGrid({ patterns }: PatternsGridProps) {
         ) : (
           <div className="grid grid-cols-3 gap-3 h-full content-start">
             {pageItems.map((p) => (
-              <PatternCard key={p.id} pattern={p} />
+              <PatternCard key={p.id} pattern={p} onToggleFavourite={onToggleFavourite} />
             ))}
           </div>
         )}

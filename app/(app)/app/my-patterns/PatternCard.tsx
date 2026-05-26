@@ -38,9 +38,10 @@ const YARN_BRAND: Record<string, string> = {
 interface PatternCardProps {
   pattern: PatternRow;
   compact?: boolean;
+  onToggleFavourite?: (patternId: string, isFavourite: boolean) => void;
 }
 
-export default function PatternCard({ pattern, compact = false }: PatternCardProps) {
+export default function PatternCard({ pattern, compact = false, onToggleFavourite }: PatternCardProps) {
   const [favourite, setFavourite] = useState(pattern.is_favourite);
   const [downloading, setDownloading] = useState(false);
 
@@ -51,10 +52,12 @@ export default function PatternCard({ pattern, compact = false }: PatternCardPro
   async function handleHeartClick() {
     const next = !favourite;
     setFavourite(next);
+    onToggleFavourite?.(pattern.id, next);
     try {
       await toggleFavourite(pattern.id, next);
     } catch {
       setFavourite(!next);
+      onToggleFavourite?.(pattern.id, !next);
     }
   }
 
