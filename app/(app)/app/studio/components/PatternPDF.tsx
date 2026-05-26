@@ -331,7 +331,7 @@ function PatternDocument({ data }: { data: PatternData }) {
   }
 
   return (
-    <Document>
+    <Document title={`${data.plushieName} the ${cap(data.animal)} — Pattern`}>
       {/* ── Page 1: Cover + Materials ─────────────────────────────── */}
       <Page size="A4" style={s.page}>
         <View style={s.content}>
@@ -518,8 +518,9 @@ export async function downloadPatternPDF(data: PatternData, filename: string) {
 
 export async function openPatternPDF(data: PatternData) {
   const blob = await pdf(<PatternDocument data={data} />).toBlob();
-  const url = URL.createObjectURL(blob);
+  const filename = `${data.plushieName}-the-${data.animal}-pattern.pdf`;
+  const file = new File([blob], filename, { type: "application/pdf" });
+  const url = URL.createObjectURL(file);
   window.open(url, "_blank");
-  // Don't revoke immediately — the new tab needs time to load it
   setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
