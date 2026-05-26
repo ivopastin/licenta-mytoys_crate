@@ -50,15 +50,6 @@ const s = StyleSheet.create({
     fontWeight: 400,
     position: "relative",
   },
-  // Texture watermark layer (absolute, fills page)
-  texture: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    opacity: 0.07,
-  },
   content: {
     padding: 36,
     flexDirection: "column",
@@ -343,7 +334,6 @@ function PatternDocument({ data }: { data: PatternData }) {
     <Document>
       {/* ── Page 1: Cover + Materials ─────────────────────────────── */}
       <Page size="A4" style={s.page}>
-        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
         <View style={s.content}>
           {/* Header row: text + animal image */}
           <View style={s.coverRow}>
@@ -420,7 +410,6 @@ function PatternDocument({ data }: { data: PatternData }) {
 
       {/* ── Page 2: Abbreviations + Notes ─────────────────────────── */}
       <Page size="A4" style={s.page}>
-        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
         <View style={s.content}>
           <View style={s.card}>
             <Text style={s.cardHeader}>Abbreviations</Text>
@@ -452,7 +441,6 @@ function PatternDocument({ data }: { data: PatternData }) {
 
       {/* ── Page 3+: Pattern Parts ─────────────────────────────────── */}
       <Page size="A4" style={s.page}>
-        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
         <View style={s.content}>
           {data.parts.map((part, pi) => {
             const [leftRounds, rightRounds] = splitRounds(part.rounds);
@@ -502,7 +490,6 @@ function PatternDocument({ data }: { data: PatternData }) {
 
       {/* ── Assembly ───────────────────────────────────────────────── */}
       <Page size="A4" style={s.page}>
-        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
         <View style={s.content}>
           <View style={s.card}>
             <Text style={s.cardHeader}>Assembly</Text>
