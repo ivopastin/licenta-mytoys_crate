@@ -17,6 +17,7 @@ import StepAccessory from "./components/StepAccessory";
 import StepGenerating from "./components/StepGenerating";
 import StepResult from "./components/StepResult";
 import WizardPlushiesBg from "./components/WizardPlushiesBg";
+import type { PatternData } from "@/lib/pattern/types";
 
 type WizardStepId =
   | "mode"
@@ -47,6 +48,8 @@ export default function StudioPage() {
   const [wizardActive, setWizardActive] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [config, setConfig] = useState<PlushieConfig>(EMPTY_CONFIG);
+  const [patternId, setPatternId] = useState<string | null>(null);
+  const [patternData, setPatternData] = useState<PatternData | null>(null);
   const [pendingHref, setPendingHref] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
@@ -100,10 +103,15 @@ export default function StudioPage() {
     return () => document.removeEventListener("click", handler, true);
   }, [isInProgress]);
 
-  const handleGeneratingDone = useCallback(() => {
-    setStepIndex((i) => i + 1);
-    setShowToast(true);
-  }, []);
+  const handleGeneratingDone = useCallback(
+    (result: { patternId: string; patternData: PatternData }) => {
+      setPatternId(result.patternId);
+      setPatternData(result.patternData);
+      setStepIndex((i) => i + 1);
+      setShowToast(true);
+    },
+    []
+  );
 
   const handleLeaveConfirm = useCallback(() => {
     if (pendingHref) router.push(pendingHref);
@@ -183,8 +191,8 @@ export default function StudioPage() {
             {currentStep === "name"          && <StepName      {...stepProps} />}
             {currentStep === "accessory"     && <StepAccessory {...stepProps} />}
             {currentStep === "accessoryColor"&& <StepColor     {...stepProps} field="accessoryColor" title="What color should the accessory be?" />}
-            {currentStep === "generating"    && <StepGenerating onDone={handleGeneratingDone} />}
-            {currentStep === "result"        && <StepResult    config={config} onReset={handleReset} />}
+            {currentStep === "generating"    && <StepGenerating config={config} onDone={handleGeneratingDone} />}
+            {currentStep === "result"        && <StepResult    config={config} patternId={patternId} patternData={patternData} onReset={handleReset} />}
           </>
         )}
       </div>

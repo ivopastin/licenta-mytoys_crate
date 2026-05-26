@@ -1,12 +1,35 @@
-"use client";
-
 import Image from "next/image";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import GrainientFade from "../components/GrainientFade";
+import FavouritesCarousel from "./FavouritesCarousel";
+import PatternsGrid from "./PatternsGrid";
+import type { PatternRow } from "./PatternCard";
 
-export default function MyPatternsPage() {
+export default async function MyPatternsPage() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let patterns: PatternRow[] = [];
+
+  if (user) {
+    const { data } = await supabase
+      .from("patterns")
+      .select("id, name, animal, size, color_name, skill_level, is_favourite, pattern_data")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    patterns = (data ?? []) as PatternRow[];
+  }
+
+  const favourites = patterns.filter((p) => p.is_favourite);
+
   return (
-    <div className="relative h-full w-full overflow-hidden flex flex-col items-center justify-center">
-      {/* Grainient background */}
+    <div className="relative h-full w-full overflow-hidden">
+      {/* Background */}
       <GrainientFade
         color1="#417c9c"
         color2="#2d5f7a"
@@ -37,31 +60,49 @@ export default function MyPatternsPage() {
         />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center gap-3 text-center max-w-[400px] px-8">
-        <div className="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M6 2h9l5 5v15a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z"
-              stroke="white"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M14 2v6h6M9 13h6M9 17h4"
-              stroke="white"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-            />
-          </svg>
+      <div className="relative z-10 h-full overflow-y-auto">
+        <div className="max-w-2xl mx-auto px-6 py-10 flex flex-col gap-8">
+          <h1 className="text-[28px] font-bold text-white">My Patterns</h1>
+
+          {patterns.length === 0 ? (
+            <div className="flex flex-col items-center gap-3 text-center py-20">
+              <div className="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M6 2h9l5 5v15a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z"
+                    stroke="white"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M14 2v6h6M9 13h6M9 17h4"
+                    stroke="white"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+              <p className="text-[26px] font-bold text-white">No patterns yet</p>
+              <p className="text-[15px] text-white/70 font-medium leading-relaxed max-w-[320px]">
+                Your saved patterns will appear here. Head to the Studio to design your first plushie.
+              </p>
+              <Link
+                href="/app/studio"
+                className="mt-2 px-6 py-2.5 rounded-[12px] bg-white text-deep text-[14px] font-bold hover:bg-white/90 transition-colors"
+              >
+                Go to Studio
+              </Link>
+            </div>
+          ) : (
+            <>
+              {favourites.length >= 1 && (
+                <FavouritesCarousel patterns={favourites} />
+              )}
+              <PatternsGrid patterns={patterns} />
+            </>
+          )}
         </div>
-        <h1 className="text-[26px] font-bold text-white">
-          No patterns yet
-        </h1>
-        <p className="text-[15px] text-white/70 font-medium leading-relaxed">
-          Your downloaded patterns will appear here. Head to the Studio to
-          design your first plushie.
-        </p>
       </div>
     </div>
   );
