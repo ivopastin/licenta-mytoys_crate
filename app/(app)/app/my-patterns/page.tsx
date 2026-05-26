@@ -60,7 +60,7 @@ export default async function MyPatternsPage() {
         />
       </div>
 
-      <div className="relative z-10 h-full flex flex-col px-8 py-8">
+      <div className="relative z-10 h-full flex flex-col px-14 py-8">
         {/* Page title */}
         <h1 className="text-[24px] font-bold text-white shrink-0 mb-6">My Patterns</h1>
 
