@@ -78,6 +78,11 @@ export function buildPatternData(template: TemplateRow, config: PlushieConfig): 
       ? template.finished_size_medium
       : template.finished_size_large;
 
+  const parts: PatternPart[] = template.parts.map((part) => ({
+    ...part,
+    colorNote: part.colorNote ?? `In ${colorName} yarn`,
+  }));
+
   return {
     plushieName: name,
     animal,
@@ -92,7 +97,7 @@ export function buildPatternData(template: TemplateRow, config: PlushieConfig): 
     },
     abbreviations: ABBREVIATIONS,
     notes: PATTERN_NOTES,
-    parts: template.parts,
+    parts,
     assembly: template.assembly,
   };
 }

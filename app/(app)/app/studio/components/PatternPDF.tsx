@@ -5,334 +5,513 @@ import {
   Page,
   Text,
   View,
+  Image as PDFImage,
   StyleSheet,
+  Font,
   pdf,
 } from "@react-pdf/renderer";
 import type { PatternData } from "@/lib/pattern/types";
 
+// Register Figtree from public/fonts — react-pdf fetches via URL in browser
+Font.register({
+  family: "Figtree",
+  fonts: [
+    { src: "/fonts/Figtree-Regular.ttf", fontWeight: 400 },
+    { src: "/fonts/Figtree-SemiBold.ttf", fontWeight: 600 },
+    { src: "/fonts/Figtree-Bold.ttf", fontWeight: 700 },
+  ],
+});
+
+// Suppress hyphenation
+Font.registerHyphenationCallback((word) => [word]);
+
+// --- Palette matching the app ---
 const BG = "#2a3f4f";
 const BRAND = "#417c9c";
 const GOLD = "#c9a96e";
+const DEEP = "#591427";
 const WHITE = "#ffffff";
+const INK = "#1a1a1a";
+const CARD_BG = "#ffffff";
 const CARD_RADIUS = 10;
+const SOFT_TEXT = "#716458";
 
-const styles = StyleSheet.create({
+const ANIMAL_IMAGE: Record<string, string> = {
+  bear: "/images/bear.png",
+  rabbit: "/images/bunny.png",
+  cat: "/images/cat.png",
+};
+
+const s = StyleSheet.create({
   page: {
     backgroundColor: BG,
-    padding: 32,
-    fontFamily: "Helvetica",
+    fontFamily: "Figtree",
+    fontWeight: 400,
+    position: "relative",
   },
-  title: {
-    fontSize: 36,
-    fontFamily: "Helvetica-Bold",
-    color: WHITE,
-    marginBottom: 6,
+  // Texture watermark layer (absolute, fills page)
+  texture: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    opacity: 0.07,
   },
-  subtitle: {
-    fontSize: 13,
-    color: "rgba(255,255,255,0.6)",
-    marginBottom: 20,
+  content: {
+    padding: 36,
+    flexDirection: "column",
+    gap: 14,
   },
-  card: {
-    backgroundColor: WHITE,
-    borderRadius: CARD_RADIUS,
-    padding: 16,
-    marginBottom: 14,
-  },
-  cardHeader: {
-    fontSize: 11,
-    fontFamily: "Helvetica-Bold",
-    color: BRAND,
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    marginBottom: 10,
-  },
-  row: {
+  // ── Cover ────────────────────────────────────
+  coverRow: {
     flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 20,
+    marginBottom: 2,
+  },
+  coverLeft: {
+    flex: 1,
+    flexDirection: "column",
+    gap: 6,
+  },
+  logoImg: {
+    width: 36,
+    height: 36,
+    objectFit: "contain",
     marginBottom: 4,
   },
-  label: {
-    fontSize: 11,
-    color: "#555",
-    width: 90,
+  coverTitle: {
+    fontSize: 40,
+    fontWeight: 700,
+    color: WHITE,
+    lineHeight: 1.1,
   },
-  value: {
-    fontSize: 11,
-    color: "#1a1a1a",
+  coverSubtitle: {
+    fontSize: 13,
+    color: "rgba(255,255,255,0.55)",
+    fontWeight: 400,
+  },
+  animalImage: {
+    width: 160,
+    height: 160,
+    objectFit: "contain",
+    borderRadius: 12,
+  },
+  animalPlaceholder: {
+    width: 160,
+    height: 160,
+    borderRadius: 12,
+    backgroundColor: "rgba(255,255,255,0.06)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
+    borderStyle: "dashed",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  animalPlaceholderText: {
+    fontSize: 10,
+    color: "rgba(255,255,255,0.25)",
+  },
+  // ── Cards ─────────────────────────────────────
+  card: {
+    backgroundColor: CARD_BG,
+    borderRadius: CARD_RADIUS,
+    padding: 16,
+  },
+  cardHeader: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: BRAND,
+    textTransform: "uppercase",
+    letterSpacing: 1.2,
+    marginBottom: 10,
+  },
+  // Materials
+  materialsBody: {
+    flexDirection: "row",
+    gap: 16,
+  },
+  matCol: {
     flex: 1,
   },
-  twoCol: {
+  matColLabel: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: INK,
+    marginBottom: 6,
+  },
+  matRow: {
+    flexDirection: "row",
+    marginBottom: 3,
+    gap: 6,
+  },
+  matLabel: {
+    fontSize: 10,
+    color: SOFT_TEXT,
+    width: 72,
+    fontWeight: 600,
+  },
+  matValue: {
+    fontSize: 10,
+    color: INK,
+    flex: 1,
+  },
+  matDivider: {
+    width: 1,
+    backgroundColor: "#f0ece8",
+    marginHorizontal: 4,
+  },
+  // Meta row (finished size + skill)
+  metaRow: {
     flexDirection: "row",
     gap: 12,
   },
-  col: {
+  metaCard: {
     flex: 1,
+    backgroundColor: CARD_BG,
+    borderRadius: CARD_RADIUS,
+    padding: 14,
+    alignItems: "center",
+    gap: 4,
   },
-  abbr: {
-    flexDirection: "row",
-    marginBottom: 3,
+  metaLabel: {
+    fontSize: 9,
+    color: SOFT_TEXT,
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    fontWeight: 600,
   },
-  abbrKey: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-    color: BRAND,
-    width: 42,
-  },
-  abbrVal: {
-    fontSize: 10,
-    color: "#333",
-    flex: 1,
-  },
-  note: {
-    fontSize: 10,
-    color: "#444",
-    marginBottom: 4,
-  },
-  partHeader: {
-    fontSize: 12,
-    fontFamily: "Helvetica-Bold",
-    color: BRAND,
-    marginBottom: 2,
-  },
-  colorNote: {
-    fontSize: 10,
-    color: "#888",
-    fontFamily: "Helvetica-Oblique",
-    marginBottom: 6,
-  },
-  roundRow: {
-    flexDirection: "row",
-    marginBottom: 3,
-    alignItems: "flex-start",
-  },
-  roundLabel: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-    color: GOLD,
-    width: 80,
-  },
-  roundInstruction: {
-    fontSize: 10,
-    color: "#333",
-    flex: 1,
-  },
-  roundCount: {
-    fontSize: 10,
-    color: "#888",
-    width: 50,
-    textAlign: "right",
-  },
-  closingNote: {
-    fontSize: 10,
-    color: "#666",
-    fontFamily: "Helvetica-Oblique",
-    marginTop: 6,
-  },
-  assemblyStep: {
-    flexDirection: "row",
-    marginBottom: 4,
-  },
-  stepNum: {
-    fontSize: 10,
-    fontFamily: "Helvetica-Bold",
-    color: BRAND,
-    width: 20,
-  },
-  stepText: {
-    fontSize: 10,
-    color: "#333",
-    flex: 1,
-  },
-  star: {
+  metaValue: {
     fontSize: 13,
-    color: GOLD,
+    fontWeight: 700,
+    color: INK,
   },
   starRow: {
     flexDirection: "row",
     gap: 2,
     marginTop: 2,
   },
-  metaRow: {
+  star: {
+    fontSize: 13,
+  },
+  // ── Abbreviations ────────────────────────────
+  abbrGrid: {
+    flexDirection: "row",
+    gap: 16,
+  },
+  abbrCol: {
+    flex: 1,
+  },
+  abbrRow: {
+    flexDirection: "row",
+    marginBottom: 4,
+    gap: 6,
+  },
+  abbrKey: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: BRAND,
+    width: 40,
+  },
+  abbrVal: {
+    fontSize: 10,
+    color: "#333",
+    flex: 1,
+  },
+  // Notes
+  noteRow: {
+    flexDirection: "row",
+    marginBottom: 5,
+    gap: 4,
+  },
+  noteBullet: {
+    fontSize: 10,
+    color: GOLD,
+    fontWeight: 700,
+    width: 10,
+  },
+  noteText: {
+    fontSize: 10,
+    color: "#444",
+    flex: 1,
+    lineHeight: 1.5,
+  },
+  // ── Pattern parts ────────────────────────────
+  partTitle: {
+    fontSize: 13,
+    fontWeight: 700,
+    color: DEEP,
+    marginBottom: 2,
+  },
+  colorNote: {
+    fontSize: 10,
+    color: SOFT_TEXT,
+    fontStyle: "italic" as const,
+    marginBottom: 8,
+  },
+  roundsGrid: {
     flexDirection: "row",
     gap: 12,
-    marginTop: 10,
   },
-  metaCard: {
+  roundsCol: {
     flex: 1,
-    backgroundColor: WHITE,
-    borderRadius: CARD_RADIUS,
-    padding: 12,
-    alignItems: "center",
   },
-  metaLabel: {
-    fontSize: 9,
-    color: "#888",
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
+  roundRow: {
+    flexDirection: "row",
     marginBottom: 4,
+    alignItems: "flex-start",
+    gap: 4,
   },
-  metaValue: {
-    fontSize: 12,
-    fontFamily: "Helvetica-Bold",
-    color: "#1a1a1a",
+  roundLabel: {
+    fontSize: 9,
+    fontWeight: 700,
+    color: GOLD,
+    width: 72,
+    lineHeight: 1.4,
+  },
+  roundInstruction: {
+    fontSize: 9,
+    color: INK,
+    flex: 1,
+    lineHeight: 1.4,
+  },
+  roundCount: {
+    fontSize: 9,
+    color: "#999",
+    width: 36,
+    textAlign: "right" as const,
+  },
+  closingNote: {
+    fontSize: 9,
+    color: SOFT_TEXT,
+    fontStyle: "italic" as const,
+    marginTop: 6,
+  },
+  // ── Assembly ─────────────────────────────────
+  assemblyRow: {
+    flexDirection: "row",
+    marginBottom: 5,
+    gap: 6,
+  },
+  assemblyNum: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: BRAND,
+    width: 18,
+  },
+  assemblyText: {
+    fontSize: 10,
+    color: INK,
+    flex: 1,
+    lineHeight: 1.5,
+  },
+  // Divider between parts
+  partDivider: {
+    height: 1,
+    backgroundColor: "#f0ece8",
+    marginVertical: 10,
   },
 });
 
-function skillStars(level: string) {
+function SkillStars({ level }: { level: string }) {
   const count = level === "beginner" ? 1 : level === "intermediate" ? 2 : 3;
   return (
-    <View style={styles.starRow}>
-      {Array.from({ length: 3 }).map((_, i) => (
-        <Text key={i} style={[styles.star, { color: i < count ? GOLD : "#ddd" }]}>
-          ★
-        </Text>
+    <View style={s.starRow}>
+      {[0, 1, 2].map((i) => (
+        <Text key={i} style={[s.star, { color: i < count ? GOLD : "#ddd" }]}>★</Text>
       ))}
     </View>
   );
 }
 
+function cap(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function PatternDocument({ data }: { data: PatternData }) {
-  const animal = data.animal.charAt(0).toUpperCase() + data.animal.slice(1);
+  const animalImg = ANIMAL_IMAGE[data.animal];
+
+  // Split rounds into two halves for two-column layout
+  function splitRounds(rounds: PatternData["parts"][0]["rounds"]) {
+    const mid = Math.ceil(rounds.length / 2);
+    return [rounds.slice(0, mid), rounds.slice(mid)];
+  }
 
   return (
     <Document>
-      {/* Page 1 — Cover & Materials */}
-      <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>{data.plushieName}</Text>
-        <Text style={styles.subtitle}>
-          {animal} · {data.size.charAt(0).toUpperCase() + data.size.slice(1)} · {data.skillLevel.charAt(0).toUpperCase() + data.skillLevel.slice(1)}
-        </Text>
-
-        {/* Placeholder image */}
-        <View
-          style={{
-            width: "100%",
-            height: 160,
-            backgroundColor: "rgba(255,255,255,0.06)",
-            borderRadius: CARD_RADIUS,
-            borderWidth: 1,
-            borderColor: "rgba(255,255,255,0.15)",
-            borderStyle: "dashed",
-            marginBottom: 14,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ color: "rgba(255,255,255,0.3)", fontSize: 11 }}>
-            {data.plushieName} illustration
-          </Text>
-        </View>
-
-        {/* Materials */}
-        <View style={styles.card}>
-          <Text style={styles.cardHeader}>Materials</Text>
-          <View style={styles.twoCol}>
-            <View style={styles.col}>
-              <Text style={[styles.label, { marginBottom: 6, fontFamily: "Helvetica-Bold", color: "#333" }]}>Yarn</Text>
-              {data.materials.yarn.map((y, i) => (
-                <View key={i} style={styles.row}>
-                  <Text style={styles.label}>{y.colorName}</Text>
-                  <Text style={styles.value}>{y.label}</Text>
-                </View>
-              ))}
+      {/* ── Page 1: Cover + Materials ─────────────────────────────── */}
+      <Page size="A4" style={s.page}>
+        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
+        <View style={s.content}>
+          {/* Header row: text + animal image */}
+          <View style={s.coverRow}>
+            <View style={s.coverLeft}>
+              <PDFImage src="/images/logos/logo-alb-deschis.png" style={s.logoImg} />
+              <Text style={s.coverTitle}>{data.plushieName}</Text>
+              <Text style={s.coverSubtitle}>
+                {cap(data.animal)} · {cap(data.size)} · {cap(data.skillLevel)}
+              </Text>
             </View>
-            <View style={styles.col}>
-              <View style={styles.row}>
-                <Text style={styles.label}>Hook</Text>
-                <Text style={styles.value}>{data.materials.hook}</Text>
+            {animalImg ? (
+              <PDFImage src={animalImg} style={s.animalImage} />
+            ) : (
+              <View style={s.animalPlaceholder}>
+                <Text style={s.animalPlaceholderText}>{cap(data.animal)} illustration</Text>
               </View>
-              {data.materials.eyes && (
-                <View style={styles.row}>
-                  <Text style={styles.label}>Eyes</Text>
-                  <Text style={styles.value}>{data.materials.eyes}</Text>
-                </View>
-              )}
-              {data.materials.other.map((o, i) => (
-                <View key={i} style={styles.row}>
-                  <Text style={styles.label}>{i === 0 ? "Other" : ""}</Text>
-                  <Text style={styles.value}>{o}</Text>
-                </View>
-              ))}
-            </View>
+            )}
           </View>
-        </View>
 
-        {/* Finished size + skill */}
-        <View style={styles.metaRow}>
-          <View style={styles.metaCard}>
-            <Text style={styles.metaLabel}>Finished Size</Text>
-            <Text style={styles.metaValue}>{data.finishedSize}</Text>
-          </View>
-          <View style={styles.metaCard}>
-            <Text style={styles.metaLabel}>Skill Level</Text>
-            <Text style={styles.metaValue}>
-              {data.skillLevel.charAt(0).toUpperCase() + data.skillLevel.slice(1)}
-            </Text>
-            {skillStars(data.skillLevel)}
-          </View>
-        </View>
-      </Page>
-
-      {/* Page 2 — Abbreviations & Notes */}
-      <Page size="A4" style={styles.page}>
-        <View style={styles.card}>
-          <Text style={styles.cardHeader}>Abbreviations</Text>
-          <View style={styles.twoCol}>
-            {[data.abbreviations.slice(0, 5), data.abbreviations.slice(5)].map((half, col) => (
-              <View key={col} style={styles.col}>
-                {half.map((a) => (
-                  <View key={a.abbr} style={styles.abbr}>
-                    <Text style={styles.abbrKey}>{a.abbr}</Text>
-                    <Text style={styles.abbrVal}>{a.meaning}</Text>
+          {/* Materials card */}
+          <View style={s.card}>
+            <Text style={s.cardHeader}>Materials</Text>
+            <View style={s.materialsBody}>
+              {/* Left: yarn list */}
+              <View style={s.matCol}>
+                <Text style={s.matColLabel}>Yarn</Text>
+                {data.materials.yarn.map((y, i) => (
+                  <View key={i} style={s.matRow}>
+                    <Text style={s.matLabel}>{y.colorName}</Text>
+                    <Text style={s.matValue}>{y.label}</Text>
                   </View>
                 ))}
               </View>
-            ))}
-          </View>
-        </View>
 
-        <View style={styles.card}>
-          <Text style={styles.cardHeader}>Notes</Text>
-          {data.notes.map((n, i) => (
-            <Text key={i} style={styles.note}>• {n}</Text>
-          ))}
+              <View style={s.matDivider} />
+
+              {/* Right: hook + eyes + other */}
+              <View style={s.matCol}>
+                <Text style={s.matColLabel}>Tools</Text>
+                <View style={s.matRow}>
+                  <Text style={s.matLabel}>Hook</Text>
+                  <Text style={s.matValue}>{data.materials.hook}</Text>
+                </View>
+                {data.materials.eyes && (
+                  <View style={s.matRow}>
+                    <Text style={s.matLabel}>Eyes</Text>
+                    <Text style={s.matValue}>{data.materials.eyes}</Text>
+                  </View>
+                )}
+                {data.materials.other.map((o, i) => (
+                  <View key={i} style={s.matRow}>
+                    <Text style={s.matLabel}>{i === 0 ? "Other" : ""}</Text>
+                    <Text style={s.matValue}>{o}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+
+          {/* Finished size + skill level */}
+          <View style={s.metaRow}>
+            <View style={s.metaCard}>
+              <Text style={s.metaLabel}>Finished Size</Text>
+              <Text style={s.metaValue}>{data.finishedSize}</Text>
+            </View>
+            <View style={s.metaCard}>
+              <Text style={s.metaLabel}>Skill Level</Text>
+              <Text style={s.metaValue}>{cap(data.skillLevel)}</Text>
+              <SkillStars level={data.skillLevel} />
+            </View>
+          </View>
         </View>
       </Page>
 
-      {/* Page 3+ — Pattern Parts */}
-      <Page size="A4" style={styles.page}>
-        {data.parts.map((part) => (
-          <View key={part.name} style={styles.card}>
-            <Text style={styles.partHeader}>{part.name}</Text>
-            {part.colorNote && (
-              <Text style={styles.colorNote}>{part.colorNote}</Text>
-            )}
-            {part.rounds.map((r, i) => (
-              <View key={i} style={styles.roundRow}>
-                <Text style={styles.roundLabel}>{r.label}:</Text>
-                <Text style={styles.roundInstruction}>{r.instruction}</Text>
-                {r.stitchCount !== null && (
-                  <Text style={styles.roundCount}>({r.stitchCount} sc)</Text>
-                )}
+      {/* ── Page 2: Abbreviations + Notes ─────────────────────────── */}
+      <Page size="A4" style={s.page}>
+        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
+        <View style={s.content}>
+          <View style={s.card}>
+            <Text style={s.cardHeader}>Abbreviations</Text>
+            <View style={s.abbrGrid}>
+              {[data.abbreviations.slice(0, 5), data.abbreviations.slice(5)].map((half, col) => (
+                <View key={col} style={s.abbrCol}>
+                  {half.map((a) => (
+                    <View key={a.abbr} style={s.abbrRow}>
+                      <Text style={s.abbrKey}>{a.abbr}</Text>
+                      <Text style={s.abbrVal}>{a.meaning}</Text>
+                    </View>
+                  ))}
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <View style={s.card}>
+            <Text style={s.cardHeader}>Notes</Text>
+            {data.notes.map((n, i) => (
+              <View key={i} style={s.noteRow}>
+                <Text style={s.noteBullet}>•</Text>
+                <Text style={s.noteText}>{n}</Text>
               </View>
             ))}
-            {part.closingNote && (
-              <Text style={styles.closingNote}>{part.closingNote}</Text>
-            )}
           </View>
-        ))}
+        </View>
       </Page>
 
-      {/* Assembly page */}
-      <Page size="A4" style={styles.page}>
-        <View style={styles.card}>
-          <Text style={styles.cardHeader}>Assembly</Text>
-          {data.assembly.map((a, i) => (
-            <View key={i} style={styles.assemblyStep}>
-              <Text style={styles.stepNum}>{i + 1}.</Text>
-              <Text style={styles.stepText}>{a.step}</Text>
-            </View>
-          ))}
+      {/* ── Page 3+: Pattern Parts ─────────────────────────────────── */}
+      <Page size="A4" style={s.page}>
+        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
+        <View style={s.content}>
+          {data.parts.map((part, pi) => {
+            const [leftRounds, rightRounds] = splitRounds(part.rounds);
+            return (
+              <View key={part.name}>
+                {pi > 0 && <View style={s.partDivider} />}
+                <View style={s.card}>
+                  <Text style={s.partTitle}>{part.name}</Text>
+                  {part.colorNote && (
+                    <Text style={s.colorNote}>{part.colorNote}</Text>
+                  )}
+                  <View style={s.roundsGrid}>
+                    <View style={s.roundsCol}>
+                      {leftRounds.map((r, i) => (
+                        <View key={i} style={s.roundRow}>
+                          <Text style={s.roundLabel}>{r.label}:</Text>
+                          <Text style={s.roundInstruction}>{r.instruction}</Text>
+                          {r.stitchCount !== null && (
+                            <Text style={s.roundCount}>({r.stitchCount})</Text>
+                          )}
+                        </View>
+                      ))}
+                    </View>
+                    {rightRounds.length > 0 && (
+                      <View style={s.roundsCol}>
+                        {rightRounds.map((r, i) => (
+                          <View key={i} style={s.roundRow}>
+                            <Text style={s.roundLabel}>{r.label}:</Text>
+                            <Text style={s.roundInstruction}>{r.instruction}</Text>
+                            {r.stitchCount !== null && (
+                              <Text style={s.roundCount}>({r.stitchCount})</Text>
+                            )}
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                  {part.closingNote && (
+                    <Text style={s.closingNote}>{part.closingNote}</Text>
+                  )}
+                </View>
+              </View>
+            );
+          })}
+        </View>
+      </Page>
+
+      {/* ── Assembly ───────────────────────────────────────────────── */}
+      <Page size="A4" style={s.page}>
+        <PDFImage src="/images/textures/app/wall.jpg" style={s.texture} />
+        <View style={s.content}>
+          <View style={s.card}>
+            <Text style={s.cardHeader}>Assembly</Text>
+            {data.assembly.map((a, i) => (
+              <View key={i} style={s.assemblyRow}>
+                <Text style={s.assemblyNum}>{i + 1}.</Text>
+                <Text style={s.assemblyText}>{a.step}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       </Page>
     </Document>

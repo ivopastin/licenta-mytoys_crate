@@ -12,7 +12,7 @@ export const ABBREVIATIONS: { abbr: string; meaning: string }[] = [
 ];
 
 export const PATTERN_NOTES: string[] = [
-  "Use a stitch marker to mark the first stitch of each round.",
+  "Place a stitch marker in the last stitch of each round and move it up as you go.",
   "All rounds are worked in a continuous spiral unless otherwise noted.",
-  "Tutorials for magic ring, increases, and decreases can be found at learncrochet.com.",
+  "Video tutorials for magic ring, increases, and decreases are available in the Tutorials section of the app.",
 ];
