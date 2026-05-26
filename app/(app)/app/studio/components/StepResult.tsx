@@ -42,8 +42,14 @@ export default function StepResult({ config, patternData, onReset }: StepResultP
       await downloadPatternPDF(patternData, `${name}-pattern.pdf`);
     } finally {
       setDownloading(false);
+      router.refresh();
       router.push("/app/my-patterns");
     }
+  }
+
+  function handleSave() {
+    router.refresh();
+    router.push("/app/my-patterns");
   }
 
   return (
@@ -59,7 +65,7 @@ export default function StepResult({ config, patternData, onReset }: StepResultP
 
       <div className="flex flex-col gap-3">
         <button
-          onClick={() => router.push("/app/my-patterns")}
+          onClick={handleSave}
           className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-[12px] bg-brand/10 text-brand text-[15px] font-bold border border-brand/20 transition-all duration-200 hover:bg-brand/20 active:scale-95 cursor-pointer"
         >
           <BookMarked size={16} />
