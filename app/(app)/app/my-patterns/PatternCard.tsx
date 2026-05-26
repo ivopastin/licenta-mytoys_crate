@@ -17,11 +17,12 @@ export type PatternRow = {
   pattern_data: PatternData;
 };
 
-function skillStars(level: string) {
+function SkillStars({ level, small }: { level: string; small?: boolean }) {
   const count = level === "beginner" ? 1 : level === "intermediate" ? 2 : 3;
+  const size = small ? "text-[11px]" : "text-[13px]";
   return (
-    <span className="text-[13px]" aria-label={`${level} difficulty`}>
-      {Array.from({ length: 3 }).map((_, i) => (
+    <span className={size} aria-label={`${level} difficulty`}>
+      {[0, 1, 2].map((i) => (
         <span key={i} style={{ color: i < count ? "#c9a96e" : "#e0e0e0" }}>★</span>
       ))}
     </span>
@@ -36,9 +37,10 @@ const YARN_BRAND: Record<string, string> = {
 
 interface PatternCardProps {
   pattern: PatternRow;
+  compact?: boolean;
 }
 
-export default function PatternCard({ pattern }: PatternCardProps) {
+export default function PatternCard({ pattern, compact = false }: PatternCardProps) {
   const [favourite, setFavourite] = useState(pattern.is_favourite);
   const [downloading, setDownloading] = useState(false);
 
@@ -66,6 +68,46 @@ export default function PatternCard({ pattern }: PatternCardProps) {
     }
   }
 
+  if (compact) {
+    return (
+      <div className="flex flex-col bg-white rounded-[14px] shadow-sm border border-border-soft overflow-hidden">
+        {/* Image placeholder */}
+        <div className="relative bg-warm/10 w-full aspect-square flex items-center justify-center">
+          <span className="text-[10px] text-warm/40 text-center px-2">{pattern.name}</span>
+          <button
+            onClick={handleHeartClick}
+            className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full bg-white/80 hover:bg-white transition-colors cursor-pointer"
+            aria-label={favourite ? "Remove from favourites" : "Add to favourites"}
+          >
+            <Heart
+              size={12}
+              fill={favourite ? "#8b1a33" : "none"}
+              stroke={favourite ? "#8b1a33" : "#9e9e9e"}
+            />
+          </button>
+        </div>
+        {/* Info */}
+        <div className="flex flex-col gap-1 p-2.5">
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-[11px] font-bold text-ink truncate leading-tight">
+              {pattern.name} the {animal}
+            </span>
+            <SkillStars level={pattern.skill_level} small />
+          </div>
+          <p className="text-[10px] text-warm">{size} · {pattern.color_name}</p>
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            className="mt-0.5 flex items-center justify-center gap-1 w-full py-1.5 rounded-[8px] border border-border-soft text-[10px] font-semibold text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50"
+          >
+            <Download size={10} />
+            {downloading ? "…" : "PDF"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col bg-white rounded-[16px] shadow-sm border border-border-soft overflow-hidden">
       {/* Image placeholder */}
@@ -90,7 +132,7 @@ export default function PatternCard({ pattern }: PatternCardProps) {
           <span className="text-[14px] font-bold text-ink truncate">
             {pattern.name} the {animal}
           </span>
-          {skillStars(pattern.skill_level)}
+          <SkillStars level={pattern.skill_level} />
         </div>
 
         <p className="text-[12px] text-warm">

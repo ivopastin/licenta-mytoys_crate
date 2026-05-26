@@ -41,64 +41,74 @@ export default function PatternsGrid({ patterns }: PatternsGridProps) {
   }
 
   return (
-    <section className="flex flex-col gap-4">
-      {/* Controls */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-warm/50" />
-          <input
-            type="text"
-            placeholder="Search by name…"
-            value={query}
-            onChange={(e) => handleQueryChange(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 rounded-[10px] bg-white/10 border border-white/15 text-[13px] text-white placeholder:text-white/40 focus:outline-none focus:border-white/30 transition-colors"
-          />
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="shrink-0 mb-4">
+        <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest mb-3">
+          All Patterns
+          <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
+            ({patterns.length})
+          </span>
+        </h2>
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+            <input
+              type="text"
+              placeholder="Search by name…"
+              value={query}
+              onChange={(e) => handleQueryChange(e.target.value)}
+              className="w-full pl-8 pr-3 py-2 rounded-[10px] bg-white/10 border border-white/15 text-[12px] text-white placeholder:text-white/35 focus:outline-none focus:border-white/30 transition-colors"
+            />
+          </div>
+          <button
+            onClick={handleSort}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-[10px] bg-white/10 border border-white/15 text-[12px] font-semibold text-white hover:bg-white/20 transition-colors cursor-pointer whitespace-nowrap"
+          >
+            <ArrowUpDown size={12} />
+            {sortAsc ? "A → Z" : "Z → A"}
+          </button>
         </div>
-        <button
-          onClick={handleSort}
-          className="flex items-center gap-1.5 px-3 py-2.5 rounded-[10px] bg-white/10 border border-white/15 text-[13px] font-semibold text-white hover:bg-white/20 transition-colors cursor-pointer whitespace-nowrap"
-        >
-          <ArrowUpDown size={13} />
-          {sortAsc ? "A → Z" : "Z → A"}
-        </button>
       </div>
 
-      {/* Grid */}
-      {pageItems.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 gap-2">
-          <span className="text-[15px] font-semibold text-white/70">No patterns found</span>
-          <span className="text-[13px] text-white/40">Try a different name</span>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {pageItems.map((p) => (
-            <PatternCard key={p.id} pattern={p} />
-          ))}
-        </div>
-      )}
+      {/* Grid — fills remaining space */}
+      <div className="flex-1 min-h-0">
+        {pageItems.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full gap-2 opacity-60">
+            <span className="text-[14px] font-semibold text-white">No patterns found</span>
+            <span className="text-[12px] text-white/60">Try a different name</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-3 h-full content-start">
+            {pageItems.map((p) => (
+              <PatternCard key={p.id} pattern={p} />
+            ))}
+          </div>
+        )}
+      </div>
 
-      {/* Pagination */}
+      {/* Pagination — pinned at bottom */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 pt-2">
+        <div className="shrink-0 flex items-center justify-center gap-2 pt-3">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={safePage === 1}
-            className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-white bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold text-white bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
           >
             Previous
           </button>
-          <span className="text-[13px] text-white/60">
+          <span className="text-[12px] text-white/50">
             {safePage} / {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={safePage === totalPages}
-            className="px-3 py-1.5 rounded-[8px] text-[13px] font-semibold text-white bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold text-white bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
           >
             Next
           </button>
         </div>
       )}
-    </section>
+    </div>
   );
 }
