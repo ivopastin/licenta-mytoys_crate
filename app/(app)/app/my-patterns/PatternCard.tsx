@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Heart, Download } from "lucide-react";
 import { toggleFavourite } from "./actions";
-import { openPatternPDF } from "@/app/(app)/app/studio/components/PatternPDF";
+import { openPatternPDF, downloadPatternPDF } from "@/app/(app)/app/studio/components/PatternPDF";
 import type { PatternData } from "@/lib/pattern/types";
 
 export type PatternRow = {
@@ -42,6 +42,7 @@ interface PatternCardProps {
 }
 
 export default function PatternCard({ pattern, compact = false, onToggleFavourite }: PatternCardProps) {
+  const [previewing, setPreviewing] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [, startTransition] = useTransition();
 
@@ -66,11 +67,21 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
     });
   }
 
+  async function handlePreview() {
+    if (previewing) return;
+    setPreviewing(true);
+    try {
+      await openPatternPDF(pattern.pattern_data);
+    } finally {
+      setPreviewing(false);
+    }
+  }
+
   async function handleDownload() {
     if (downloading) return;
     setDownloading(true);
     try {
-      await openPatternPDF(pattern.pattern_data);
+      await downloadPatternPDF(pattern.pattern_data, `${pattern.name}-the-${pattern.animal}-pattern.pdf`);
     } finally {
       setDownloading(false);
     }
@@ -103,14 +114,23 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
             <SkillStars level={pattern.skill_level} small />
           </div>
           <p className="text-[10px] text-warm">{size} · {pattern.color_name}</p>
-          <button
-            onClick={handleDownload}
-            disabled={downloading}
-            className="mt-0.5 flex items-center justify-center gap-1 w-full py-1.5 rounded-[8px] border border-border-soft text-[10px] font-semibold text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50"
-          >
-            <Download size={10} />
-            {downloading ? "…" : "View"}
-          </button>
+          <div className="mt-0.5 flex gap-1">
+            <button
+              onClick={handlePreview}
+              disabled={previewing}
+              className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-[8px] border border-border-soft text-[10px] font-semibold text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50"
+            >
+              {previewing ? "…" : "View"}
+            </button>
+            <button
+              onClick={handleDownload}
+              disabled={downloading}
+              className="w-7 flex items-center justify-center rounded-[8px] border border-border-soft text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50"
+              aria-label="Download PDF"
+            >
+              <Download size={10} />
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -147,14 +167,23 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
           {size} · {pattern.color_name} {yarnBrand}
         </p>
 
-        <button
-          onClick={handleDownload}
-          disabled={downloading}
-          className="mt-1 flex items-center justify-center gap-1.5 w-full py-2 rounded-[10px] border border-border-soft text-[13px] font-semibold text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Download size={13} />
-          {downloading ? "Generating…" : "View PDF"}
-        </button>
+        <div className="mt-1 flex gap-2">
+          <button
+            onClick={handlePreview}
+            disabled={previewing}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-[10px] border border-border-soft text-[13px] font-semibold text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {previewing ? "Generating…" : "View PDF"}
+          </button>
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            className="w-10 flex items-center justify-center rounded-[10px] border border-border-soft text-warm hover:border-brand hover:text-brand transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Download PDF"
+          >
+            <Download size={14} />
+          </button>
+        </div>
       </div>
     </div>
   );
