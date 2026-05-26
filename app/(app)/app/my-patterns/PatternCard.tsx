@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Heart, Download } from "lucide-react";
 import { toggleFavourite } from "./actions";
 import { downloadPatternPDF } from "@/app/(app)/app/studio/components/PatternPDF";
@@ -42,23 +42,28 @@ interface PatternCardProps {
 }
 
 export default function PatternCard({ pattern, compact = false, onToggleFavourite }: PatternCardProps) {
-  const [favourite, setFavourite] = useState(pattern.is_favourite);
   const [downloading, setDownloading] = useState(false);
+  const [, startTransition] = useTransition();
+
+  // Read favourite directly from parent state — no local copy
+  const favourite = pattern.is_favourite;
 
   const animal = pattern.animal.charAt(0).toUpperCase() + pattern.animal.slice(1);
   const size = pattern.size.charAt(0).toUpperCase() + pattern.size.slice(1);
   const yarnBrand = YARN_BRAND[pattern.size] ?? "";
 
-  async function handleHeartClick() {
+  function handleHeartClick() {
     const next = !favourite;
-    setFavourite(next);
+    // Update parent state immediately (optimistic)
     onToggleFavourite?.(pattern.id, next);
-    try {
-      await toggleFavourite(pattern.id, next);
-    } catch {
-      setFavourite(!next);
-      onToggleFavourite?.(pattern.id, !next);
-    }
+    // Fire server action in background, roll back on failure
+    startTransition(async () => {
+      try {
+        await toggleFavourite(pattern.id, next);
+      } catch {
+        onToggleFavourite?.(pattern.id, !next);
+      }
+    });
   }
 
   async function handleDownload() {
