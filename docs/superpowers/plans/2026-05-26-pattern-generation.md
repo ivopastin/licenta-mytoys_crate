@@ -126,7 +126,7 @@ insert into pattern_templates (animal, skill_level, finished_size_small, finishe
   'Approx. 15 cm tall',
   'Approx. 25 cm tall',
   'Approx. 35 cm tall',
-  '{"nose": "black"}',
+  '{"nose": "black", "belly": "white"}',
   '[
     {"name":"Body","colorNote":null,"rounds":[
       {"label":"Round 1","instruction":"Make 6 sc into a magic ring.","stitchCount":6},
@@ -183,12 +183,20 @@ insert into pattern_templates (animal, skill_level, finished_size_small, finishe
       {"label":"Round 18 — Stop stuffing","instruction":"(2 sc, dec) x 4.","stitchCount":12},
       {"label":"Round 19","instruction":"Sc in each st around.","stitchCount":12}
     ],"closingNote":"F/O and leave a long tail for sewing."},
+    {"name":"Belly Patch","colorNote":"In white yarn.","rounds":[
+      {"label":"Ch 6","instruction":"Chain 6.","stitchCount":null},
+      {"label":"Round 1","instruction":"Sc in 2nd ch from hook, 3 sc, inc3 in last chain, working on opposite side: 3 sc, inc.","stitchCount":12},
+      {"label":"Round 2","instruction":"Inc, 3 sc, inc x 3, 3 sc, inc x 2.","stitchCount":18},
+      {"label":"Round 3","instruction":"Sc, inc, 4 sc, inc, sc, inc, sc, inc, 4 sc, inc, sc, inc.","stitchCount":24},
+      {"label":"Round 4","instruction":"2 sc, inc, 5 sc, inc, 2 sc, inc, 2 sc, inc, 5 sc, inc, 2 sc, inc.","stitchCount":30}
+    ],"closingNote":"F/O and leave a long tail. Pin belly onto body and sew into place."},
     {"name":"Head","colorNote":null,"rounds":[],"closingNote":"Pattern coming soon — check tutorials for guidance."},
     {"name":"Ear (Make 2)","colorNote":null,"rounds":[],"closingNote":"Pattern coming soon — check tutorials for guidance."},
     {"name":"Tail","colorNote":null,"rounds":[],"closingNote":"Pattern coming soon — check tutorials for guidance."}
   ]',
   '[
     {"step":"Sew the head onto the body, adding more stuffing as you go."},
+    {"step":"Pin and sew the belly patch onto the front of the body."},
     {"step":"Pin the arms onto the body at a forward-facing angle and sew into place."},
     {"step":"Turn the body upside down, pin the legs onto the bottom and sew into place."},
     {"step":"Pin the ears onto the head and sew into place."},
