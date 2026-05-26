@@ -16,9 +16,10 @@ import type { PatternData } from "@/lib/pattern/types";
 Font.register({
   family: "Figtree",
   fonts: [
-    { src: "/fonts/Figtree-Regular.ttf", fontWeight: 400 },
-    { src: "/fonts/Figtree-SemiBold.ttf", fontWeight: 600 },
-    { src: "/fonts/Figtree-Bold.ttf", fontWeight: 700 },
+    { src: "/fonts/Figtree-Regular.ttf", fontWeight: 400, fontStyle: "normal" },
+    { src: "/fonts/Figtree-Italic.ttf", fontWeight: 400, fontStyle: "italic" },
+    { src: "/fonts/Figtree-SemiBold.ttf", fontWeight: 600, fontStyle: "normal" },
+    { src: "/fonts/Figtree-Bold.ttf", fontWeight: 700, fontStyle: "normal" },
   ],
 });
 
