@@ -2,7 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
+  const origin = `https://${request.headers.get("host")}`;
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/app";
 
@@ -32,6 +33,10 @@ export async function GET(request: NextRequest) {
     );
 
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      console.error("[auth/callback] exchangeCodeForSession error:", error.message, error.status);
+    }
 
     if (!error) {
       // Password recovery flow — redirect to reset page
