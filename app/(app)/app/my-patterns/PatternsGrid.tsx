@@ -105,9 +105,9 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
           </div>
           <button
             onClick={() => setReviewOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-semibold text-white/60 hover:bg-white/20 hover:text-white transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 text-[12px] font-semibold text-white hover:bg-white/25 transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95 cursor-pointer animate-pulse-subtle"
           >
-            <MessageSquarePlus size={11} />
+            <MessageSquarePlus size={13} />
             Leave a review
           </button>
         </div>
