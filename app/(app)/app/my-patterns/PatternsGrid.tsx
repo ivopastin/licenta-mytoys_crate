@@ -80,23 +80,15 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
 
       {/* Header */}
       <div className="shrink-0 mb-4">
+        <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest mb-3">
+          All Patterns
+          <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
+            ({filtered.length})
+          </span>
+        </h2>
+        {/* Mode filter tabs + review button */}
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest">
-            All Patterns
-            <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
-              ({filtered.length})
-            </span>
-          </h2>
-          <button
-            onClick={() => setReviewOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-white/10 border border-white/15 text-[11px] font-semibold text-white/70 hover:bg-white/20 hover:text-white transition-colors cursor-pointer"
-          >
-            <MessageSquarePlus size={12} />
-            Leave a review
-          </button>
-        </div>
-        {/* Mode filter tabs */}
-        <div className="flex gap-1.5 mb-3">
+          <div className="flex gap-1.5">
           {MODE_TABS.map((tab) => (
             <button
               key={tab.value}
@@ -110,6 +102,14 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
               {tab.label}
             </button>
           ))}
+          </div>
+          <button
+            onClick={() => setReviewOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-semibold text-white/60 hover:bg-white/20 hover:text-white transition-colors cursor-pointer"
+          >
+            <MessageSquarePlus size={11} />
+            Leave a review
+          </button>
         </div>
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
