@@ -15,7 +15,10 @@ type TemplateRow = {
 
 const YARN_BY_SIZE: Record<string, { label: string; yarnBrand: string }> = {
   small: { label: "Katia Capri (100% cotton)", yarnBrand: "Capri" },
-  medium: { label: "Katia Alabama (50% cotton, 50% acrylic)", yarnBrand: "Alabama" },
+  medium: {
+    label: "Katia Alabama (50% cotton, 50% acrylic)",
+    yarnBrand: "Alabama",
+  },
   large: { label: "Katia Bambi (plush)", yarnBrand: "Bambi" },
 };
 
@@ -47,7 +50,10 @@ const ACCENT_COLOR_NAMES: Record<string, string> = {
   opposite: "Contrast color",
 };
 
-export function buildPatternData(template: TemplateRow, config: PlushieConfig): PatternData {
+export function buildPatternData(
+  template: TemplateRow,
+  config: PlushieConfig,
+): PatternData {
   const size = config.size ?? "medium";
   const animal = config.animal ?? "dog";
   const color = config.color ?? "#ffffff";
@@ -55,7 +61,8 @@ export function buildPatternData(template: TemplateRow, config: PlushieConfig): 
   const name = config.name ?? "My Plushie";
 
   const yarn = YARN_BY_SIZE[size];
-  const colorName = STUDIO_PALETTE.find((c) => c.hex === color)?.name ?? "Custom";
+  const colorName =
+    STUDIO_PALETTE.find((c) => c.hex === color)?.name ?? "Custom";
 
   const mainYarn = {
     label: yarn.label,
@@ -64,19 +71,21 @@ export function buildPatternData(template: TemplateRow, config: PlushieConfig): 
     yarnBrand: yarn.yarnBrand,
   };
 
-  const accentYarns = Object.entries(template.accent_colors).map(([part, accentColor]) => ({
-    label: `${yarn.label} — for ${part}`,
-    colorName: ACCENT_COLOR_NAMES[accentColor] ?? accentColor,
-    hex: ACCENT_COLOR_HEX[accentColor] ?? "#9e9e9e",
-    yarnBrand: yarn.yarnBrand,
-  }));
+  const accentYarns = Object.entries(template.accent_colors).map(
+    ([part, accentColor]) => ({
+      label: `${yarn.label} — for ${part}`,
+      colorName: ACCENT_COLOR_NAMES[accentColor] ?? accentColor,
+      hex: ACCENT_COLOR_HEX[accentColor] ?? "#9e9e9e",
+      yarnBrand: yarn.yarnBrand,
+    }),
+  );
 
   const finishedSize =
     size === "small"
       ? template.finished_size_small
       : size === "medium"
-      ? template.finished_size_medium
-      : template.finished_size_large;
+        ? template.finished_size_medium
+        : template.finished_size_large;
 
   const parts: PatternPart[] = template.parts.map((part) => ({
     ...part,
