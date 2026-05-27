@@ -72,15 +72,15 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
         </div>
       </div>
 
-      {/* Grid — fills remaining space */}
-      <div className="flex-1 min-h-0">
+      {/* Grid — scrollable, natural card height */}
+      <div className="flex-1 min-h-0 overflow-y-auto pr-1 scrollbar-hide">
         {pageItems.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full gap-2 opacity-60">
+          <div className="flex flex-col items-center justify-center py-20 gap-2 opacity-60">
             <span className="text-[14px] font-semibold text-white">No patterns found</span>
             <span className="text-[12px] text-white/60">Try a different name</span>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-3 h-full content-start">
+          <div className="grid grid-cols-3 gap-3">
             {pageItems.map((p) => (
               <PatternCard key={p.id} pattern={p} onToggleFavourite={onToggleFavourite} />
             ))}

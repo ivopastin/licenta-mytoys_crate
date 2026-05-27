@@ -139,7 +139,7 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
   return (
     <div className="flex flex-col bg-white rounded-[16px] shadow-sm border border-border-soft overflow-hidden">
       {/* Image placeholder */}
-      <div className="relative bg-warm/10 aspect-square w-full flex items-center justify-center">
+      <div className="relative bg-warm/10 h-36 w-full flex items-center justify-center">
         <span className="text-[13px] text-warm/50">{pattern.name} the {animal}</span>
         <button
           onClick={handleHeartClick}
