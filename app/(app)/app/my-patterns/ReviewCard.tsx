@@ -91,7 +91,7 @@ export default function ReviewCard({ patterns, onClose }: ReviewCardProps) {
             <Star
               size={20}
               fill={(hovered || stars) >= s ? "#c9a96e" : "none"}
-              stroke={(hovered || stars) >= s ? "#c9a96e" : "rgba(255,255,255,0.3)"}
+              stroke={(hovered || stars) >= s ? "#c9a96e" : "#d1c5bc"}
             />
           </button>
         ))}
