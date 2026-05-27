@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, ArrowUpDown } from "lucide-react";
+import { Search, ArrowUpDown, MessageSquarePlus } from "lucide-react";
 import PatternCard, { type PatternRow } from "./PatternCard";
+import ReviewCard from "./ReviewCard";
 
 interface PatternsGridProps {
   patterns: PatternRow[];
@@ -25,6 +26,7 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
   const [modeFilter, setModeFilter] = useState<ModeFilter>("all");
+  const [reviewOpen, setReviewOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
@@ -67,14 +69,32 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
 
   return (
     <div className="flex flex-col h-full">
+      {/* Review dialog */}
+      {reviewOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReviewOpen(false)}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <ReviewCard patterns={patterns} onClose={() => setReviewOpen(false)} />
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="shrink-0 mb-4">
-        <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest mb-3">
-          All Patterns
-          <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
-            ({filtered.length})
-          </span>
-        </h2>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest">
+            All Patterns
+            <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
+              ({filtered.length})
+            </span>
+          </h2>
+          <button
+            onClick={() => setReviewOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-white/10 border border-white/15 text-[11px] font-semibold text-white/70 hover:bg-white/20 hover:text-white transition-colors cursor-pointer"
+          >
+            <MessageSquarePlus size={12} />
+            Leave a review
+          </button>
+        </div>
         {/* Mode filter tabs */}
         <div className="flex gap-1.5 mb-3">
           {MODE_TABS.map((tab) => (

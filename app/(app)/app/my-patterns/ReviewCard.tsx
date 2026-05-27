@@ -7,6 +7,7 @@ import type { PatternRow } from "./PatternCard";
 
 interface ReviewCardProps {
   patterns: PatternRow[];
+  onClose?: () => void;
 }
 
 function patternLabel(p: PatternRow): string {
@@ -22,7 +23,7 @@ function patternLabel(p: PatternRow): string {
   return p.pattern_data?.accessoryName ?? "Accessory";
 }
 
-export default function ReviewCard({ patterns }: ReviewCardProps) {
+export default function ReviewCard({ patterns, onClose }: ReviewCardProps) {
   const [stars, setStars] = useState(0);
   const [hovered, setHovered] = useState(0);
   const [selectedPattern, setSelectedPattern] = useState("");
@@ -51,19 +52,30 @@ export default function ReviewCard({ patterns }: ReviewCardProps) {
 
   if (submitted) {
     return (
-      <div className="bg-white/10 backdrop-blur-sm rounded-[16px] border border-white/20 p-5 flex flex-col items-center justify-center gap-2 text-center min-h-[180px]">
-        <span className="text-[22px]">🎉</span>
-        <p className="text-[14px] font-bold text-white">Thank you for your review!</p>
-        <p className="text-[12px] text-white/60">Come back tomorrow to leave another one.</p>
+      <div className="w-[400px] bg-white rounded-[20px] p-8 flex flex-col items-center justify-center gap-3 text-center">
+        <span className="text-[32px]">🎉</span>
+        <p className="text-[16px] font-bold text-ink">Thank you for your review!</p>
+        <p className="text-[13px] text-warm">Come back tomorrow to leave another one.</p>
+        <button
+          onClick={onClose}
+          className="mt-2 px-6 py-2 rounded-[10px] bg-deep text-white text-[13px] font-bold hover:bg-black transition-colors cursor-pointer"
+        >
+          Close
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/10 backdrop-blur-sm rounded-[16px] border border-white/20 p-5 flex flex-col gap-4">
-      <div>
-        <p className="text-[13px] font-bold text-white">Leave a review</p>
-        <p className="text-[11px] text-white/50 mt-0.5">How are you liking MyToys Crate?</p>
+    <div className="w-[400px] bg-white rounded-[20px] p-6 flex flex-col gap-4 shadow-2xl">
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-[15px] font-bold text-ink">Leave a review</p>
+          <p className="text-[12px] text-warm mt-0.5">How are you liking MyToys Crate?</p>
+        </div>
+        {onClose && (
+          <button onClick={onClose} className="text-warm/50 hover:text-ink transition-colors cursor-pointer text-[18px] leading-none">×</button>
+        )}
       </div>
 
       {/* Stars */}
@@ -90,11 +102,11 @@ export default function ReviewCard({ patterns }: ReviewCardProps) {
         <select
           value={selectedPattern}
           onChange={(e) => setSelectedPattern(e.target.value)}
-          className="w-full bg-white/10 border border-white/20 rounded-[10px] px-3 py-2 text-[12px] text-white focus:outline-none focus:border-white/40 transition-colors"
+          className="w-full bg-black/5 border border-black/10 rounded-[10px] px-3 py-2 text-[12px] text-ink focus:outline-none focus:border-black/30 transition-colors"
         >
           <option value="">No specific pattern (optional)</option>
           {patterns.map((p) => (
-            <option key={p.id} value={p.id} className="text-ink bg-white">
+            <option key={p.id} value={p.id}>
               {patternLabel(p)}
             </option>
           ))}
@@ -107,15 +119,15 @@ export default function ReviewCard({ patterns }: ReviewCardProps) {
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Share your thoughts…"
         rows={3}
-        className="w-full bg-white/10 border border-white/20 rounded-[10px] px-3 py-2 text-[12px] text-white placeholder:text-white/40 focus:outline-none focus:border-white/40 transition-colors resize-none"
+        className="w-full bg-black/5 border border-black/10 rounded-[10px] px-3 py-2 text-[12px] text-ink placeholder:text-black/30 focus:outline-none focus:border-black/30 transition-colors resize-none"
       />
 
-      {error && <p className="text-[11px] text-red-300">{error}</p>}
+      {error && <p className="text-[11px] text-red-500">{error}</p>}
 
       <button
         onClick={handleSubmit}
         disabled={stars === 0 || description.trim().length < 5 || loading}
-        className="w-full py-2 rounded-[10px] bg-white text-deep text-[13px] font-bold hover:bg-white/90 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full py-2 rounded-[10px] bg-deep text-white text-[13px] font-bold hover:bg-black transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {loading ? "Submitting…" : "Submit Review"}
       </button>
