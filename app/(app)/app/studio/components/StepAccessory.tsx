@@ -5,12 +5,9 @@ import WizardShell from "./WizardShell";
 import { StepProps, AccessoryType } from "../types";
 
 const ACCESSORIES: { value: AccessoryType; label: string }[] = [
-  { value: "tshirt",        label: "T-Shirt" },
-  { value: "ribbon",        label: "Ribbon" },
-  { value: "crossbody-bag", label: "Crossbody Bag" },
-  { value: "hat",           label: "Hat" },
-  { value: "sunglasses",    label: "Sunglasses" },
-  { value: "dress",         label: "Dress" },
+  { value: "hat",     label: "Hat" },
+  { value: "bow-tie", label: "Bow Tie" },
+  { value: "basket",  label: "Basket" },
 ];
 
 export default function StepAccessory({ config, onNext, onBack, stepLabel, direction }: StepProps) {

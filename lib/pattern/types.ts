@@ -27,6 +27,9 @@ export type PatternData = {
   notes: string[];
   parts: PatternPart[];
   assembly: { step: string }[];
+  accessoryName?: string;
+  accessoryParts?: PatternPart[];
+  accessoryAssembly?: { step: string }[];
 };
 
 export const COLOR_PALETTE: Record<string, string> = {

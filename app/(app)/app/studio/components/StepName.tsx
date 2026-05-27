@@ -7,9 +7,13 @@ import { StepProps } from "../types";
 export default function StepName({ config, onNext, onBack, stepLabel, direction }: StepProps) {
   const [name, setName] = useState(config.name ?? "");
 
+  const title = config.mode === "accessory"
+    ? "Give your accessory a name"
+    : "Give your plushie a name";
+
   return (
     <WizardShell
-      title="Give your plushie a name"
+      title={title}
       stepLabel={stepLabel}
       direction={direction}
       onBack={onBack}

@@ -155,7 +155,7 @@ export default function AppSidebar({ displayName, avatarColor, email, recentPatt
                               <SidebarPatternLink
                                 key={p.id}
                                 patternId={p.id}
-                                label={`${p.name} the ${p.animal.charAt(0).toUpperCase() + p.animal.slice(1)}`}
+                                label={p.animal ? `${p.name} the ${p.animal.charAt(0).toUpperCase() + p.animal.slice(1)}` : p.name}
                               />
                             ))
                           )}

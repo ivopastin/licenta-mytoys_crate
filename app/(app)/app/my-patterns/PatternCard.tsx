@@ -4,14 +4,16 @@ import { useState, useTransition } from "react";
 import { Heart, Download } from "lucide-react";
 import { toggleFavourite } from "./actions";
 import { openPatternPDF, downloadPatternPDF } from "@/app/(app)/app/studio/components/PatternPDF";
+import { COLOR_PALETTE } from "@/app/(app)/app/studio/types";
 import type { PatternData } from "@/lib/pattern/types";
 
 export type PatternRow = {
   id: string;
   name: string;
-  animal: string;
-  size: string;
-  color_name: string;
+  animal: string | null;
+  size: string | null;
+  color_name: string | null;
+  accessory_color: string | null;
   skill_level: string;
   is_favourite: boolean;
   pattern_data: PatternData;
@@ -49,9 +51,22 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
   // Read favourite directly from parent state — no local copy
   const favourite = pattern.is_favourite;
 
-  const animal = pattern.animal.charAt(0).toUpperCase() + pattern.animal.slice(1);
-  const size = pattern.size.charAt(0).toUpperCase() + pattern.size.slice(1);
-  const yarnBrand = YARN_BRAND[pattern.size] ?? "";
+  const animal = pattern.animal ? pattern.animal.charAt(0).toUpperCase() + pattern.animal.slice(1) : null;
+  const size = pattern.size ? pattern.size.charAt(0).toUpperCase() + pattern.size.slice(1) : null;
+  const yarnBrand = pattern.size ? YARN_BRAND[pattern.size] ?? "" : "";
+  const accessoryName = pattern.pattern_data?.accessoryName ?? null;
+  const accessoryColorName = pattern.accessory_color
+    ? (COLOR_PALETTE.find((c) => c.hex === pattern.accessory_color)?.name ?? null)
+    : null;
+
+  let displayTitle: string;
+  if (animal && accessoryName) {
+    displayTitle = `${pattern.name} the ${animal}`;
+  } else if (animal) {
+    displayTitle = `${pattern.name} the ${animal}`;
+  } else {
+    displayTitle = `${pattern.name} — ${accessoryName ?? "Accessory"}`;
+  }
 
   function handleHeartClick() {
     const next = !favourite;
@@ -81,7 +96,8 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
     if (downloading) return;
     setDownloading(true);
     try {
-      await downloadPatternPDF(pattern.pattern_data, `${pattern.name}-the-${pattern.animal}-pattern.pdf`);
+      const filename = pattern.animal ? `${pattern.name}-the-${pattern.animal}-pattern.pdf` : `${pattern.name}-pattern.pdf`;
+      await downloadPatternPDF(pattern.pattern_data, filename);
     } finally {
       setDownloading(false);
     }
@@ -106,15 +122,24 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
           </button>
         </div>
         {/* Info */}
-        <div className="flex flex-col gap-1 p-2.5">
-          <div className="flex items-center justify-between gap-1">
-            <span className="text-[11px] font-bold text-ink truncate leading-tight">
-              {pattern.name} the {animal}
-            </span>
-            <SkillStars level={pattern.skill_level} small />
+        <div className="flex flex-col justify-between gap-1 p-2.5 flex-1">
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-center justify-between gap-1">
+              <span className="text-[11px] font-bold text-ink truncate leading-tight">
+                {displayTitle}
+              </span>
+              <SkillStars level={pattern.skill_level} small />
+            </div>
+            <div className="flex items-center gap-1.5">
+              <p className="text-[10px] text-warm">{[size, animal ? pattern.color_name : accessoryColorName].filter(Boolean).join(" · ")}</p>
+              {animal && accessoryName && (
+                <span className="px-1.5 py-0.5 rounded-full bg-brand/10 text-brand text-[9px] font-semibold shrink-0">
+                  + {accessoryName}
+                </span>
+              )}
+            </div>
           </div>
-          <p className="text-[10px] text-warm">{size} · {pattern.color_name}</p>
-          <div className="mt-0.5 flex gap-1">
+          <div className="mt-1.5 flex gap-1">
             <button
               onClick={handlePreview}
               disabled={previewing}
@@ -140,7 +165,7 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
     <div className="flex flex-col bg-white rounded-[16px] shadow-sm border border-border-soft overflow-hidden">
       {/* Image placeholder */}
       <div className="relative bg-warm/10 h-36 w-full flex items-center justify-center">
-        <span className="text-[13px] text-warm/50">{pattern.name} the {animal}</span>
+        <span className="text-[13px] text-warm/50">{displayTitle}</span>
         <button
           onClick={handleHeartClick}
           className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors cursor-pointer"
@@ -155,19 +180,32 @@ export default function PatternCard({ pattern, compact = false, onToggleFavourit
       </div>
 
       {/* Info */}
-      <div className="flex flex-col gap-2 p-4">
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-[14px] font-bold text-ink truncate">
-            {pattern.name} the {animal}
-          </span>
-          <SkillStars level={pattern.skill_level} />
+      <div className="flex flex-col justify-between gap-2 p-4 flex-1">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[14px] font-bold text-ink truncate">
+              {displayTitle}
+            </span>
+            <SkillStars level={pattern.skill_level} />
+          </div>
+          <div className="flex items-center gap-2">
+            <p className="text-[12px] text-warm">
+              {[
+                size,
+                animal && pattern.color_name
+                  ? `${pattern.color_name}${yarnBrand ? ` ${yarnBrand}` : ""}`
+                  : accessoryColorName,
+              ].filter(Boolean).join(" · ")}
+            </p>
+            {animal && accessoryName && (
+              <span className="px-2 py-0.5 rounded-full bg-brand/10 text-brand text-[11px] font-semibold shrink-0">
+                + {accessoryName}
+              </span>
+            )}
+          </div>
         </div>
 
-        <p className="text-[12px] text-warm">
-          {size} · {pattern.color_name} {yarnBrand}
-        </p>
-
-        <div className="mt-1 flex gap-2">
+        <div className="flex gap-2">
           <button
             onClick={handlePreview}
             disabled={previewing}

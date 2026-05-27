@@ -11,21 +11,40 @@ interface PatternsGridProps {
 
 const PAGE_SIZE = 9;
 
+type ModeFilter = "all" | "plushie" | "accessory" | "both";
+
+const MODE_TABS: { value: ModeFilter; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "plushie", label: "Plushie" },
+  { value: "accessory", label: "Accessory" },
+  { value: "both", label: "Both" },
+];
+
 export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGridProps) {
   const [query, setQuery] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
+  const [modeFilter, setModeFilter] = useState<ModeFilter>("all");
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
-    const results = q
+    let results = q
       ? patterns.filter((p) => p.name.toLowerCase().includes(q))
       : [...patterns];
+
+    if (modeFilter === "plushie") {
+      results = results.filter((p) => p.animal && !p.pattern_data?.accessoryName);
+    } else if (modeFilter === "accessory") {
+      results = results.filter((p) => !p.animal && p.pattern_data?.accessoryName);
+    } else if (modeFilter === "both") {
+      results = results.filter((p) => p.animal && p.pattern_data?.accessoryName);
+    }
+
     results.sort((a, b) =>
       sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
     );
     return results;
-  }, [patterns, query, sortAsc]);
+  }, [patterns, query, sortAsc, modeFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -41,6 +60,11 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
     setPage(1);
   }
 
+  function handleModeFilter(mode: ModeFilter) {
+    setModeFilter(mode);
+    setPage(1);
+  }
+
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -48,9 +72,25 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
         <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest mb-3">
           All Patterns
           <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
-            ({patterns.length})
+            ({filtered.length})
           </span>
         </h2>
+        {/* Mode filter tabs */}
+        <div className="flex gap-1.5 mb-3">
+          {MODE_TABS.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => handleModeFilter(tab.value)}
+              className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-colors cursor-pointer ${
+                modeFilter === tab.value
+                  ? "bg-white text-deep"
+                  : "bg-white/10 text-white/60 hover:bg-white/20 hover:text-white"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
@@ -77,7 +117,9 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
         {pageItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 gap-2 opacity-60">
             <span className="text-[14px] font-semibold text-white">No patterns found</span>
-            <span className="text-[12px] text-white/60">Try a different name</span>
+            <span className="text-[12px] text-white/60">
+              {modeFilter !== "all" ? "Try a different filter or name" : "Try a different name"}
+            </span>
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-3">

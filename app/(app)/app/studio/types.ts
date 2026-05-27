@@ -2,7 +2,7 @@ export type PlushieMode = "plushie" | "accessory" | "both";
 export type AnimalType = "dog" | "cat" | "rabbit" | "bear" | "fox" | "sheep";
 export type SizeType = "small" | "medium" | "large";
 export type EyesType = "safety" | "x-sewed";
-export type AccessoryType = "tshirt" | "ribbon" | "crossbody-bag" | "hat" | "sunglasses" | "dress";
+export type AccessoryType = "hat" | "bow-tie" | "basket";
 
 export type PlushieConfig = {
   mode: PlushieMode | null;

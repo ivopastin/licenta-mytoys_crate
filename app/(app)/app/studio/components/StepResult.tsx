@@ -24,10 +24,17 @@ export default function StepResult({ config, patternData, onReset }: StepResultP
   const router = useRouter();
   const [downloading, setDownloading] = useState(false);
 
+  const name = config.name ?? "My Pattern";
+  const isAccessoryOnly = config.mode === "accessory";
   const animal = config.animal
     ? config.animal.charAt(0).toUpperCase() + config.animal.slice(1)
-    : "Plushie";
-  const name = config.name ?? "My Plushie";
+    : null;
+  const accessoryLabel = config.accessory
+    ? config.accessory.charAt(0).toUpperCase() + config.accessory.slice(1).replace("-", " ")
+    : null;
+  const titleSuffix = isAccessoryOnly
+    ? (accessoryLabel ? ` — ${accessoryLabel}` : "")
+    : (animal ? ` the ${animal}` : "");
   const sizeLabel = config.size
     ? config.size.charAt(0).toUpperCase() + config.size.slice(1)
     : "";
@@ -54,10 +61,10 @@ export default function StepResult({ config, patternData, onReset }: StepResultP
     <div className="w-full max-w-lg bg-white rounded-[24px] p-8 shadow-2xl flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <h2 className="text-[26px] font-bold text-ink">
-          {name} the {animal}
+          {name}{titleSuffix}
         </h2>
         <p className="text-[14px] text-black/40">
-          {sizeLabel} · {colorName(config.color)} · {skillLabel}
+          {[sizeLabel, colorName(config.color), skillLabel].filter(Boolean).join(" · ")}
         </p>
       </div>
 

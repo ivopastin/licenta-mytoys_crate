@@ -317,7 +317,8 @@ function SkillStars({ level }: { level: string }) {
   );
 }
 
-function cap(str: string) {
+function cap(str: string | null | undefined) {
+  if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -331,9 +332,9 @@ function PatternDocument({ data }: { data: PatternData }) {
   }
 
   return (
-    <Document title={`${data.plushieName} the ${cap(data.animal)} — Pattern`}>
-      {/* ── Page 1: Cover + Materials ─────────────────────────────── */}
-      <Page size="A4" style={s.page}>
+    <Document title={data.animal ? `${data.plushieName} the ${cap(data.animal)} — Pattern` : `${data.plushieName} — Pattern`}>
+      {/* ── Page 1: Cover + Materials (skipped for accessory-only) ─── */}
+      {data.parts.length > 0 && <Page size="A4" style={s.page}>
         <View style={s.content}>
           {/* Header row: text + animal image */}
           <View style={s.coverRow}>
@@ -406,10 +407,10 @@ function PatternDocument({ data }: { data: PatternData }) {
             </View>
           </View>
         </View>
-      </Page>
+      </Page>}
 
-      {/* ── Page 2: Abbreviations + Notes ─────────────────────────── */}
-      <Page size="A4" style={s.page}>
+      {/* ── Page 2: Abbreviations + Notes (skipped for accessory-only) */}
+      {data.parts.length > 0 && <Page size="A4" style={s.page}>
         <View style={s.content}>
           <View style={s.card}>
             <Text style={s.cardHeader}>Abbreviations</Text>
@@ -437,10 +438,10 @@ function PatternDocument({ data }: { data: PatternData }) {
             ))}
           </View>
         </View>
-      </Page>
+      </Page>}
 
-      {/* ── Page 3+: Pattern Parts ─────────────────────────────────── */}
-      <Page size="A4" style={s.page}>
+      {/* ── Page 3+: Pattern Parts (skipped for accessory-only) ───── */}
+      {data.parts.length > 0 && <Page size="A4" style={s.page}>
         <View style={s.content}>
           {data.parts.map((part, pi) => {
             const [leftRounds, rightRounds] = splitRounds(part.rounds);
@@ -486,10 +487,10 @@ function PatternDocument({ data }: { data: PatternData }) {
             );
           })}
         </View>
-      </Page>
+      </Page>}
 
-      {/* ── Assembly ───────────────────────────────────────────────── */}
-      <Page size="A4" style={s.page}>
+      {/* ── Assembly (skipped for accessory-only) ──────────────────── */}
+      {data.assembly.length > 0 && <Page size="A4" style={s.page}>
         <View style={s.content}>
           <View style={s.card}>
             <Text style={s.cardHeader}>Assembly</Text>
@@ -501,7 +502,75 @@ function PatternDocument({ data }: { data: PatternData }) {
             ))}
           </View>
         </View>
-      </Page>
+      </Page>}
+
+      {/* ── Accessory Parts ────────────────────────────────────────── */}
+      {data.accessoryParts && data.accessoryParts.length > 0 && (
+        <Page size="A4" style={s.page}>
+          <View style={s.content}>
+            <Text style={[s.cardHeader, { marginBottom: 12 }]}>
+              {data.accessoryName ?? "Accessory"}
+            </Text>
+            {data.accessoryParts.map((part, pi) => {
+              const [leftRounds, rightRounds] = splitRounds(part.rounds);
+              return (
+                <View key={part.name}>
+                  {pi > 0 && <View style={s.partDivider} />}
+                  <View style={s.card}>
+                    <Text style={s.partTitle}>{part.name}</Text>
+                    {part.colorNote && (
+                      <Text style={s.colorNote}>{part.colorNote}</Text>
+                    )}
+                    <View style={s.roundsGrid}>
+                      <View style={s.roundsCol}>
+                        {leftRounds.map((r, i) => (
+                          <View key={i} style={s.roundRow}>
+                            <Text style={s.roundLabel}>{r.label}:</Text>
+                            <Text style={s.roundInstruction}>{r.instruction}</Text>
+                            {r.stitchCount !== null && (
+                              <Text style={s.roundCount}>({r.stitchCount})</Text>
+                            )}
+                          </View>
+                        ))}
+                      </View>
+                      {rightRounds.length > 0 && (
+                        <View style={s.roundsCol}>
+                          {rightRounds.map((r, i) => (
+                            <View key={i} style={s.roundRow}>
+                              <Text style={s.roundLabel}>{r.label}:</Text>
+                              <Text style={s.roundInstruction}>{r.instruction}</Text>
+                              {r.stitchCount !== null && (
+                                <Text style={s.roundCount}>({r.stitchCount})</Text>
+                              )}
+                            </View>
+                          ))}
+                        </View>
+                      )}
+                    </View>
+                    {part.closingNote && (
+                      <Text style={s.closingNote}>{part.closingNote}</Text>
+                    )}
+                  </View>
+                </View>
+              );
+            })}
+            {data.accessoryAssembly && data.accessoryAssembly.length > 0 && (
+              <>
+                <View style={s.partDivider} />
+                <View style={s.card}>
+                  <Text style={s.cardHeader}>Accessory Assembly</Text>
+                  {data.accessoryAssembly.map((a, i) => (
+                    <View key={i} style={s.assemblyRow}>
+                      <Text style={s.assemblyNum}>{i + 1}.</Text>
+                      <Text style={s.assemblyText}>{a.step}</Text>
+                    </View>
+                  ))}
+                </View>
+              </>
+            )}
+          </View>
+        </Page>
+      )}
     </Document>
   );
 }
@@ -518,7 +587,9 @@ export async function downloadPatternPDF(data: PatternData, filename: string) {
 
 export async function openPatternPDF(data: PatternData) {
   const blob = await pdf(<PatternDocument data={data} />).toBlob();
-  const filename = `${data.plushieName}-the-${data.animal}-pattern.pdf`;
+  const filename = data.animal
+    ? `${data.plushieName}-the-${data.animal}-pattern.pdf`
+    : `${data.plushieName}-pattern.pdf`;
   const file = new File([blob], filename, { type: "application/pdf" });
   const url = URL.createObjectURL(file);
   window.open(url, "_blank");
