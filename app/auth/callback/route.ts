@@ -13,6 +13,11 @@ export async function GET(request: NextRequest) {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
+        cookieOptions: {
+          maxAge: 60 * 60 * 24 * 365,
+          sameSite: "lax",
+          secure: true,
+        },
         cookies: {
           getAll() {
             return request.cookies.getAll();
