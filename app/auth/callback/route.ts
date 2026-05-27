@@ -3,7 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const origin = `https://${request.headers.get("host")}`;
+  const host = request.headers.get("host") ?? "localhost:3000";
+  const protocol = host.startsWith("localhost") ? "http" : "https";
+  const origin = `${protocol}://${host}`;
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/app";
 

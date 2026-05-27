@@ -29,6 +29,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: ReviewItem[] }) 
   if (reviews.length === 0) return null;
 
   const items = [...reviews, ...reviews];
+  const duration = `${reviews.length * 8}s`;
 
   return (
     <div
@@ -36,19 +37,25 @@ export default function ReviewsCarousel({ reviews }: { reviews: ReviewItem[] }) 
       style={{
         maskImage:
           "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
       }}
     >
       <div
         className="flex gap-4"
         style={{
-          animation: `carousel-scroll ${reviews.length * 8}s linear infinite`,
           width: "max-content",
+          animationName: "carousel-scroll",
+          animationDuration: duration,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          animationPlayState: "running",
         }}
       >
         {items.map((r, i) => (
           <div
             key={`${r.id}-${i}`}
-            className="w-[240px] shrink-0 bg-white/10 backdrop-blur-sm rounded-[14px] border border-white/15 p-4 flex flex-col gap-2"
+            className="w-60 shrink-0 bg-white/10 backdrop-blur-sm rounded-[14px] border border-white/15 p-4 flex flex-col gap-2"
           >
             <StarRow stars={r.stars} />
             <p className="text-[12px] text-white/85 leading-relaxed line-clamp-3">
@@ -63,17 +70,6 @@ export default function ReviewsCarousel({ reviews }: { reviews: ReviewItem[] }) 
           </div>
         ))}
       </div>
-
-      <style jsx>{`
-        @keyframes carousel-scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
     </div>
   );
 }

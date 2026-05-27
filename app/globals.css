@@ -316,9 +316,16 @@ body {
   }
 }
 
-@keyframes pulse-subtle {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.15); }
-  50% { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+@layer base {
+  @keyframes carousel-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.15); }
+    50% { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+  }
 }
 
 .animate-pulse-subtle {
