@@ -1,15 +1,26 @@
-"use client";
-
 import Link from "next/link";
 import { GraduationCap, ArrowRight } from "lucide-react";
 import GrainientFade from "./components/GrainientFade";
 import NewsCard from "./components/NewsCard";
+import ReviewsCarousel, { type ReviewItem } from "./components/ReviewsCarousel";
 import newsData from "@/content/news.json";
 import tutorialsData from "@/content/tutorials.json";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/server";
 
-export default function AppHomePage() {
+export const revalidate = 86400;
+
+export default async function AppHomePage() {
+  const supabase = await createClient();
   const firstTutorial = tutorialsData[0];
+
+  const { data: rawReviews } = await supabase
+    .from("reviews")
+    .select("id, user_name, stars, description, pattern_label")
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  const reviews = ((rawReviews ?? []) as ReviewItem[]).slice(0, 10);
 
   return (
     <div className="relative h-full w-full">
@@ -64,6 +75,16 @@ export default function AppHomePage() {
               Go to Studio
             </Link>
           </div>
+
+          {/* Reviews carousel */}
+          {reviews.length > 0 && (
+            <section>
+              <h2 className="text-[16px] font-bold text-white mb-4">
+                What Others Are Saying
+              </h2>
+              <ReviewsCarousel reviews={reviews} />
+            </section>
+          )}
 
           {/* News section */}
           <section>
