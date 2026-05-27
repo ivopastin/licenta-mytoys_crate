@@ -24,9 +24,10 @@ export async function GET(request: NextRequest) {
             return request.cookies.getAll();
           },
           setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options)
-            );
+            cookiesToSet.forEach(({ name, value, options }) => {
+              const safeValue = value.replace(/\n/g, "").replace(/\r/g, "");
+              response.cookies.set(name, safeValue, options);
+            });
           },
         },
       }
