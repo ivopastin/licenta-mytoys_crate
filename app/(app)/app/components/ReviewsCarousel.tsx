@@ -41,7 +41,7 @@ export default function ReviewsCarousel({ reviews }: { reviews: ReviewItem[] }) 
       <div
         className="flex gap-4"
         style={{
-          animation: `carousel-scroll ${reviews.length * 4}s linear infinite`,
+          animation: `carousel-scroll ${reviews.length * 8}s linear infinite`,
           width: "max-content",
         }}
       >
