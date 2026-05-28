@@ -18,7 +18,7 @@ const pacifico = Pacifico({
 
 export const metadata: Metadata = {
   title: "MyToysCrate — Turn Your Plush Toy Idea into Reality",
-  description: "Design a custom amigurumi, get an instant crochet pattern PDF. MyToysCrate makes it easy to bring your plush toy idea to life — one stitch at a time.",
+  description: "Design a custom amigurumi and get an instant downloadable crochet pattern PDF. Choose your animal, size, colors and accessories — MyToysCrate brings your plush toy idea to life.",
   metadataBase: new URL("https://mytoys-crate.com"),
   openGraph: {
     title: "MyToysCrate — Turn Your Plush Toy Idea into Reality",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "MyToysCrate",
     images: [
       {
-        url: "/screenshot-landing-page.png",
+        url: "https://mytoys-crate.com/screenshot-landing-page.png",
         width: 1200,
         height: 630,
         alt: "MyToysCrate — custom amigurumi crochet patterns",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MyToysCrate — Turn Your Plush Toy Idea into Reality",
     description: "Design a custom amigurumi and download a professional crochet pattern PDF instantly.",
-    images: ["/screenshot-landing-page.png"],
+    images: ["https://mytoys-crate.com/screenshot-landing-page.png"],
   },
   icons: {
     icon: "/favicon.ico",
