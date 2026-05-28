@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import Grainient from "@/components/Grainient";
 import SplitText from "@/components/SplitText";
 import FadeUp from "@/components/FadeUp";
@@ -196,9 +197,11 @@ export default function Footer() {
               </p>
             </FadeUp>
             <FadeUp delay={350}>
-              <button className="px-8 py-3 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[16px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95 cursor-pointer">
-                Create your plushie
-              </button>
+              <Link href="/login">
+                <button className="px-8 py-3 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[16px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95 cursor-pointer">
+                  Create your plushie
+                </button>
+              </Link>
             </FadeUp>
           </div>
         </div>

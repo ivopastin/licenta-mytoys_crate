@@ -87,7 +87,7 @@ export default async function AppHomePage() {
           )}
 
           {/* News section */}
-          <section>
+          <section id="whats-new">
             <h2 className="text-[16px] font-bold text-white mb-4">
               What&apos;s New
             </h2>

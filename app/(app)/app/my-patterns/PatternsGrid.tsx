@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search, ArrowUpDown, MessageSquarePlus } from "lucide-react";
 import PatternCard, { type PatternRow } from "./PatternCard";
 import ReviewCard from "./ReviewCard";
@@ -22,16 +22,25 @@ const MODE_TABS: { value: ModeFilter; label: string }[] = [
 ];
 
 export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGridProps) {
+  const [inputValue, setInputValue] = useState("");
   const [query, setQuery] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
   const [page, setPage] = useState(1);
   const [modeFilter, setModeFilter] = useState<ModeFilter>("all");
   const [reviewOpen, setReviewOpen] = useState(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setQuery(inputValue), 300);
+    return () => clearTimeout(timer);
+  }, [inputValue]);
+
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
     let results = q
-      ? patterns.filter((p) => p.name.toLowerCase().includes(q))
+      ? patterns.filter((p) =>
+          p.name.toLowerCase().includes(q) ||
+          (p.animal?.toLowerCase().includes(q) ?? false)
+        )
       : [...patterns];
 
     if (modeFilter === "plushie") {
@@ -53,7 +62,7 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
   const pageItems = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   function handleQueryChange(q: string) {
-    setQuery(q);
+    setInputValue(q);
     setPage(1);
   }
 
@@ -117,7 +126,7 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
             <input
               type="text"
               placeholder="Search by name…"
-              value={query}
+              value={inputValue}
               onChange={(e) => handleQueryChange(e.target.value)}
               className="w-full pl-8 pr-3 py-2 rounded-[10px] bg-white/10 border border-white/15 text-[12px] text-white placeholder:text-white/35 focus:outline-none focus:border-white/30 transition-colors"
             />

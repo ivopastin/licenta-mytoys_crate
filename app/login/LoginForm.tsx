@@ -74,7 +74,7 @@ export default function LoginForm() {
       if (error) {
         setError("Invalid email or password.");
       } else {
-        router.push("/app");
+        router.replace("/app");
       }
     } else {
       const { data, error } = await supabase.auth.signUp({
@@ -87,7 +87,7 @@ export default function LoginForm() {
       if (error) {
         setError(error.message);
       } else if (data.session) {
-        router.push("/app");
+        router.replace("/app");
       } else {
         setEmailSent(true);
       }

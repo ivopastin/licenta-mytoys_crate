@@ -1,11 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import Grainient from "@/components/Grainient";
 import LoginForm from "./LoginForm";
+import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) router.replace("/app");
+    });
+  }, [router]);
   return (
     <div className="h-[calc(100vh-20px)] grid grid-cols-2">
       {/* ── Left panel: blue branded area ── */}
