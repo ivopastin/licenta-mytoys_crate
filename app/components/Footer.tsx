@@ -233,61 +233,54 @@ export default function Footer() {
               <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
                 Product
               </p>
-              {["How it works", "Pricing", "Examples", "FAQ"].map((l) => (
-                <a
-                  key={l}
-                  href="#"
+              {[
+                { label: "How it works", href: "/#about" },
+                { label: "Showcase", href: "/#showcase" },
+                { label: "Pricing", href: "/#pricing" },
+                { label: "Testimonials", href: "/#testimonials" },
+              ].map((l) => (
+                <Link
+                  key={l.label}
+                  href={l.href}
                   className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
                 >
-                  {l}
-                </a>
+                  {l.label}
+                </Link>
               ))}
             </div>
             <div className="flex flex-col gap-3">
               <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
-                Company
-              </p>
-              {["About us", "Blog", "Press", "Careers"].map((l) => (
-                <a
-                  key={l}
-                  href="#"
-                  className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
-                >
-                  {l}
-                </a>
-              ))}
-            </div>
-            <div className="flex flex-col gap-3">
-              <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
-                Legal
+                Get Started
               </p>
               {[
-                "Privacy Policy",
-                "Terms of Service",
-                "Cookie Policy",
-                "Refunds",
+                { label: "Try for free", href: "/login" },
+                { label: "Log in", href: "/login" },
+                { label: "Go to Studio", href: "/app/studio" },
               ].map((l) => (
-                <a
-                  key={l}
-                  href="#"
+                <Link
+                  key={l.label}
+                  href={l.href}
                   className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
                 >
-                  {l}
-                </a>
+                  {l.label}
+                </Link>
               ))}
             </div>
             <div className="flex flex-col gap-3">
               <p className="text-[12px] font-bold uppercase tracking-widest text-[var(--color-warm)]">
                 Support
               </p>
-              {["Contact us", "Help center", "Community", "Status"].map((l) => (
-                <a
-                  key={l}
-                  href="#"
+              {[
+                { label: "Contact us", href: "/#contact-us" },
+                { label: "Tutorials", href: "/app/tutorials" },
+              ].map((l) => (
+                <Link
+                  key={l.label}
+                  href={l.href}
                   className="text-[14px] text-[var(--color-ink)]/60 hover:text-[var(--color-deep)] font-medium transition-colors"
                 >
-                  {l}
-                </a>
+                  {l.label}
+                </Link>
               ))}
             </div>
           </div>
