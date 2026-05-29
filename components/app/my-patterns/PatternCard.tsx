@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Heart, Download } from "lucide-react";
-import { toggleFavourite } from "./actions";
+import { toggleFavourite } from "@/app/(app)/app/my-patterns/actions";
 import {
   openPatternPDF,
   downloadPatternPDF,

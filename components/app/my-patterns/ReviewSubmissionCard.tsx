@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { Star } from "lucide-react";
-import { submitReview } from "./actions";
+import { submitReview } from "@/app/(app)/app/my-patterns/actions";
 import type { PatternRow } from "./PatternCard";
 
-interface ReviewCardProps {
+interface ReviewSubmissionCardProps {
   patterns: PatternRow[];
   onClose?: () => void;
 }
@@ -23,7 +23,7 @@ function patternLabel(p: PatternRow): string {
   return p.pattern_data?.accessoryName ?? "Accessory";
 }
 
-export default function ReviewCard({ patterns, onClose }: ReviewCardProps) {
+export default function ReviewSubmissionCard({ patterns, onClose }: ReviewSubmissionCardProps) {
   const [stars, setStars] = useState(0);
   const [hovered, setHovered] = useState(0);
   const [selectedPattern, setSelectedPattern] = useState("");

@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Search, ArrowUpDown, MessageSquarePlus } from "lucide-react";
 import PatternCard, { type PatternRow } from "./PatternCard";
-import ReviewCard from "./ReviewCard";
+import ReviewSubmissionCard from "./ReviewSubmissionCard";
 
 interface PatternsGridProps {
   patterns: PatternRow[];
@@ -86,7 +86,7 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
       {reviewOpen && createPortal(
         <div className="fixed inset-0 z-200 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReviewOpen(false)}>
           <div onClick={(e) => e.stopPropagation()}>
-            <ReviewCard patterns={patterns} onClose={() => setReviewOpen(false)} />
+            <ReviewSubmissionCard patterns={patterns} onClose={() => setReviewOpen(false)} />
           </div>
         </div>,
         document.body

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import GrainientFade from "@/components/app/GrainientFade";
-import MyPatternsClient from "./MyPatternsClient";
-import type { PatternRow } from "./PatternCard";
+import MyPatternsClient from "@/components/app/my-patterns/MyPatternsClient";
+import type { PatternRow } from "@/components/app/my-patterns/PatternCard";
 
 export default async function MyPatternsPage() {
   const supabase = await createClient();
