@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
-import TabNav from "./TabNav";
-import ProfileSection from "./ProfileSection";
-import AccountSection from "./AccountSection";
-import BillingSection from "./BillingSection";
+import TabNav from "@/components/app/settings/TabNav";
+import ProfileSection from "@/components/app/settings/ProfileSection";
+import AccountSection from "@/components/app/settings/AccountSection";
+import BillingSection from "@/components/app/settings/BillingSection";
 import { Suspense } from "react";
 
 type Tab = "profile" | "account" | "billing";
