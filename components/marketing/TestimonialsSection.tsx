@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Grainient from "@/components/shared/Grainient";
-import ReviewCard from "./testimonials/ReviewCard";
+import TestimonialCard from "./TestimonialCard";
 import LogoLoop from "@/components/shared/LogoLoop";
 import SplitText from "@/components/shared/SplitText";
 import FadeUp from "@/components/shared/FadeUp";
@@ -51,7 +51,7 @@ const reviews = [
 ];
 
 const logoItems = reviews.map((review) => ({
-  node: <ReviewCard review={review} />,
+  node: <TestimonialCard review={review} />,
 }));
 
 function TestimonialsSection() {
