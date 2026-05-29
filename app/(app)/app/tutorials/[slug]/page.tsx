@@ -5,7 +5,7 @@ import path from "path";
 import ReactMarkdown from "react-markdown";
 import { ArrowLeft, Clock, GraduationCap } from "lucide-react";
 import tutorialsData from "@/content/tutorials.json";
-import GrainientBackground from "./GrainientBackground";
+import GrainientBackground from "@/components/app/tutorials/GrainientBackground";
 
 interface Props {
   params: Promise<{ slug: string }>;
