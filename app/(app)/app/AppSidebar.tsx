@@ -83,7 +83,7 @@ export default function AppSidebar({ displayName, avatarColor, email, recentPatt
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    router.push("/login");
+    window.location.href = "/login";
   }
 
   const initials = getInitials(displayName, email);
