@@ -8,6 +8,13 @@ export type ReviewItem = {
   stars: number;
   description: string;
   pattern_label: string | null;
+  experience_level: string | null;
+};
+
+const LEVEL_LABEL: Record<string, string> = {
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
 };
 
 function StarRow({ stars }: { stars: number }) {
@@ -61,10 +68,17 @@ export default function ReviewsCarousel({ reviews }: { reviews: ReviewItem[] }) 
             <p className="text-[12px] text-white/85 leading-relaxed line-clamp-3">
               {r.description}
             </p>
-            <div className="mt-auto pt-1">
-              <p className="text-[11px] font-semibold text-white/70">{r.user_name}</p>
-              {r.pattern_label && (
-                <p className="text-[10px] text-white/40">{r.pattern_label}</p>
+            <div className="mt-auto pt-1 flex items-center justify-between gap-2">
+              <div>
+                <p className="text-[11px] font-semibold text-white/70">{r.user_name}</p>
+                {r.pattern_label && (
+                  <p className="text-[10px] text-white/40">{r.pattern_label}</p>
+                )}
+              </div>
+              {r.experience_level && LEVEL_LABEL[r.experience_level] && (
+                <span className="shrink-0 px-2 py-0.5 rounded-full bg-white/10 text-white/50 text-[9px] font-semibold">
+                  {LEVEL_LABEL[r.experience_level]}
+                </span>
               )}
             </div>
           </div>

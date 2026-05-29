@@ -57,12 +57,19 @@ export async function submitReview(
     user.email?.split("@")[0] ??
     "Anonymous";
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("experience_level")
+    .eq("id", user.id)
+    .single();
+
   const { error: insertError } = await supabase.from("reviews").insert({
     user_id: user.id,
     user_name: userName,
     stars,
     description,
     pattern_label: patternLabel,
+    experience_level: profile?.experience_level ?? null,
   });
 
   if (insertError) return { error: "Failed to save review" };

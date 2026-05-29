@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import FavouritesPanel from "./FavouritesPanel";
 import PatternsGrid from "./PatternsGrid";
 import type { PatternRow } from "./PatternCard";
 
@@ -12,8 +11,6 @@ interface MyPatternsClientProps {
 
 export default function MyPatternsClient({ initialPatterns }: MyPatternsClientProps) {
   const [patterns, setPatterns] = useState<PatternRow[]>(initialPatterns);
-
-  const favourites = patterns.filter((p) => p.is_favourite);
 
   function handleToggleFavourite(patternId: string, isFavourite: boolean) {
     setPatterns((prev) =>
@@ -56,15 +53,8 @@ export default function MyPatternsClient({ initialPatterns }: MyPatternsClientPr
   }
 
   return (
-    <div className="flex-1 min-h-0 flex gap-6">
-      {favourites.length > 0 && (
-        <div className="w-[32%] shrink-0 flex flex-col min-h-0">
-          <FavouritesPanel patterns={favourites} onToggleFavourite={handleToggleFavourite} />
-        </div>
-      )}
-      <div className={`flex flex-col min-h-0 ${favourites.length > 0 ? "flex-1" : "w-full"}`}>
-        <PatternsGrid patterns={patterns} onToggleFavourite={handleToggleFavourite} />
-      </div>
+    <div className="flex-1 min-h-0">
+      <PatternsGrid patterns={patterns} onToggleFavourite={handleToggleFavourite} />
     </div>
   );
 }

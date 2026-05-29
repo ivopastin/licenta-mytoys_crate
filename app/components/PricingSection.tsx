@@ -105,7 +105,7 @@ function PricingCard({
 
 export default function PricingSection() {
   return (
-    <div id="pricing" className="relative h-[calc(100vh-20px)] overflow-hidden flex flex-col items-center justify-center">
+    <div id="pricing" className="relative h-[calc(100vh-20px)] min-h-175 overflow-hidden flex flex-col items-center justify-center">
       {/* warm neutral base */}
       <div className="absolute inset-0 bg-[var(--color-accent)]/60" />
 

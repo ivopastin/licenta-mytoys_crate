@@ -16,7 +16,7 @@ export default async function AppHomePage() {
 
   const { data: rawReviews } = await supabase
     .from("reviews")
-    .select("id, user_name, stars, description, pattern_label")
+    .select("id, user_name, stars, description, pattern_label, experience_level")
     .order("created_at", { ascending: false })
     .limit(50);
 

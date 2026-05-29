@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Search, ArrowUpDown, MessageSquarePlus } from "lucide-react";
 import PatternCard, { type PatternRow } from "./PatternCard";
 import ReviewCard from "./ReviewCard";
@@ -12,10 +13,11 @@ interface PatternsGridProps {
 
 const PAGE_SIZE = 9;
 
-type ModeFilter = "all" | "plushie" | "accessory" | "both";
+type ModeFilter = "all" | "favourites" | "plushie" | "accessory" | "both";
 
-const MODE_TABS: { value: ModeFilter; label: string }[] = [
+const MODE_TABS: { value: ModeFilter; label: string; accent?: boolean }[] = [
   { value: "all", label: "All" },
+  { value: "favourites", label: "♥ Favourites", accent: true },
   { value: "plushie", label: "Plushie" },
   { value: "accessory", label: "Accessory" },
   { value: "both", label: "Both" },
@@ -43,7 +45,9 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
         )
       : [...patterns];
 
-    if (modeFilter === "plushie") {
+    if (modeFilter === "favourites") {
+      results = results.filter((p) => p.is_favourite);
+    } else if (modeFilter === "plushie") {
       results = results.filter((p) => p.animal && !p.pattern_data?.accessoryName);
     } else if (modeFilter === "accessory") {
       results = results.filter((p) => !p.animal && p.pattern_data?.accessoryName);
@@ -78,19 +82,20 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
 
   return (
     <div className="flex flex-col h-full">
-      {/* Review dialog */}
-      {reviewOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReviewOpen(false)}>
+      {/* Review dialog — portaled to body to escape overflow-hidden stacking context */}
+      {reviewOpen && createPortal(
+        <div className="fixed inset-0 z-200 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReviewOpen(false)}>
           <div onClick={(e) => e.stopPropagation()}>
             <ReviewCard patterns={patterns} onClose={() => setReviewOpen(false)} />
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Header */}
       <div className="shrink-0 mb-4">
         <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest mb-3">
-          All Patterns
+          My Patterns
           <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
             ({filtered.length})
           </span>
@@ -102,10 +107,14 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
             <button
               key={tab.value}
               onClick={() => handleModeFilter(tab.value)}
-              className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-colors cursor-pointer ${
-                modeFilter === tab.value
-                  ? "bg-white text-deep"
-                  : "bg-white/10 text-white/60 hover:bg-white/20 hover:text-white"
+              className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all duration-200 cursor-pointer ${
+                tab.accent
+                  ? modeFilter === tab.value
+                    ? "bg-white text-[#c9a96e]"
+                    : "bg-[#c9a96e]/60 text-white border border-[#c9a96e]/80 hover:bg-[#c9a96e]/80"
+                  : modeFilter === tab.value
+                    ? "bg-white text-deep"
+                    : "bg-white/10 text-white/60 hover:bg-white/20 hover:text-white"
               }`}
             >
               {tab.label}
@@ -114,7 +123,7 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
           </div>
           <button
             onClick={() => setReviewOpen(true)}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/25 text-[12px] font-semibold text-white hover:bg-white/25 transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-95 cursor-pointer animate-pulse-subtle"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[12px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-white hover:scale-105 active:scale-95 cursor-pointer"
           >
             <MessageSquarePlus size={13} />
             Leave a review
@@ -151,7 +160,7 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
             </span>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-4 gap-3">
             {pageItems.map((p) => (
               <PatternCard key={p.id} pattern={p} onToggleFavourite={onToggleFavourite} />
             ))}

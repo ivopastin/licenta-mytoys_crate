@@ -139,7 +139,7 @@ function AboutSection() {
     <div id="about" ref={containerRef} className="relative h-[500vh]">
       <div
         ref={stickyRef}
-        className="sticky top-0 overflow-hidden h-[calc(100vh-20px)] flex flex-col items-center justify-center"
+        className="sticky top-0 overflow-hidden h-[calc(100vh-20px)] min-h-175 flex flex-col items-center justify-center"
       >
         {/* Dark overlay that appears as showcase slides up */}
         <div
@@ -213,7 +213,7 @@ function AboutSection() {
 
         <div
           ref={aboutOverlayRef}
-          className="absolute top-[164px] bottom-[60px] left-[120px] right-[120px] flex flex-col items-end justify-between p-[30px]  rounded-[16px]"
+          className="absolute inset-0 flex flex-col items-end justify-between pt-41 pb-15 px-30 p-7.5 rounded-[16px]"
           style={{ opacity: 0 }}
         >
           <div className="w-[500px] relative h-[64px] flex flex-row justify-end">
@@ -302,7 +302,7 @@ function AboutSection() {
           Scroll down to meet my friends!
         </div>
 
-        <div className="relative z-10 flex flex-col pt-[194px] pb-[60px] px-[150px] w-full h-full">
+        <div className="relative z-10 flex flex-col pt-41 pb-15 px-37.5 w-full h-full min-h-0">
           <div
             ref={videoWrapRef}
             className="relative flex flex-col w-full h-full bg-[var(--color-warm)]/30 border border-white/40 rounded-[16px] overflow-hidden p-[10px]"

@@ -17,7 +17,7 @@ export default function HeroSection({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div id="hero" className="relative h-[calc(100vh-20px)] overflow-hidden">
+    <div id="hero" className="relative h-[calc(100vh-20px)] min-h-175 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <Grainient
           color1="#417c9c"
