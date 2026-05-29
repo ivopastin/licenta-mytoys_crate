@@ -12,6 +12,7 @@ const AVATAR_COLORS = [
   { name: "Soft green", hex: "#4a7c59" },
   { name: "Muted purple", hex: "#6b5b8a" },
   { name: "Coral", hex: "#c4614a" },
+  { name: "Dusty pink", hex: "#d4829a" },
   { name: "Slate", hex: "#4a5568" },
   { name: "Sand", hex: "#b8956a" },
 ];
