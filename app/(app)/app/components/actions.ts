@@ -10,7 +10,9 @@ export async function sendSupportEmail(formData: {
   message: string;
 }): Promise<{ success: boolean; error?: string }> {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) return { success: false, error: "Not authenticated." };
 
@@ -22,7 +24,7 @@ export async function sendSupportEmail(formData: {
 
   const { error } = await resend.emails.send({
     from: "MyToys Crate <hello@mytoys-crate.com>",
-    to: "hello@mytoys-crate.com",
+    to: "ivo.pastin@gmail.com",
     replyTo: user.email!,
     subject: `[Support] ${subject}`,
     text: `New support request from ${user.email}\n\n${message}`,
