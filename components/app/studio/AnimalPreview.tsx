@@ -1,4 +1,4 @@
-import { AnimalType } from "../types";
+import { AnimalType } from "./types";
 
 interface AnimalPreviewProps {
   animal: AnimalType | null;

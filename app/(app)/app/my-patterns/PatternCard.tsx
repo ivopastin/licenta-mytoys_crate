@@ -6,8 +6,8 @@ import { toggleFavourite } from "./actions";
 import {
   openPatternPDF,
   downloadPatternPDF,
-} from "@/app/(app)/app/studio/components/PatternPDF";
-import { COLOR_PALETTE } from "@/app/(app)/app/studio/types";
+} from "@/components/app/studio/PatternPDF";
+import { COLOR_PALETTE } from "@/components/app/studio/types";
 import type { PatternData } from "@/lib/pattern/types";
 
 export type PatternRow = {

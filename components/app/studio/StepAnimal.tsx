@@ -2,28 +2,31 @@
 
 import { useState } from "react";
 import WizardShell from "./WizardShell";
-import { StepProps, AccessoryType } from "../types";
+import { StepProps, AnimalType } from "./types";
 
-const ACCESSORIES: { value: AccessoryType; label: string }[] = [
-  { value: "hat",     label: "Hat" },
-  { value: "bow-tie", label: "Bow Tie" },
-  { value: "basket",  label: "Basket" },
+const ANIMALS: { value: AnimalType; label: string }[] = [
+  { value: "dog",    label: "Dog" },
+  { value: "cat",    label: "Cat" },
+  { value: "rabbit", label: "Rabbit" },
+  { value: "bear",   label: "Bear" },
+  { value: "fox",    label: "Fox" },
+  { value: "sheep",  label: "Sheep" },
 ];
 
-export default function StepAccessory({ config, onNext, onBack, stepLabel, direction }: StepProps) {
-  const [selected, setSelected] = useState<AccessoryType | null>(config.accessory);
+export default function StepAnimal({ config, onNext, onBack, stepLabel, direction }: StepProps) {
+  const [selected, setSelected] = useState<AnimalType | null>(config.animal);
 
   return (
     <WizardShell
-      title="What accessory should it wear?"
+      title="What kind of animal?"
       stepLabel={stepLabel}
       direction={direction}
       onBack={onBack}
-      onNext={() => selected && onNext({ accessory: selected })}
+      onNext={() => selected && onNext({ animal: selected })}
       nextDisabled={!selected}
     >
       <div className="flex flex-wrap gap-3">
-        {ACCESSORIES.map(({ value, label }) => (
+        {ANIMALS.map(({ value, label }) => (
           <button
             key={value}
             onClick={() => setSelected(value)}

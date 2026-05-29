@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import WizardShell from "./WizardShell";
-import { StepProps, EyesType } from "../types";
+import { StepProps, EyesType } from "./types";
 
 const EYES: { value: EyesType; label: string; description: string; icon: string }[] = [
   { value: "safety",  label: "Safety Eyes",  description: "Classic round plastic eyes — shiny and expressive", icon: "●" },

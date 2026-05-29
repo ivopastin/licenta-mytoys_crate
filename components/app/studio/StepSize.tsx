@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import WizardShell from "./WizardShell";
-import { StepProps, SizeType } from "../types";
+import { StepProps, SizeType } from "./types";
 
 const SIZES: { value: SizeType; label: string; height: string; description: string }[] = [
   { value: "small",  label: "Small",  height: "15 cm", description: "Fits in a pocket" },

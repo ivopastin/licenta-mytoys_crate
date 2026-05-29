@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { generatePattern } from "../actions";
-import type { PlushieConfig } from "../types";
+import { generatePattern } from "@/app/(app)/app/studio/actions";
+import type { PlushieConfig } from "./types";
 import type { PatternData } from "@/lib/pattern/types";
 
 interface StepGeneratingProps {

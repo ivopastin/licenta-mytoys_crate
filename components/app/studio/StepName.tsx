@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import WizardShell from "./WizardShell";
-import { StepProps } from "../types";
+import { StepProps } from "./types";
 
 export default function StepName({ config, onNext, onBack, stepLabel, direction }: StepProps) {
   const [name, setName] = useState(config.name ?? "");

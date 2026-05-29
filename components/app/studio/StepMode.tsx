@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Rabbit, Sparkles, Layers } from "lucide-react";
 import WizardShell from "./WizardShell";
-import { StepProps, PlushieMode } from "../types";
+import { StepProps, PlushieMode } from "./types";
 
 const MODES: { value: PlushieMode; label: string; description: string; icon: React.ElementType }[] = [
   { value: "plushie",   label: "Plushie only",   description: "Design a custom stuffed animal",       icon: Rabbit },

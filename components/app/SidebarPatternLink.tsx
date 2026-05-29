@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { openPatternPDF } from "@/app/(app)/app/studio/components/PatternPDF";
+import { openPatternPDF } from "@/components/app/studio/PatternPDF";
 import type { PatternData } from "@/lib/pattern/types";
 
 interface SidebarPatternLinkProps {

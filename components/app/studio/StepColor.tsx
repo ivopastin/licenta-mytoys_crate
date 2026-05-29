@@ -3,7 +3,7 @@
 import { useState } from "react";
 import WizardShell from "./WizardShell";
 import AnimalPreview from "./AnimalPreview";
-import { StepProps, COLOR_PALETTE } from "../types";
+import { StepProps, COLOR_PALETTE } from "./types";
 
 interface StepColorProps extends StepProps {
   field: "color" | "accessoryColor";

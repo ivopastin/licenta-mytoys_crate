@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Download, BookMarked } from "lucide-react";
-import type { PlushieConfig } from "../types";
-import { COLOR_PALETTE } from "../types";
+import type { PlushieConfig } from "./types";
+import { COLOR_PALETTE } from "./types";
 import type { PatternData } from "@/lib/pattern/types";
 import { downloadPatternPDF } from "./PatternPDF";
 
