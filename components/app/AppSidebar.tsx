@@ -25,8 +25,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import NotificationsPanel from "./components/NotificationsPanel";
-import SidebarPatternLink from "./components/SidebarPatternLink";
+import NotificationsPanel from "@/components/app/NotificationsPanel";
+import SidebarPatternLink from "@/components/app/SidebarPatternLink";
 import tutorialsData from "@/content/tutorials.json";
 import { createClient } from "@/lib/supabase/client";
 

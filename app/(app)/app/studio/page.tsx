@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import LeaveConfirmDialog from "./components/LeaveConfirmDialog";
 import PatternReadyToast from "./components/PatternReadyToast";
 import Image from "next/image";
-import GrainientFade from "../components/GrainientFade";
+import GrainientFade from "@/components/app/GrainientFade";
 import { PlushieConfig, EMPTY_CONFIG } from "./types";
 import StepMode from "./components/StepMode";
 import StepAnimal from "./components/StepAnimal";

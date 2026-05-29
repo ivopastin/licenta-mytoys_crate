@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { sendSupportEmail } from "./actions";
+import { sendSupportEmail } from "@/app/(app)/app/actions";
 
 interface ContactModalProps {
   onClose: () => void;

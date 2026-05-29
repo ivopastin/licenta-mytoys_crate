@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { GraduationCap, ArrowRight } from "lucide-react";
-import GrainientFade from "./components/GrainientFade";
-import NewsCard from "./components/NewsCard";
-import ReviewsCarousel, { type ReviewItem } from "./components/ReviewsCarousel";
+import GrainientFade from "@/components/app/GrainientFade";
+import NewsCard from "@/components/app/NewsCard";
+import ReviewsCarousel, { type ReviewItem } from "@/components/app/ReviewsCarousel";
 import newsData from "@/content/news.json";
 import tutorialsData from "@/content/tutorials.json";
 import Image from "next/image";

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
-import GrainientFade from "../components/GrainientFade";
+import GrainientFade from "@/components/app/GrainientFade";
 import MyPatternsClient from "./MyPatternsClient";
 import type { PatternRow } from "./PatternCard";
 

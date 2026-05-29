@@ -1,7 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import AppSidebar from "./AppSidebar";
-import HelpButton from "./components/HelpButton";
-import OnboardingModal from "./components/OnboardingModal";
+import AppSidebar from "@/components/app/AppSidebar";
+import HelpButton from "@/components/app/HelpButton";
+import OnboardingModal from "@/components/app/OnboardingModal";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {

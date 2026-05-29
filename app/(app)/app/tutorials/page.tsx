@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GraduationCap, Clock } from "lucide-react";
-import GrainientFade from "../components/GrainientFade";
+import GrainientFade from "@/components/app/GrainientFade";
 import tutorialsData from "@/content/tutorials.json";
 
 const DIFFICULTY_COLORS: Record<string, string> = {

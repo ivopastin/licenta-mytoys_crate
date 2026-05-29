@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import GrainientFade from "../../components/GrainientFade";
+import GrainientFade from "@/components/app/GrainientFade";
 
 export default function GrainientBackground() {
   return (
