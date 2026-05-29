@@ -3,11 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Grainient from "@/components/Grainient";
-import Magnet from "@/components/Magnet";
+import Grainient from "@/components/shared/Grainient";
+import Magnet from "@/components/shared/Magnet";
 import { Button } from "@/components/ui/button";
-import SplitText from "@/components/SplitText";
-import FadeUp from "@/components/FadeUp";
+import SplitText from "@/components/shared/SplitText";
+import FadeUp from "@/components/shared/FadeUp";
 
 export default function HeroSection({
   children,

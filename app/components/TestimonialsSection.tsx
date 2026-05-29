@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Grainient from "@/components/Grainient";
+import Grainient from "@/components/shared/Grainient";
 import ReviewCard from "./testimonials/ReviewCard";
-import LogoLoop from "@/components/LogoLoop";
-import SplitText from "@/components/SplitText";
-import FadeUp from "@/components/FadeUp";
+import LogoLoop from "@/components/shared/LogoLoop";
+import SplitText from "@/components/shared/SplitText";
+import FadeUp from "@/components/shared/FadeUp";
 
 const reviews = [
   {

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import Grainient from "@/components/Grainient";
+import Grainient from "@/components/shared/Grainient";
 import LoginForm from "./LoginForm";
 import { createClient } from "@/lib/supabase/client";
 

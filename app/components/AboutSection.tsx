@@ -3,8 +3,8 @@
 import { useRef, useState, useEffect } from "react";
 import { useScrollStore } from "@/app/store/useScrollStore";
 import Image from "next/image";
-import Grainient from "@/components/Grainient";
-import BlurText from "@/components/BlurText";
+import Grainient from "@/components/shared/Grainient";
+import BlurText from "@/components/shared/BlurText";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
-import Grainient from "@/components/Grainient";
+import Grainient from "@/components/shared/Grainient";
 import { createClient } from "@/lib/supabase/client";
 
 function getPasswordStrength(password: string): "weak" | "medium" | "strong" {

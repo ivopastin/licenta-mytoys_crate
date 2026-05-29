@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import GradualBlur from "@/components/GradualBlur";
+import GradualBlur from "@/components/shared/GradualBlur";
 
 export default function BottomBlur() {
   const [hidden, setHidden] = useState(false);

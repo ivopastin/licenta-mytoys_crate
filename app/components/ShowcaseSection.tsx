@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import SplitText from "@/components/SplitText";
-import FadeUp from "@/components/FadeUp";
+import SplitText from "@/components/shared/SplitText";
+import FadeUp from "@/components/shared/FadeUp";
 
 const items = [
   { id: "1", img: "/images/showcase/plushie1.webp", height: 300 },

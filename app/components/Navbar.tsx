@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import GlassSurface from "@/components/GlassSurface";
+import GlassSurface from "@/components/shared/GlassSurface";
 import { motion, AnimatePresence } from "motion/react";
 
 const LINKS = ["About", "Showcase", "Testimonials", "Pricing", "Contact Us"];

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import SplitText from "@/components/SplitText";
-import FadeUp from "@/components/FadeUp";
+import SplitText from "@/components/shared/SplitText";
+import FadeUp from "@/components/shared/FadeUp";
 
 const CHECK = (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none">

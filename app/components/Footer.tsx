@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Grainient from "@/components/Grainient";
-import SplitText from "@/components/SplitText";
-import FadeUp from "@/components/FadeUp";
+import Grainient from "@/components/shared/Grainient";
+import SplitText from "@/components/shared/SplitText";
+import FadeUp from "@/components/shared/FadeUp";
 
 const animals = [
   {

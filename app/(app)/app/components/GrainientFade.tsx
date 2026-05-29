@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Grainient from "@/components/Grainient";
+import Grainient from "@/components/shared/Grainient";
 
 interface Props {
   color1: string;

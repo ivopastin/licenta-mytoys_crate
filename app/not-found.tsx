@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Grainient from "@/components/Grainient";
+import Grainient from "@/components/shared/Grainient";
 
 export default function NotFound() {
   return (
