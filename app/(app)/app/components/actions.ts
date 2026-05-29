@@ -21,7 +21,7 @@ export async function sendSupportEmail(formData: {
   }
 
   const { error } = await resend.emails.send({
-    from: "MyToysCrate <hello@mytoys-crate.com>",
+    from: "MyToys Crate <hello@mytoys-crate.com>",
     to: "hello@mytoys-crate.com",
     replyTo: user.email!,
     subject: `[Support] ${subject}`,
