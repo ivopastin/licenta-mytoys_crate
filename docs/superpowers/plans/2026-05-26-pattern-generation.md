@@ -12,21 +12,21 @@
 
 ## File Map
 
-| Action | File | Responsibility |
-|--------|------|----------------|
-| Create | `lib/pattern/types.ts` | `PatternData`, `PatternPart`, `PatternRound` types |
-| Create | `lib/pattern/abbreviations.ts` | Fixed abbreviations list |
-| Create | `lib/pattern/buildPatternData.ts` | Pure function: template + config → PatternData |
-| Create | `app/(app)/app/studio/actions.ts` | `generatePattern` Server Action |
-| Create | `app/(app)/app/studio/components/PatternPDF.tsx` | @react-pdf/renderer PDF document |
-| Modify | `app/(app)/app/studio/components/StepGenerating.tsx` | Call Server Action instead of fake timer |
-| Modify | `app/(app)/app/studio/components/StepResult.tsx` | Show summary + save/download buttons |
-| Modify | `app/(app)/app/studio/page.tsx` | Thread patternId + patternData through wizard state |
-| Replace | `app/(app)/app/my-patterns/page.tsx` | Server Component fetching patterns |
-| Create | `app/(app)/app/my-patterns/FavouritesCarousel.tsx` | Horizontal scrollable favourites |
-| Create | `app/(app)/app/my-patterns/PatternsGrid.tsx` | Search + sort + paginated grid |
-| Create | `app/(app)/app/my-patterns/PatternCard.tsx` | Individual pattern card with heart toggle |
-| Create | `app/(app)/app/my-patterns/actions.ts` | `toggleFavourite` Server Action |
+| Action  | File                                                 | Responsibility                                      |
+| ------- | ---------------------------------------------------- | --------------------------------------------------- |
+| Create  | `lib/pattern/types.ts`                               | `PatternData`, `PatternPart`, `PatternRound` types  |
+| Create  | `lib/pattern/abbreviations.ts`                       | Fixed abbreviations list                            |
+| Create  | `lib/pattern/buildPatternData.ts`                    | Pure function: template + config → PatternData      |
+| Create  | `app/(app)/app/studio/actions.ts`                    | `generatePattern` Server Action                     |
+| Create  | `app/(app)/app/studio/components/PatternPDF.tsx`     | @react-pdf/renderer PDF document                    |
+| Modify  | `app/(app)/app/studio/components/StepGenerating.tsx` | Call Server Action instead of fake timer            |
+| Modify  | `app/(app)/app/studio/components/StepResult.tsx`     | Show summary + save/download buttons                |
+| Modify  | `app/(app)/app/studio/page.tsx`                      | Thread patternId + patternData through wizard state |
+| Replace | `app/(app)/app/my-patterns/page.tsx`                 | Server Component fetching patterns                  |
+| Create  | `app/(app)/app/my-patterns/FavouritesCarousel.tsx`   | Horizontal scrollable favourites                    |
+| Create  | `app/(app)/app/my-patterns/PatternsGrid.tsx`         | Search + sort + paginated grid                      |
+| Create  | `app/(app)/app/my-patterns/PatternCard.tsx`          | Individual pattern card with heart toggle           |
+| Create  | `app/(app)/app/my-patterns/actions.ts`               | `toggleFavourite` Server Action                     |
 
 ---
 
@@ -583,6 +583,7 @@ insert into pattern_templates (animal, skill_level, finished_size_small, finishe
 ### Task 3: PatternData Types
 
 **Files:**
+
 - Create: `lib/pattern/types.ts`
 
 - [ ] **Step 1: Create the types file**
@@ -610,7 +611,12 @@ export type PatternData = {
   skillLevel: string;
   finishedSize: string;
   materials: {
-    yarn: { label: string; colorName: string; hex: string; yarnBrand: string }[];
+    yarn: {
+      label: string;
+      colorName: string;
+      hex: string;
+      yarnBrand: string;
+    }[];
     hook: string;
     eyes: string | null;
     other: string[];
@@ -643,6 +649,7 @@ git commit -m "feat: add PatternData types"
 ### Task 4: buildPatternData Pure Function
 
 **Files:**
+
 - Create: `lib/pattern/buildPatternData.ts`
 
 - [ ] **Step 1: Create the builder function**
@@ -653,7 +660,10 @@ import { PlushieConfig, COLOR_PALETTE } from "@/app/(app)/app/studio/types";
 import { PatternData } from "./types";
 
 const ABBREVIATIONS = [
-  { abbr: "MR", meaning: "Magic Ring — crochet stitches into an adjustable loop" },
+  {
+    abbr: "MR",
+    meaning: "Magic Ring — crochet stitches into an adjustable loop",
+  },
   { abbr: "ch", meaning: "Chain stitch" },
   { abbr: "sc", meaning: "Single crochet" },
   { abbr: "sl st", meaning: "Slip stitch" },
@@ -672,16 +682,31 @@ const NOTES = [
   "Visit the Tutorials page in the app for video recommendations and step-by-step guides.",
 ];
 
-const YARN_BY_SIZE: Record<string, { brand: string; type: string; hook: string }> = {
-  small:  { brand: "Katia Capri",   type: "100% cotton",              hook: "2mm crochet hook (or size suitable for yarn used)" },
-  medium: { brand: "Katia Alabama", type: "50% cotton, 50% acrylic",  hook: "4mm crochet hook (or size suitable for yarn used)" },
-  large:  { brand: "Katia Bambi",   type: "plush yarn",               hook: "6mm crochet hook (or size suitable for yarn used)" },
+const YARN_BY_SIZE: Record<
+  string,
+  { brand: string; type: string; hook: string }
+> = {
+  small: {
+    brand: "Katia Capri",
+    type: "100% cotton",
+    hook: "2mm crochet hook (or size suitable for yarn used)",
+  },
+  medium: {
+    brand: "Katia Alabama",
+    type: "50% cotton, 50% acrylic",
+    hook: "4mm crochet hook (or size suitable for yarn used)",
+  },
+  large: {
+    brand: "Katia Bambi",
+    type: "plush yarn",
+    hook: "6mm crochet hook (or size suitable for yarn used)",
+  },
 };
 
 const EYES_BY_SIZE: Record<string, string> = {
-  small:  "4-6mm safety eyes",
+  small: "4-6mm safety eyes",
   medium: "8mm safety eyes",
-  large:  "10-12mm safety eyes",
+  large: "10-12mm safety eyes",
 };
 
 type TemplateRow = {
@@ -696,18 +721,21 @@ type TemplateRow = {
 
 export function buildPatternData(
   config: PlushieConfig,
-  template: TemplateRow
+  template: TemplateRow,
 ): PatternData {
   const size = config.size ?? "medium";
   const yarn = YARN_BY_SIZE[size];
-  const colorName = COLOR_PALETTE.find((c) => c.hex === config.color)?.name ?? config.color ?? "Main Color";
+  const colorName =
+    COLOR_PALETTE.find((c) => c.hex === config.color)?.name ??
+    config.color ??
+    "Main Color";
 
   const finishedSize =
     size === "small"
       ? template.finished_size_small
       : size === "large"
-      ? template.finished_size_large
-      : template.finished_size_medium;
+        ? template.finished_size_large
+        : template.finished_size_medium;
 
   // Build yarn list: main color first, then accent colors
   const yarnList: PatternData["materials"]["yarn"] = [
@@ -796,6 +824,7 @@ git commit -m "feat: add buildPatternData pure function"
 ### Task 5: generatePattern Server Action
 
 **Files:**
+
 - Create: `app/(app)/app/studio/actions.ts`
 
 - [ ] **Step 1: Create the Server Action**
@@ -810,16 +839,20 @@ import { buildPatternData } from "@/lib/pattern/buildPatternData";
 import { PatternData } from "@/lib/pattern/types";
 
 export async function generatePattern(
-  config: PlushieConfig
+  config: PlushieConfig,
 ): Promise<{ patternId: string; patternData: PatternData }> {
   const supabase = await createClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { data: template, error: templateError } = await supabase
     .from("pattern_templates")
-    .select("skill_level, finished_size_small, finished_size_medium, finished_size_large, accent_colors, parts, assembly")
+    .select(
+      "skill_level, finished_size_small, finished_size_medium, finished_size_large, accent_colors, parts, assembly",
+    )
     .eq("animal", config.animal)
     .single();
 
@@ -876,6 +909,7 @@ git commit -m "feat: add generatePattern server action"
 ### Task 6: Wire StepGenerating to Server Action
 
 **Files:**
+
 - Modify: `app/(app)/app/studio/components/StepGenerating.tsx`
 - Modify: `app/(app)/app/studio/page.tsx`
 
@@ -897,7 +931,10 @@ interface StepGeneratingProps {
   onDone: (result: { patternId: string; patternData: PatternData }) => void;
 }
 
-export default function StepGenerating({ config, onDone }: StepGeneratingProps) {
+export default function StepGenerating({
+  config,
+  onDone,
+}: StepGeneratingProps) {
   const [error, setError] = useState<string | null>(null);
   const called = useRef(false);
 
@@ -916,16 +953,22 @@ export default function StepGenerating({ config, onDone }: StepGeneratingProps) 
     return (
       <div className="w-full max-w-130 bg-white rounded-[24px] p-12 shadow-2xl flex flex-col items-center gap-6">
         <div className="flex flex-col items-center gap-2 text-center">
-          <p className="text-[18px] font-semibold text-ink">Something went wrong</p>
+          <p className="text-[18px] font-semibold text-ink">
+            Something went wrong
+          </p>
           <p className="text-[14px] text-black/40">{error}</p>
         </div>
         <button
           onClick={() => {
             setError(null);
             called.current = false;
-            generatePattern(config).then(onDone).catch((err) => {
-              setError(err?.message ?? "Something went wrong. Please try again.");
-            });
+            generatePattern(config)
+              .then(onDone)
+              .catch((err) => {
+                setError(
+                  err?.message ?? "Something went wrong. Please try again.",
+                );
+              });
           }}
           className="px-6 py-2.5 rounded-[12px] bg-deep text-(--color-accent) text-[14px] font-bold cursor-pointer hover:bg-[#7a1c35] transition-colors"
         >
@@ -939,8 +982,12 @@ export default function StepGenerating({ config, onDone }: StepGeneratingProps) 
     <div className="w-full max-w-130 bg-white rounded-[24px] p-12 shadow-2xl flex flex-col items-center gap-6">
       <div className="w-20 h-20 rounded-full bg-black/10 animate-pulse" />
       <div className="flex flex-col items-center gap-2 text-center">
-        <p className="text-[18px] font-semibold text-ink">Generating your pattern…</p>
-        <p className="text-[14px] text-black/40">This will only take a moment</p>
+        <p className="text-[18px] font-semibold text-ink">
+          Generating your pattern…
+        </p>
+        <p className="text-[14px] text-black/40">
+          This will only take a moment
+        </p>
       </div>
     </div>
   );
@@ -962,11 +1009,14 @@ const [generationResult, setGenerationResult] = useState<{
 } | null>(null);
 
 // Replace handleGeneratingDone:
-const handleGeneratingDone = useCallback((result: { patternId: string; patternData: PatternData }) => {
-  setGenerationResult(result);
-  setStepIndex((i) => i + 1);
-  setShowToast(true);
-}, []);
+const handleGeneratingDone = useCallback(
+  (result: { patternId: string; patternData: PatternData }) => {
+    setGenerationResult(result);
+    setStepIndex((i) => i + 1);
+    setShowToast(true);
+  },
+  [],
+);
 
 // Replace handleReset:
 const handleReset = useCallback(() => {
@@ -977,17 +1027,23 @@ const handleReset = useCallback(() => {
 }, []);
 
 // Update the StepGenerating render line:
-{currentStep === "generating" && <StepGenerating config={config} onDone={handleGeneratingDone} />}
+{
+  currentStep === "generating" && (
+    <StepGenerating config={config} onDone={handleGeneratingDone} />
+  );
+}
 
 // Update the StepResult render line:
-{currentStep === "result" && generationResult && (
-  <StepResult
-    config={config}
-    patternData={generationResult.patternData}
-    patternId={generationResult.patternId}
-    onReset={handleReset}
-  />
-)}
+{
+  currentStep === "result" && generationResult && (
+    <StepResult
+      config={config}
+      patternData={generationResult.patternData}
+      patternId={generationResult.patternId}
+      onReset={handleReset}
+    />
+  );
+}
 ```
 
 - [ ] **Step 3: Verify TypeScript compiles**
@@ -1010,6 +1066,7 @@ git commit -m "feat: wire StepGenerating to generatePattern server action"
 ### Task 7: StepResult with Save & Download
 
 **Files:**
+
 - Modify: `app/(app)/app/studio/components/StepResult.tsx`
 - Create: `app/(app)/app/studio/components/PatternPDF.tsx`
 
@@ -1200,7 +1257,12 @@ const styles = StyleSheet.create({
 
 function Stars({ level }: { level: string }) {
   const count = level === "beginner" ? 1 : level === "intermediate" ? 2 : 3;
-  return <Text style={styles.stars}>{"★".repeat(count)}{"☆".repeat(3 - count)}</Text>;
+  return (
+    <Text style={styles.stars}>
+      {"★".repeat(count)}
+      {"☆".repeat(3 - count)}
+    </Text>
+  );
 }
 
 interface PatternPDFProps {
@@ -1235,7 +1297,13 @@ export default function PatternPDF({ data }: PatternPDFProps) {
                 </Text>
               ))}
             </View>
-            <View style={{ width: 1, backgroundColor: "#e0e0e0", marginHorizontal: 12 }} />
+            <View
+              style={{
+                width: 1,
+                backgroundColor: "#e0e0e0",
+                marginHorizontal: 12,
+              }}
+            />
             {/* Right: tools */}
             <View style={styles.col}>
               <Text style={styles.label}>Tools</Text>
@@ -1244,7 +1312,9 @@ export default function PatternPDF({ data }: PatternPDFProps) {
                 <Text style={styles.toolItem}>• {data.materials.eyes}</Text>
               )}
               {data.materials.other.map((o, i) => (
-                <Text key={i} style={styles.toolItem}>• {o}</Text>
+                <Text key={i} style={styles.toolItem}>
+                  • {o}
+                </Text>
               ))}
             </View>
           </View>
@@ -1257,7 +1327,13 @@ export default function PatternPDF({ data }: PatternPDFProps) {
             <View style={{ alignItems: "flex-end" }}>
               <Text style={styles.label}>Skill Level</Text>
               <Stars level={data.skillLevel} />
-              <Text style={{ fontSize: 9, color: "#716458", textTransform: "capitalize" }}>
+              <Text
+                style={{
+                  fontSize: 9,
+                  color: "#716458",
+                  textTransform: "capitalize",
+                }}
+              >
                 {data.skillLevel}
               </Text>
             </View>
@@ -1282,7 +1358,9 @@ export default function PatternPDF({ data }: PatternPDFProps) {
         <View style={styles.card}>
           <Text style={styles.cardHeader}>Notes</Text>
           {data.notes.map((n, i) => (
-            <Text key={i} style={styles.noteItem}>• {n}</Text>
+            <Text key={i} style={styles.noteItem}>
+              • {n}
+            </Text>
           ))}
         </View>
       </Page>
@@ -1341,7 +1419,7 @@ import dynamic from "next/dynamic";
 // @react-pdf/renderer must be loaded client-only
 const PDFDownloadLink = dynamic(
   () => import("@react-pdf/renderer").then((m) => m.PDFDownloadLink),
-  { ssr: false }
+  { ssr: false },
 );
 const PatternPDF = dynamic(() => import("./PatternPDF"), { ssr: false });
 
@@ -1353,7 +1431,8 @@ function Stars({ level }: { level: string }) {
   const count = level === "beginner" ? 1 : level === "intermediate" ? 2 : 3;
   return (
     <span className="text-[--color-accent]">
-      {"★".repeat(count)}{"☆".repeat(3 - count)}
+      {"★".repeat(count)}
+      {"☆".repeat(3 - count)}
     </span>
   );
 }
@@ -1365,7 +1444,12 @@ interface StepResultProps {
   onReset: () => void;
 }
 
-export default function StepResult({ config, patternData, patternId, onReset }: StepResultProps) {
+export default function StepResult({
+  config,
+  patternData,
+  patternId,
+  onReset,
+}: StepResultProps) {
   const router = useRouter();
 
   const fileName = `${patternData.plushieName.replace(/\s+/g, "-").toLowerCase()}-pattern.pdf`;
@@ -1377,13 +1461,20 @@ export default function StepResult({ config, patternData, patternId, onReset }: 
           {patternData.plushieName} the {capitalize(patternData.animal)}
         </h2>
         <p className="text-[14px] text-black/40 mt-1">
-          {capitalize(patternData.size)} · {patternData.materials.yarn[0].colorName} · <Stars level={patternData.skillLevel} /> {capitalize(patternData.skillLevel)}
+          {capitalize(patternData.size)} ·{" "}
+          {patternData.materials.yarn[0].colorName} ·{" "}
+          <Stars level={patternData.skillLevel} />{" "}
+          {capitalize(patternData.skillLevel)}
         </p>
       </div>
 
       <div className="bg-black/5 border border-black/10 rounded-[16px] px-4 py-3 flex flex-col gap-1">
-        <span className="text-[12px] text-black/40 uppercase tracking-wide">Finished size</span>
-        <span className="text-[14px] font-semibold text-ink">{patternData.finishedSize}</span>
+        <span className="text-[12px] text-black/40 uppercase tracking-wide">
+          Finished size
+        </span>
+        <span className="text-[14px] font-semibold text-ink">
+          {patternData.finishedSize}
+        </span>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -1442,6 +1533,7 @@ Expected: no errors.
 - [ ] **Step 4: Smoke test the wizard end-to-end**
 
 Start dev server (`bun dev`), navigate to `http://localhost:3000/app/studio`, go through the full wizard, verify:
+
 1. StepGenerating calls the action (check Network tab — should see a POST server action request)
 2. StepResult shows the plushie name and animal correctly
 3. "Save for now" navigates to `/app/my-patterns`
@@ -1459,6 +1551,7 @@ git commit -m "feat: add PatternPDF component and wire StepResult with save/down
 ### Task 8: toggleFavourite Server Action
 
 **Files:**
+
 - Create: `app/(app)/app/my-patterns/actions.ts`
 
 - [ ] **Step 1: Create the action**
@@ -1471,10 +1564,12 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function toggleFavourite(
   patternId: string,
-  isFavourite: boolean
+  isFavourite: boolean,
 ): Promise<void> {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { error } = await supabase
@@ -1507,6 +1602,7 @@ git commit -m "feat: add toggleFavourite server action"
 ### Task 9: PatternCard Component
 
 **Files:**
+
 - Create: `app/(app)/app/my-patterns/PatternCard.tsx`
 
 - [ ] **Step 1: Create PatternCard**
@@ -1523,12 +1619,11 @@ import dynamic from "next/dynamic";
 
 const PDFDownloadLink = dynamic(
   () => import("@react-pdf/renderer").then((m) => m.PDFDownloadLink),
-  { ssr: false }
+  { ssr: false },
 );
-const PatternPDF = dynamic(
-  () => import("../studio/components/PatternPDF"),
-  { ssr: false }
-);
+const PatternPDF = dynamic(() => import("../studio/components/PatternPDF"), {
+  ssr: false,
+});
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -1538,7 +1633,8 @@ function Stars({ level }: { level: string }) {
   const count = level === "beginner" ? 1 : level === "intermediate" ? 2 : 3;
   return (
     <span className="text-[--color-accent] text-[14px]">
-      {"★".repeat(count)}{"☆".repeat(3 - count)}
+      {"★".repeat(count)}
+      {"☆".repeat(3 - count)}
     </span>
   );
 }
@@ -1658,6 +1754,7 @@ git commit -m "feat: add PatternCard component with favourite toggle and PDF dow
 ### Task 10: FavouritesCarousel Component
 
 **Files:**
+
 - Create: `app/(app)/app/my-patterns/FavouritesCarousel.tsx`
 
 - [ ] **Step 1: Create FavouritesCarousel**
@@ -1686,13 +1783,17 @@ interface FavouritesCarouselProps {
   patterns: FavouritePattern[];
 }
 
-export default function FavouritesCarousel({ patterns }: FavouritesCarouselProps) {
+export default function FavouritesCarousel({
+  patterns,
+}: FavouritesCarouselProps) {
   const [index, setIndex] = useState(0);
 
   if (patterns.length === 0) return null;
 
   const visible = patterns[index];
-  const yarnBrand = visible.pattern_data.materials.yarn[0]?.yarnBrand?.split(" ")[0] ?? "Alabama";
+  const yarnBrand =
+    visible.pattern_data.materials.yarn[0]?.yarnBrand?.split(" ")[0] ??
+    "Alabama";
 
   return (
     <div className="flex flex-col gap-3">
@@ -1757,6 +1858,7 @@ git commit -m "feat: add FavouritesCarousel component"
 ### Task 11: PatternsGrid Component
 
 **Files:**
+
 - Create: `app/(app)/app/my-patterns/PatternsGrid.tsx`
 
 - [ ] **Step 1: Create PatternsGrid**
@@ -1798,14 +1900,17 @@ export default function PatternsGrid({ patterns }: PatternsGridProps) {
       ? patterns.filter((p) => p.name.toLowerCase().includes(q))
       : [...patterns];
     result.sort((a, b) =>
-      sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+      sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name),
     );
     return result;
   }, [patterns, search, sortAsc]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages - 1);
-  const pageItems = filtered.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE);
+  const pageItems = filtered.slice(
+    safePage * PAGE_SIZE,
+    (safePage + 1) * PAGE_SIZE,
+  );
 
   function handleSearch(value: string) {
     setSearch(value);
@@ -1817,7 +1922,10 @@ export default function PatternsGrid({ patterns }: PatternsGridProps) {
       {/* Controls */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search
+            size={15}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40"
+          />
           <input
             type="text"
             placeholder="Search patterns…"
@@ -1827,7 +1935,10 @@ export default function PatternsGrid({ patterns }: PatternsGridProps) {
           />
         </div>
         <button
-          onClick={() => { setSortAsc((v) => !v); setPage(0); }}
+          onClick={() => {
+            setSortAsc((v) => !v);
+            setPage(0);
+          }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-[12px] bg-white/10 border border-white/15 text-[13px] font-medium text-white hover:bg-white/20 transition-colors cursor-pointer shrink-0"
           title={sortAsc ? "Sort Z→A" : "Sort A→Z"}
         >
@@ -1838,11 +1949,15 @@ export default function PatternsGrid({ patterns }: PatternsGridProps) {
 
       {/* Grid */}
       {pageItems.length === 0 ? (
-        <p className="text-[14px] text-white/50 text-center py-10">No patterns found.</p>
+        <p className="text-[14px] text-white/50 text-center py-10">
+          No patterns found.
+        </p>
       ) : (
         <div className="grid grid-cols-3 gap-4">
           {pageItems.map((p) => {
-            const yarnBrand = p.pattern_data.materials.yarn[0]?.yarnBrand?.split(" ")[0] ?? "Alabama";
+            const yarnBrand =
+              p.pattern_data.materials.yarn[0]?.yarnBrand?.split(" ")[0] ??
+              "Alabama";
             return (
               <PatternCard
                 key={p.id}
@@ -1908,6 +2023,7 @@ git commit -m "feat: add PatternsGrid with search, sort and pagination"
 ### Task 12: My Patterns Page (Server Component)
 
 **Files:**
+
 - Replace: `app/(app)/app/my-patterns/page.tsx`
 
 - [ ] **Step 1: Replace the placeholder page**
@@ -1922,12 +2038,16 @@ import PatternsGrid from "./PatternsGrid";
 
 export default async function MyPatternsPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: patterns } = user
     ? await supabase
         .from("patterns")
-        .select("id, name, animal, size, color_name, skill_level, is_favourite, pattern_data")
+        .select(
+          "id, name, animal, size, color_name, skill_level, is_favourite, pattern_data",
+        )
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
     : { data: [] };
@@ -1969,20 +2089,35 @@ export default async function MyPatternsPage() {
       </div>
 
       <div className="relative z-10 px-8 py-10 flex flex-col gap-8">
-
-        <h1 className="text-[28px] font-bold text-white leading-tight">My Patterns</h1>
+        <h1 className="text-[28px] font-bold text-white leading-tight">
+          My Patterns
+        </h1>
 
         {allPatterns.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3 text-center">
             <div className="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M6 2h9l5 5v15a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M14 2v6h6M9 13h6M9 17h4" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+                <path
+                  d="M6 2h9l5 5v15a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z"
+                  stroke="white"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M14 2v6h6M9 13h6M9 17h4"
+                  stroke="white"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
               </svg>
             </div>
-            <h2 className="text-[22px] font-bold text-white">No patterns yet</h2>
+            <h2 className="text-[22px] font-bold text-white">
+              No patterns yet
+            </h2>
             <p className="text-[15px] text-white/70 font-medium leading-relaxed max-w-90">
-              Your saved patterns will appear here. Head to the Studio to design your first plushie.
+              Your saved patterns will appear here. Head to the Studio to design
+              your first plushie.
             </p>
           </div>
         ) : (
@@ -2010,6 +2145,7 @@ Expected: no errors.
 - [ ] **Step 3: Smoke test My Patterns**
 
 Navigate to `http://localhost:3000/app/my-patterns`:
+
 1. If no patterns saved yet: should show the empty state with the document icon
 2. After generating a pattern in the Studio: refresh My Patterns — card should appear in the grid
 3. Click the heart on a card → it should fill red (optimistic update)
