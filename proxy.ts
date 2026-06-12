@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const ADMIN_EMAIL = "ivo.pastin@gmail.com";
+
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -30,6 +32,11 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
+
+  // Block non-admins from /admin/*
+  if (pathname.startsWith("/admin") && user?.email !== ADMIN_EMAIL) {
+    return NextResponse.redirect(new URL("/app", request.url));
+  }
 
   // Unauthenticated user trying to access /app/*
   if (!user && pathname.startsWith("/app")) {
