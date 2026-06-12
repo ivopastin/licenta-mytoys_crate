@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import GrainientFade from "@/components/app/GrainientFade";
 import MyPatternsClient from "@/components/app/my-patterns/MyPatternsClient";
@@ -46,15 +45,6 @@ export default async function MyPatternsPage() {
         zoom={0.9}
       />
 
-      {/* Texture overlay */}
-      <div className="absolute inset-0 pointer-events-none z-1">
-        <Image
-          src="/images/textures/app/wall.jpg"
-          alt=""
-          fill
-          className="object-cover opacity-[0.12] mix-blend-overlay"
-        />
-      </div>
 
       <div className="relative z-10 h-full flex flex-col px-20 py-8">
         <h1 className="text-[24px] font-bold text-white shrink-0 mb-6">My Patterns</h1>

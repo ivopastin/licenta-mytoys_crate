@@ -4,7 +4,6 @@ import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import LeaveConfirmDialog from "@/components/app/studio/LeaveConfirmDialog";
 import PatternReadyToast from "@/components/app/studio/PatternReadyToast";
-import Image from "next/image";
 import GrainientFade from "@/components/app/GrainientFade";
 import { PlushieConfig, EMPTY_CONFIG } from "@/components/app/studio/types";
 import StepMode from "@/components/app/studio/StepMode";
@@ -147,15 +146,6 @@ export default function StudioPage() {
         zoom={0.9}
       />
 
-      {/* Texture overlay */}
-      <div className="absolute inset-0 pointer-events-none z-1">
-        <Image
-          src="/images/textures/app/black-sand.jpg"
-          alt=""
-          fill
-          className="object-cover opacity-[0.12] mix-blend-overlay"
-        />
-      </div>
 
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-8">
         {/* Landing */}
