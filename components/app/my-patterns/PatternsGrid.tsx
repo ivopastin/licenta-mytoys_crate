@@ -1,0 +1,195 @@
+"use client";
+
+import { useState, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { Search, ArrowUpDown, MessageSquarePlus } from "lucide-react";
+import PatternCard, { type PatternRow } from "./PatternCard";
+import ReviewSubmissionCard from "./ReviewSubmissionCard";
+
+interface PatternsGridProps {
+  patterns: PatternRow[];
+  onToggleFavourite: (patternId: string, isFavourite: boolean) => void;
+}
+
+const PAGE_SIZE = 9;
+
+type ModeFilter = "all" | "favourites" | "plushie" | "accessory" | "both";
+
+const MODE_TABS: { value: ModeFilter; label: string; accent?: boolean }[] = [
+  { value: "all", label: "All" },
+  { value: "favourites", label: "♥ Favourites", accent: true },
+  { value: "plushie", label: "Plushie" },
+  { value: "accessory", label: "Accessory" },
+  { value: "both", label: "Both" },
+];
+
+export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGridProps) {
+  const [inputValue, setInputValue] = useState("");
+  const [query, setQuery] = useState("");
+  const [sortAsc, setSortAsc] = useState(true);
+  const [page, setPage] = useState(1);
+  const [modeFilter, setModeFilter] = useState<ModeFilter>("all");
+  const [reviewOpen, setReviewOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setQuery(inputValue), 300);
+    return () => clearTimeout(timer);
+  }, [inputValue]);
+
+  const filtered = useMemo(() => {
+    const q = query.toLowerCase().trim();
+    let results = q
+      ? patterns.filter((p) =>
+          p.name.toLowerCase().includes(q) ||
+          (p.animal?.toLowerCase().includes(q) ?? false)
+        )
+      : [...patterns];
+
+    if (modeFilter === "favourites") {
+      results = results.filter((p) => p.is_favourite);
+    } else if (modeFilter === "plushie") {
+      results = results.filter((p) => p.animal && !p.pattern_data?.accessoryName);
+    } else if (modeFilter === "accessory") {
+      results = results.filter((p) => !p.animal && p.pattern_data?.accessoryName);
+    } else if (modeFilter === "both") {
+      results = results.filter((p) => p.animal && p.pattern_data?.accessoryName);
+    }
+
+    results.sort((a, b) =>
+      sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+    );
+    return results;
+  }, [patterns, query, sortAsc, modeFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pageItems = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  function handleQueryChange(q: string) {
+    setInputValue(q);
+    setPage(1);
+  }
+
+  function handleSort() {
+    setSortAsc((v) => !v);
+    setPage(1);
+  }
+
+  function handleModeFilter(mode: ModeFilter) {
+    setModeFilter(mode);
+    setPage(1);
+  }
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Review dialog — portaled to body to escape overflow-hidden stacking context */}
+      {reviewOpen && createPortal(
+        <div className="fixed inset-0 z-200 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReviewOpen(false)}>
+          <div onClick={(e) => e.stopPropagation()}>
+            <ReviewSubmissionCard patterns={patterns} onClose={() => setReviewOpen(false)} />
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Header */}
+      <div className="shrink-0 mb-4">
+        <h2 className="text-[13px] font-bold text-white/60 uppercase tracking-widest mb-3">
+          My Patterns
+          <span className="ml-2 text-white/30 font-semibold normal-case tracking-normal">
+            ({filtered.length})
+          </span>
+        </h2>
+        {/* Mode filter tabs + review button */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex gap-1.5">
+          {MODE_TABS.map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => handleModeFilter(tab.value)}
+              className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all duration-200 cursor-pointer ${
+                tab.accent
+                  ? modeFilter === tab.value
+                    ? "bg-white text-[#c9a96e]"
+                    : "bg-[#c9a96e]/60 text-white border border-[#c9a96e]/80 hover:bg-[#c9a96e]/80"
+                  : modeFilter === tab.value
+                    ? "bg-white text-deep"
+                    : "bg-white/10 text-white/60 hover:bg-white/20 hover:text-white"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+          </div>
+          <button
+            onClick={() => setReviewOpen(true)}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-[14px] bg-[var(--color-accent)] text-[var(--color-deep)] text-[12px] font-bold transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:bg-white hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            <MessageSquarePlus size={13} />
+            Leave a review
+          </button>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+            <input
+              type="text"
+              placeholder="Search by name…"
+              value={inputValue}
+              onChange={(e) => handleQueryChange(e.target.value)}
+              className="w-full pl-8 pr-3 py-2 rounded-[10px] bg-white/10 border border-white/15 text-[12px] text-white placeholder:text-white/35 focus:outline-none focus:border-white/30 transition-colors"
+            />
+          </div>
+          <button
+            onClick={handleSort}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-[10px] bg-white/10 border border-white/15 text-[12px] font-semibold text-white hover:bg-white/20 transition-colors cursor-pointer whitespace-nowrap"
+          >
+            <ArrowUpDown size={12} />
+            {sortAsc ? "A → Z" : "Z → A"}
+          </button>
+        </div>
+      </div>
+
+      {/* Grid — scrollable, natural card height */}
+      <div className="flex-1 min-h-0 overflow-y-auto pr-1 scrollbar-hide">
+        {pageItems.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 gap-2 opacity-60">
+            <span className="text-[14px] font-semibold text-white">No patterns found</span>
+            <span className="text-[12px] text-white/60">
+              {modeFilter !== "all" ? "Try a different filter or name" : "Try a different name"}
+            </span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-4 gap-3">
+            {pageItems.map((p) => (
+              <PatternCard key={p.id} pattern={p} onToggleFavourite={onToggleFavourite} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Pagination — pinned at bottom */}
+      {totalPages > 1 && (
+        <div className="shrink-0 flex items-center justify-center gap-2 pt-3">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={safePage === 1}
+            className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold text-white bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          >
+            Previous
+          </button>
+          <span className="text-[12px] text-white/50">
+            {safePage} / {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={safePage === totalPages}
+            className="px-3 py-1.5 rounded-[8px] text-[12px] font-semibold text-white bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

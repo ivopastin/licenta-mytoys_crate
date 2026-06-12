@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { GraduationCap, Clock } from "lucide-react";
-import GrainientFade from "../components/GrainientFade";
+import GrainientFade from "@/components/app/GrainientFade";
 import tutorialsData from "@/content/tutorials.json";
 
 const DIFFICULTY_COLORS: Record<string, string> = {
@@ -36,15 +35,6 @@ export default function TutorialsPage() {
         zoom={0.9}
       />
 
-      {/* Texture overlay */}
-      <div className="absolute inset-0 pointer-events-none z-1">
-        <Image
-          src="/images/textures/app/wall.jpg"
-          alt=""
-          fill
-          className="object-cover opacity-[0.12] mix-blend-overlay"
-        />
-      </div>
 
       {/* Scrollable content */}
       <div className="relative z-10 h-full overflow-y-auto">

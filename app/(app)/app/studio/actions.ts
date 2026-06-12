@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { buildPatternData } from "@/lib/pattern/buildPatternData";
-import type { PlushieConfig } from "./types";
+import type { PlushieConfig } from "@/components/app/studio/types";
 import type { PatternData, PatternPart } from "@/lib/pattern/types";
 
 type TemplateRow = {

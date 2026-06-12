@@ -2,21 +2,20 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import LeaveConfirmDialog from "./components/LeaveConfirmDialog";
-import PatternReadyToast from "./components/PatternReadyToast";
-import Image from "next/image";
-import GrainientFade from "../components/GrainientFade";
-import { PlushieConfig, EMPTY_CONFIG } from "./types";
-import StepMode from "./components/StepMode";
-import StepAnimal from "./components/StepAnimal";
-import StepSize from "./components/StepSize";
-import StepColor from "./components/StepColor";
-import StepEyes from "./components/StepEyes";
-import StepName from "./components/StepName";
-import StepAccessory from "./components/StepAccessory";
-import StepGenerating from "./components/StepGenerating";
-import StepResult from "./components/StepResult";
-import WizardPlushiesBg from "./components/WizardPlushiesBg";
+import LeaveConfirmDialog from "@/components/app/studio/LeaveConfirmDialog";
+import PatternReadyToast from "@/components/app/studio/PatternReadyToast";
+import GrainientFade from "@/components/app/GrainientFade";
+import { PlushieConfig, EMPTY_CONFIG } from "@/components/app/studio/types";
+import StepMode from "@/components/app/studio/StepMode";
+import StepAnimal from "@/components/app/studio/StepAnimal";
+import StepSize from "@/components/app/studio/StepSize";
+import StepColor from "@/components/app/studio/StepColor";
+import StepEyes from "@/components/app/studio/StepEyes";
+import StepName from "@/components/app/studio/StepName";
+import StepAccessory from "@/components/app/studio/StepAccessory";
+import StepGenerating from "@/components/app/studio/StepGenerating";
+import StepResult from "@/components/app/studio/StepResult";
+import WizardPlushiesBg from "@/components/app/studio/WizardPlushiesBg";
 import type { PatternData } from "@/lib/pattern/types";
 
 type WizardStepId =
@@ -147,15 +146,6 @@ export default function StudioPage() {
         zoom={0.9}
       />
 
-      {/* Texture overlay */}
-      <div className="absolute inset-0 pointer-events-none z-1">
-        <Image
-          src="/images/textures/app/black-sand.jpg"
-          alt=""
-          fill
-          className="object-cover opacity-[0.12] mix-blend-overlay"
-        />
-      </div>
 
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-8">
         {/* Landing */}

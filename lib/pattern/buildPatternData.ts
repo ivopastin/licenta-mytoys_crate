@@ -1,7 +1,7 @@
 import type { PatternData, PatternPart } from "./types";
 import { ABBREVIATIONS, PATTERN_NOTES } from "./abbreviations";
-import type { PlushieConfig } from "@/app/(app)/app/studio/types";
-import { COLOR_PALETTE as STUDIO_PALETTE } from "@/app/(app)/app/studio/types";
+import type { PlushieConfig } from "@/components/app/studio/types";
+import { COLOR_PALETTE as STUDIO_PALETTE } from "@/components/app/studio/types";
 
 type TemplateRow = {
   skill_level: string;

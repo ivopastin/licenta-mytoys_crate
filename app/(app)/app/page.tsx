@@ -1,14 +1,23 @@
 import Link from "next/link";
 import { GraduationCap, ArrowRight } from "lucide-react";
-import GrainientFade from "./components/GrainientFade";
-import NewsCard from "./components/NewsCard";
-import ReviewsCarousel, { type ReviewItem } from "./components/ReviewsCarousel";
-import newsData from "@/content/news.json";
+import GrainientFade from "@/components/app/GrainientFade";
+import NewsCard from "@/components/app/NewsCard";
+import ReviewsCarousel, { type ReviewItem } from "@/components/app/ReviewsCarousel";
 import tutorialsData from "@/content/tutorials.json";
-import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 
-export const revalidate = 86400;
+export const revalidate = 3600;
+
+export type NewsItem = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  body: string;
+  image_url: string | null;
+  date: string;
+  tag: string;
+};
 
 export default async function AppHomePage() {
   const supabase = await createClient();
@@ -16,15 +25,22 @@ export default async function AppHomePage() {
 
   const { data: rawReviews } = await supabase
     .from("reviews")
-    .select("id, user_name, stars, description, pattern_label, experience_level")
+    .select("id, user_name, stars, description, pattern_label")
     .order("created_at", { ascending: false })
-    .limit(50);
+    .limit(10);
 
-  const reviews = ((rawReviews ?? []) as ReviewItem[]).slice(0, 10);
+  const reviews = (rawReviews ?? []) as ReviewItem[];
+
+  const { data: newsData } = await supabase
+    .from("news")
+    .select("id, slug, title, summary, body, image_url, date, tag")
+    .order("date", { ascending: false })
+    .limit(6);
+
+  const news = (newsData ?? []) as NewsItem[];
 
   return (
     <div className="relative h-full w-full">
-      {/* Grainient background */}
       <GrainientFade
         color1="#417c9c"
         color2="#716458"
@@ -45,28 +61,12 @@ export default async function AppHomePage() {
         zoom={0.9}
       />
 
-      {/* Texture overlay */}
-      <div className="absolute inset-0 pointer-events-none z-1">
-        <Image
-          src="/images/textures/app/smooth-flow.jpg"
-          alt=""
-          fill
-          className="object-cover opacity-[0.08] mix-blend-overlay"
-        />
-      </div>
-
-      {/* Scrollable content */}
       <div className="relative z-10 h-full overflow-y-auto">
         <div className="max-w-3xl mx-auto px-8 py-10 flex flex-col gap-10">
-          {/* Welcome header */}
           <div className="flex items-center justify-between gap-4">
             <div>
-              <h1 className="text-[28px] font-bold text-white leading-tight">
-                Welcome back!
-              </h1>
-              <p className="text-[15px] text-white/70 mt-1">
-                Ready to bring a new plushie to life?
-              </p>
+              <h1 className="text-[28px] font-bold text-white leading-tight">Welcome back!</h1>
+              <p className="text-[15px] text-white/70 mt-1">Ready to bring a new plushie to life?</p>
             </div>
             <Link
               href="/app/studio"
@@ -76,44 +76,45 @@ export default async function AppHomePage() {
             </Link>
           </div>
 
-          {/* Reviews carousel */}
           {reviews.length > 0 && (
             <section>
-              <h2 className="text-[16px] font-bold text-white mb-4">
-                What Others Are Saying
-              </h2>
+              <h2 className="text-[16px] font-bold text-white mb-4">What Others Are Saying</h2>
               <ReviewsCarousel reviews={reviews} />
             </section>
           )}
 
-          {/* News section */}
-          <section id="whats-new">
-            <h2 className="text-[16px] font-bold text-white mb-4">
-              What&apos;s New
-            </h2>
-            <div className="grid grid-cols-3 gap-4">
-              {newsData.map((item) => (
-                <NewsCard key={item.id} item={item} />
-              ))}
-            </div>
-          </section>
+          {news.length > 0 && (
+            <section id="whats-new">
+              <h2 className="text-[16px] font-bold text-white mb-4">What&apos;s New</h2>
+              <div className="grid grid-cols-3 gap-4">
+                {news.map((item) => (
+                  <NewsCard
+                    key={item.id}
+                    item={{
+                      id: item.id,
+                      title: item.title,
+                      summary: item.summary,
+                      body: item.body,
+                      image: item.image_url ?? "/images/news/new-animal.png",
+                      date: item.date,
+                      tag: item.tag,
+                    }}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
 
-          {/* Tutorial reminder */}
           <section>
-            <h2 className="text-[16px] font-bold text-white mb-4">
-              Learn the Basics
-            </h2>
+            <h2 className="text-[16px] font-bold text-white mb-4">Learn the Basics</h2>
             <div className="bg-white/10 backdrop-blur-sm rounded-[16px] border border-white/20 p-5 flex items-center gap-5">
               <div className="w-12 h-12 rounded-[14px] bg-white/15 flex items-center justify-center shrink-0">
                 <GraduationCap size={24} className="text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[15px] font-semibold text-white">
-                  New to crochet?
-                </p>
+                <p className="text-[15px] font-semibold text-white">New to crochet?</p>
                 <p className="text-[13px] text-white/65 mt-0.5">
-                  Start with the tutorials — {tutorialsData.length} technique
-                  guides from the magic ring to full assembly.
+                  Start with the tutorials — {tutorialsData.length} technique guides from the magic ring to full assembly.
                 </p>
               </div>
               <Link

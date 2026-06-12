@@ -1,8 +1,7 @@
-import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
-import GrainientFade from "../components/GrainientFade";
-import MyPatternsClient from "./MyPatternsClient";
-import type { PatternRow } from "./PatternCard";
+import GrainientFade from "@/components/app/GrainientFade";
+import MyPatternsClient from "@/components/app/my-patterns/MyPatternsClient";
+import type { PatternRow } from "@/components/app/my-patterns/PatternCard";
 
 export default async function MyPatternsPage() {
   const supabase = await createClient();
@@ -16,7 +15,7 @@ export default async function MyPatternsPage() {
   if (user) {
     const { data } = await supabase
       .from("patterns")
-      .select("id, name, animal, size, color_name, accessory_color, skill_level, is_favourite, pattern_data")
+      .select("id, name, animal, size, color, color_name, accessory, accessory_color, skill_level, is_favourite, pattern_data")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
@@ -46,15 +45,6 @@ export default async function MyPatternsPage() {
         zoom={0.9}
       />
 
-      {/* Texture overlay */}
-      <div className="absolute inset-0 pointer-events-none z-1">
-        <Image
-          src="/images/textures/app/wall.jpg"
-          alt=""
-          fill
-          className="object-cover opacity-[0.12] mix-blend-overlay"
-        />
-      </div>
 
       <div className="relative z-10 h-full flex flex-col px-20 py-8">
         <h1 className="text-[24px] font-bold text-white shrink-0 mb-6">My Patterns</h1>
