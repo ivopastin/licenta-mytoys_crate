@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Image from "next/image";
 import { Heart, Download } from "lucide-react";
 import { toggleFavourite } from "@/app/(app)/app/my-patterns/actions";
 import {
   openPatternPDF,
   downloadPatternPDF,
 } from "@/components/app/studio/PatternPDF";
-import { COLOR_PALETTE } from "@/components/app/studio/types";
+import { COLOR_PALETTE, HEX_TO_COLOR_SLUG, ACCESSORY_FOLDER } from "@/components/app/studio/types";
 import type { PatternData } from "@/lib/pattern/types";
 
 export type PatternRow = {
@@ -16,11 +17,82 @@ export type PatternRow = {
   animal: string | null;
   size: string | null;
   color_name: string | null;
+  color: string | null;
+  accessory: string | null;
   accessory_color: string | null;
   skill_level: string;
   is_favourite: boolean;
   pattern_data: PatternData;
 };
+
+function resolveImg(type: "plushie" | "accessory", name: string, hex: string | null): string | null {
+  if (!hex) return null;
+  const slug = HEX_TO_COLOR_SLUG[hex];
+  if (!slug) return null;
+  if (type === "plushie") return `/images/plushies/${name}/${name}-${slug}.png`;
+  const folder = ACCESSORY_FOLDER[name as keyof typeof ACCESSORY_FOLDER] ?? name;
+  return `/images/accessories/${folder}/${folder}-${slug}.png`;
+}
+
+function CardImage({
+  pattern,
+  compact,
+}: {
+  pattern: PatternRow;
+  compact: boolean;
+}) {
+  const mainHex = pattern.color ?? pattern.pattern_data?.materials?.yarn?.[0]?.hex ?? null;
+  const accessoryHex = pattern.accessory_color ?? mainHex;
+
+  const plushieSrc = pattern.animal ? resolveImg("plushie", pattern.animal, mainHex) : null;
+  // pattern.accessory is the raw wizard value: "hat", "bow-tie", "basket"
+  const accessorySrc = pattern.accessory ? resolveImg("accessory", pattern.accessory, accessoryHex) : null;
+
+  const hasAccessory = !!accessorySrc;
+  const h = compact ? "h-28" : "h-36";
+  const imgSize = compact ? 80 : 110;
+
+  if (!plushieSrc && !accessorySrc) {
+    return (
+      <div className={`relative bg-warm/10 w-full ${h} flex items-center justify-center`}>
+        <span className={`${compact ? "text-[10px]" : "text-[13px]"} text-warm/40 text-center px-2`}>
+          {pattern.name}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`relative w-full ${h} bg-[#f4f1ee] flex overflow-hidden`}>
+      {/* Plushie col */}
+      <div className={`flex items-center justify-center bg-[#edeae6] ${hasAccessory ? "flex-1 border-r border-white/60" : "w-full"}`}>
+        {plushieSrc && (
+          <Image
+            src={plushieSrc}
+            alt={pattern.animal ?? "plushie"}
+            width={imgSize}
+            height={imgSize}
+            className="object-contain drop-shadow-sm"
+            unoptimized
+          />
+        )}
+      </div>
+      {/* Accessory col */}
+      {hasAccessory && (
+        <div className="flex-1 flex items-center justify-center bg-[#e8e4e0]">
+          <Image
+            src={accessorySrc!}
+            alt={pattern.accessory ?? "accessory"}
+            width={imgSize}
+            height={imgSize}
+            className="object-contain drop-shadow-sm"
+            unoptimized
+          />
+        </div>
+      )}
+    </div>
+  );
+}
 
 function SkillHooks({ level, small }: { level: string; small?: boolean }) {
   const count = level === "beginner" ? 1 : level === "intermediate" ? 2 : 3;
@@ -142,11 +214,9 @@ export default function PatternCard({
   if (compact) {
     return (
       <div className="flex flex-col bg-white rounded-[14px] shadow-sm border border-border-soft overflow-hidden">
-        {/* Image placeholder */}
-        <div className="relative bg-warm/10 w-full aspect-square flex items-center justify-center">
-          <span className="text-[10px] text-warm/40 text-center px-2">
-            {pattern.name}
-          </span>
+        {/* Image */}
+        <div className="relative">
+          <CardImage pattern={pattern} compact={true} />
           <button
             onClick={handleHeartClick}
             className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full bg-white/80 hover:bg-white transition-colors cursor-pointer"
@@ -207,9 +277,9 @@ export default function PatternCard({
 
   return (
     <div className="flex flex-col bg-white rounded-[16px] shadow-sm border border-border-soft overflow-hidden">
-      {/* Image placeholder */}
-      <div className="relative bg-warm/10 h-36 w-full flex items-center justify-center">
-        <span className="text-[13px] text-warm/50">{displayTitle}</span>
+      {/* Image */}
+      <div className="relative">
+        <CardImage pattern={pattern} compact={false} />
         <button
           onClick={handleHeartClick}
           className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors cursor-pointer"

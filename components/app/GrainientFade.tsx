@@ -43,7 +43,7 @@ export default function GrainientFade(props: Props) {
   // updating clip-path is compositor-only and never touches the WebGL canvas.
   useEffect(() => {
     const el = ref.current;
-    const shell = document.querySelector<HTMLElement>("[data-app-shell]");
+    const shell = document.querySelector<HTMLElement>("[data-app-shell], [data-admin-shell]");
     if (!el || !shell) return;
 
     const update = () => {

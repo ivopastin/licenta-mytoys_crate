@@ -15,7 +15,7 @@ export default async function MyPatternsPage() {
   if (user) {
     const { data } = await supabase
       .from("patterns")
-      .select("id, name, animal, size, color_name, accessory_color, skill_level, is_favourite, pattern_data")
+      .select("id, name, animal, size, color, color_name, accessory, accessory_color, skill_level, is_favourite, pattern_data")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 

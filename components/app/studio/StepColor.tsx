@@ -18,7 +18,12 @@ export default function StepColor({ config, onNext, onBack, stepLabel, direction
   return (
     <div className="flex gap-6 items-stretch">
       {/* Preview panel — left side */}
-      <AnimalPreview animal={config.animal} color={selected ?? config.color} />
+      <AnimalPreview
+        animal={config.animal}
+        color={field === "accessoryColor" ? config.color : (selected ?? config.color)}
+        accessory={field === "accessoryColor" ? config.accessory : null}
+        accessoryColor={field === "accessoryColor" ? (selected ?? config.accessoryColor) : null}
+      />
 
       {/* Color picker — right side */}
       <div className="flex-1">

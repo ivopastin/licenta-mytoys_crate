@@ -11,6 +11,7 @@ import {
   pdf,
 } from "@react-pdf/renderer";
 import type { PatternData } from "@/lib/pattern/types";
+import { HEX_TO_COLOR_SLUG, ACCESSORY_FOLDER } from "./types";
 
 // Register Figtree from public/fonts — react-pdf fetches via URL in browser
 Font.register({
@@ -44,11 +45,27 @@ const BORDER = "#e7e2dd";
 const PAGE_BG = "#ffffff";
 const LIGHT_BG = "#f8f6f4";
 
-const ANIMAL_IMAGE: Record<string, string> = {
-  bear: "/images/bear.png",
-  rabbit: "/images/bunny.png",
-  cat: "/images/cat.png",
-};
+const STEP_IMAGES = [
+  { src: "/images/template-steps/make-head.png",  label: "Step 1 — Make the Head" },
+  { src: "/images/template-steps/make-leg.png",   label: "Step 2 — Make the Legs" },
+  { src: "/images/template-steps/fill-body.png",  label: "Step 3 — Fill the Body" },
+  { src: "/images/template-steps/assembly.png",   label: "Step 4 — Assembly" },
+];
+
+function resolvePlushieImage(animal: string | null, colorHex: string | null): string | null {
+  if (!animal || !colorHex) return null;
+  const slug = HEX_TO_COLOR_SLUG[colorHex];
+  if (!slug) return null;
+  return `/images/plushies/${animal}/${animal}-${slug}.png`;
+}
+
+function resolveAccessoryImage(accessory: string | null, colorHex: string | null): string | null {
+  if (!accessory || !colorHex) return null;
+  const slug = HEX_TO_COLOR_SLUG[colorHex];
+  if (!slug) return null;
+  const folder = ACCESSORY_FOLDER[accessory as keyof typeof ACCESSORY_FOLDER] ?? accessory;
+  return `/images/accessories/${folder}/${folder}-${slug}.png`;
+}
 
 const s = StyleSheet.create({
   page: {
@@ -428,6 +445,29 @@ const s = StyleSheet.create({
     color: MUTED,
     fontWeight: 600,
   },
+  // ── Process photos ────────────────────────────
+  photosGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+  },
+  photoCell: {
+    width: "47%",
+    flexDirection: "column",
+    gap: 4,
+  },
+  photoImg: {
+    width: "100%",
+    height: 180,
+    objectFit: "cover",
+    borderRadius: 6,
+    backgroundColor: LIGHT_BG,
+  },
+  photoLabel: {
+    fontSize: 8,
+    color: MUTED,
+    fontStyle: "italic" as const,
+  },
   // ── Last page: copyright block ────────────────
   copyrightPage: {
     backgroundColor: BRAND_DARK,
@@ -575,7 +615,13 @@ function PartSection({ part, splitRounds }: {
 }
 
 function PatternDocument({ data }: { data: PatternData }) {
-  const animalImg = ANIMAL_IMAGE[data.animal];
+  const mainYarnHex = data.materials.yarn[0]?.hex ?? null;
+  const animalImg = resolvePlushieImage(data.animal, mainYarnHex);
+  // Accessory yarn is typically the last yarn entry
+  const accessoryYarnHex = data.materials.yarn.length > 1 ? data.materials.yarn[data.materials.yarn.length - 1].hex : mainYarnHex;
+  const accessoryImg = data.accessoryName
+    ? resolveAccessoryImage(data.accessoryName.toLowerCase().replace(/\s+/g, "-"), accessoryYarnHex)
+    : null;
   const patternName = data.animal
     ? `${data.plushieName} the ${cap(data.animal)}`
     : data.plushieName;
@@ -604,13 +650,18 @@ function PatternDocument({ data }: { data: PatternData }) {
                   {cap(data.animal)} · {cap(data.size)} · {cap(data.skillLevel)}
                 </Text>
               </View>
-              {animalImg ? (
-                <PDFImage src={animalImg} style={s.animalImage} />
-              ) : (
-                <View style={s.animalPlaceholder}>
-                  <Text style={s.animalPlaceholderText}>{cap(data.animal)}</Text>
-                </View>
-              )}
+              <View style={{ position: "relative", width: 130, height: 130 }}>
+                {animalImg ? (
+                  <PDFImage src={animalImg} style={s.animalImage} />
+                ) : (
+                  <View style={s.animalPlaceholder}>
+                    <Text style={s.animalPlaceholderText}>{cap(data.animal)}</Text>
+                  </View>
+                )}
+                {accessoryImg && (
+                  <PDFImage src={accessoryImg} style={{ position: "absolute", bottom: 0, right: -10, width: 56, height: 56, objectFit: "contain" }} />
+                )}
+              </View>
             </View>
 
             {/* Materials */}
@@ -758,6 +809,23 @@ function PatternDocument({ data }: { data: PatternData }) {
           <PageFooter />
         </Page>
       )}
+
+      {/* ── Process photos ──────────────────────────────────────────── */}
+      <Page size="A4" style={s.page}>
+        <PageHeader patternName={patternName} />
+        <View style={s.contentWithHeader}>
+          <Text style={s.sectionHeading}>Making Your Plushie</Text>
+          <View style={s.photosGrid}>
+            {STEP_IMAGES.map(({ src, label }) => (
+              <View key={src} style={s.photoCell}>
+                <PDFImage src={src} style={s.photoImg} />
+                <Text style={s.photoLabel}>{label}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        <PageFooter />
+      </Page>
 
       {/* ── Copyright / last page ───────────────────────────────────── */}
       <Page size="A4" style={[s.page, { padding: 0 }]}>
