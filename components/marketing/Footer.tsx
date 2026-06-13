@@ -297,6 +297,46 @@ export default function Footer() {
             <p className="text-[12px] text-[var(--color-ink)]/35 font-medium">
               © 2026 MyToys Crate. All rights reserved.
             </p>
+            <p className="text-[11px] text-[var(--color-ink)]/30 font-medium text-right max-w-100 leading-snug">
+              The outlines of our mascots were illustrated in Affinity, based on
+              references from{" "}
+              <a
+                href="https://www.meshy.ai/3d-models/Patchwork-Bear-v2-019bade6-17f2-77a5-9f5f-b7fe43b8a8ee"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-[var(--color-deep)] transition-colors"
+              >
+                bear
+              </a>
+              ,{" "}
+              <a
+                href="https://sketchfab.com/3d-models/bunny-standing-light-lp-stylized-7dcde200f4f14c9eb3bd807be797a815"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-[var(--color-deep)] transition-colors"
+              >
+                bunny
+              </a>
+              ,{" "}
+              <a
+                href="https://pikbest.com/png-images/3d-stuffed-animal-cat-toy-isolated-on-transparent-background_11326234.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-[var(--color-deep)] transition-colors"
+              >
+                cat
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://sketchfab.com/3d-models/koalakoalas-march-ac0c08ce03ba4707b6b347a68439be25"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-[var(--color-deep)] transition-colors"
+              >
+                koala
+              </a>{" "}
+              3D models.
+            </p>
           </div>
         </div>
       </div>

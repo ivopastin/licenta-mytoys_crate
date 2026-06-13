@@ -2,20 +2,81 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import SplitText from "@/components/shared/SplitText";
 import FadeUp from "@/components/shared/FadeUp";
 
 const items = [
-  { id: "1", img: "/images/showcase/plushie1.webp", height: 300 },
-  { id: "2", img: "/images/showcase/plushie2.webp", height: 300 },
-  { id: "3", img: "/images/showcase/plushie3.webp", height: 300 },
-  { id: "4", img: "/images/showcase/plushie4.webp", height: 375 },
-  { id: "5", img: "/images/showcase/plushie5.webp", height: 375 },
-  { id: "6", img: "/images/showcase/plushie6.webp", height: 375 },
-  { id: "7", img: "/images/showcase/plushie7.webp", height: 450 },
-  { id: "8", img: "/images/showcase/plushie8.webp", height: 300 },
-  { id: "9", img: "/images/showcase/plushie9.webp", height: 400 },
-  { id: "10", img: "/images/showcase/plushie10.webp", height: 450 },
+  {
+    id: "1",
+    img: "/images/showcase/plushie1.webp",
+    height: 300,
+    source: "https://www.alwaysfreeamigurumi.com/crochet-bear-amigurumi-free-pattern/",
+    credit: "Always Free Amigurumi",
+  },
+  {
+    id: "2",
+    img: "/images/showcase/plushie2.webp",
+    height: 300,
+    source: "https://amigurumicat.com/elya-the-crochet-bunny-amigurumi-free-pattern/",
+    credit: "Amigurumi Cat",
+  },
+  {
+    id: "3",
+    img: "/images/showcase/plushie3.webp",
+    height: 300,
+    source: "https://www.cuddlystitchescraft.com/free-crochet-cat-pattern-low-sew-amigurumi-cat/",
+    credit: "Cuddly Stitches Craft",
+  },
+  {
+    id: "4",
+    img: "/images/showcase/plushie4.webp",
+    height: 375,
+    source: "https://jesshuff.com/crochet-dog-free-amigurumi-pattern/",
+    credit: "Jess Huff",
+  },
+  {
+    id: "5",
+    img: "/images/showcase/plushie5.webp",
+    height: 375,
+    source: "https://kristitullus.com/products/pattern-sheep",
+    credit: "Kristi Tullus",
+  },
+  {
+    id: "6",
+    img: "/images/showcase/plushie6.webp",
+    height: 375,
+    source: "https://jesshuff.com/heidi-horse-free-amigurumi-pattern/",
+    credit: "Jess Huff",
+  },
+  {
+    id: "7",
+    img: "/images/showcase/plushie7.webp",
+    height: 450,
+    source: "https://jesshuff.com/crochet-jaguar-free-amigurumi-pattern/",
+    credit: "Jess Huff",
+  },
+  {
+    id: "8",
+    img: "/images/showcase/plushie8.webp",
+    height: 300,
+    source: "https://www.lovecrafts.com/en-gb/p/happy-duck-amigurumi-crochet-pattern-by-piggiesagogo",
+    credit: "Piggiesagogo / LoveCrafts",
+  },
+  {
+    id: "9",
+    img: "/images/showcase/plushie9.webp",
+    height: 400,
+    source: "https://dailydoll.shop/shop/penguin-crochet-pattern-amigurumi-pattern/",
+    credit: "Daily Doll",
+  },
+  {
+    id: "10",
+    img: "/images/showcase/plushie10.webp",
+    height: 450,
+    source: "https://www.polushkabunny.com/crochet-mouse-pattern-polushkabunny",
+    credit: "Polushka Bunny",
+  },
 ];
 
 function ShowcaseSection() {
@@ -60,7 +121,7 @@ function ShowcaseSection() {
           {items.map((item, i) => (
             <div
               key={item.id}
-              className="break-inside-avoid mb-4 rounded-[12px] overflow-hidden transition-all duration-500"
+              className="group relative break-inside-avoid mb-4 rounded-[12px] overflow-hidden transition-all duration-500"
               style={{
                 opacity: i < visibleCount ? 1 : 0,
                 transform:
@@ -74,6 +135,17 @@ function ShowcaseSection() {
                 height={item.height}
                 className="w-full h-auto block rounded-[12px]"
               />
+              <a
+                href={item.source}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0 flex items-end justify-center rounded-[12px] bg-linear-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              >
+                <span className="mb-4 flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium text-white">
+                  Pattern by {item.credit}
+                  <ArrowUpRight className="size-4" />
+                </span>
+              </a>
             </div>
           ))}
         </div>

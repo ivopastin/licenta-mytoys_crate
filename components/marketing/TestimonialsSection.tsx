@@ -137,6 +137,7 @@ function TestimonialsSection() {
           rootMargin="0px"
         />
 
+        <div className="flex flex-col w-full gap-3">
         <div className="flex flex-row items-center w-full gap-16">
           {/* stats pinned to the left with fixed padding */}
           <div className="flex flex-col gap-13.75 shrink-0 pl-30">
@@ -193,6 +194,19 @@ function TestimonialsSection() {
               ariaLabel="Client reviews"
             />
           </div>
+        </div>
+
+          <p className="text-[12px] text-white/40 text-right pr-30">
+            Client portraits sourced from{" "}
+            <a
+              href="https://unsplash.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 transition-colors hover:text-white/70"
+            >
+              Unsplash.com
+            </a>
+          </p>
         </div>
       </div>
     </div>
