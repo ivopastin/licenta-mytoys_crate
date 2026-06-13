@@ -5,28 +5,28 @@ import Image from "next/image";
 // Same style as the landing page sections: large, very low opacity, positioned off the edges.
 const SLOTS = [
   {
-    src: "/images/bear.png",
+    src: "/images/bear.webp",
     alt: "bear",
     size: 800,
     top: "-80px",
     right: "-60px",
   },
   {
-    src: "/images/bunny.png",
+    src: "/images/bunny.webp",
     alt: "bunny",
     size: 800,
     top: "-80px",
     left: "-60px",
   },
   {
-    src: "/images/cat.png",
+    src: "/images/cat.webp",
     alt: "cat",
     size: 750,
     bottom: "-60px",
     right: "-60px",
   },
   {
-    src: "/images/koala.png",
+    src: "/images/koala.webp",
     alt: "koala",
     size: 750,
     bottom: "-60px",

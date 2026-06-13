@@ -173,7 +173,7 @@ function AboutSection() {
 
         <div className="absolute right-0 -top-20 z-[1] pointer-events-none">
           <Image
-            src="/images/bunny.png"
+            src="/images/bunny.webp"
             alt="bear"
             width={800}
             height={800}
@@ -282,7 +282,7 @@ function AboutSection() {
           onMouseLeave={() => setTooltipVisible(false)}
         >
           <Image
-            src="/images/bear-with-bee.png"
+            src="/images/bear-with-bee.webp"
             alt=""
             height={200}
             width={200}

@@ -56,7 +56,7 @@ export default function Navbar() {
         onClick={() => scrollToSection("hero")}
       >
         <Image
-          src="/images/logos/logo-font-principal.png"
+          src="/images/logos/logo-font-principal.webp"
           alt="logo"
           width={64}
           height={64}

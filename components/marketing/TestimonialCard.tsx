@@ -19,13 +19,13 @@ function TestimonialCard({ review }: { review: Review }) {
           {Array.from({ length: review.rating - 1 }, (_, i) => (
             <Image
               key={i}
-              src="/images/star.png"
+              src="/images/star.webp"
               alt="star"
               width={32}
               height={32}
             />
           ))}
-          <Image src="/images/star.png" alt="star" width={32} height={32} />
+          <Image src="/images/star.webp" alt="star" width={32} height={32} />
         </div>
       </div>
 

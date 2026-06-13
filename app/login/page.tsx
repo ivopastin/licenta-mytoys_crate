@@ -62,7 +62,7 @@ export default function LoginPage() {
         {/* Logo + wordmark — top left */}
         <div className="absolute top-6 left-6 z-10 flex items-center gap-3">
           <Image
-            src="/images/logos/logo-alb-deschis.png"
+            src="/images/logos/logo-alb-deschis.webp"
             alt="MyToys Crate"
             width={48}
             height={48}
@@ -108,25 +108,25 @@ export default function LoginPage() {
           className="absolute top-[-20px] right-[-20px] pointer-events-none opacity-10"
           style={{ transform: "rotate(8deg)" }}
         >
-          <Image src="/images/bear.png" alt="" width={160} height={160} />
+          <Image src="/images/bear.webp" alt="" width={160} height={160} />
         </div>
         <div
           className="absolute bottom-[-20px] left-[-20px] pointer-events-none opacity-10"
           style={{ transform: "rotate(-10deg)" }}
         >
-          <Image src="/images/bunny.png" alt="" width={140} height={140} />
+          <Image src="/images/bunny.webp" alt="" width={140} height={140} />
         </div>
         <div
           className="absolute top-[-10px] left-[-10px] pointer-events-none opacity-15"
           style={{ transform: "rotate(-8deg)" }}
         >
-          <Image src="/images/cat.png" alt="" width={120} height={120} />
+          <Image src="/images/cat.webp" alt="" width={120} height={120} />
         </div>
         <div
           className="absolute bottom-[-20px] right-[-20px] pointer-events-none opacity-10"
           style={{ transform: "rotate(12deg)" }}
         >
-          <Image src="/images/koala.png" alt="" width={150} height={150} />
+          <Image src="/images/koala.webp" alt="" width={150} height={150} />
         </div>
 
         {/* Form */}

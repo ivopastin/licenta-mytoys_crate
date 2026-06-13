@@ -42,7 +42,7 @@ export default function AdminSidebar() {
         >
           <div className="shrink-0 w-9 h-9 flex items-center justify-center">
             <Image
-              src="/images/logos/logo-black.png"
+              src="/images/logos/logo-black.webp"
               alt="MyToys Crate"
               width={36}
               height={36}

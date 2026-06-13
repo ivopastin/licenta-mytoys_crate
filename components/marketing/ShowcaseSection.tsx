@@ -154,7 +154,7 @@ function ShowcaseSection() {
       <div className="relative w-full flex flex-col items-center justify-center py-125 my-20 overflow-hidden">
         <div className="absolute left-0 top-20 z-1 pointer-events-none">
           <Image
-            src="/images/koala.png"
+            src="/images/koala.webp"
             alt="koala"
             width={700}
             height={700}

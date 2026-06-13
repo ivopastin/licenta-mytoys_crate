@@ -8,28 +8,28 @@ import FadeUp from "@/components/shared/FadeUp";
 
 const animals = [
   {
-    src: "/images/bear.png",
+    src: "/images/bear.webp",
     alt: "bear",
     width: 130,
     rotate: "-14deg",
     translateX: "-195px",
   },
   {
-    src: "/images/bunny.png",
+    src: "/images/bunny.webp",
     alt: "bunny",
     width: 130,
     rotate: "8deg",
     translateX: "-60px",
   },
   {
-    src: "/images/cat.png",
+    src: "/images/cat.webp",
     alt: "cat",
     width: 130,
     rotate: "-6deg",
     translateX: "60px",
   },
   {
-    src: "/images/koala.png",
+    src: "/images/koala.webp",
     alt: "koala",
     width: 130,
     rotate: "12deg",
@@ -288,7 +288,7 @@ export default function Footer() {
           {/* logo + copyright */}
           <div className="flex flex-col items-end gap-3 shrink-0">
             <Image
-              src="/images/logos/logo-black.png"
+              src="/images/logos/logo-black.webp"
               alt="MyToys Crate"
               width={120}
               height={40}

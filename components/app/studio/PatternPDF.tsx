@@ -46,17 +46,17 @@ const PAGE_BG = "#ffffff";
 const LIGHT_BG = "#f8f6f4";
 
 const STEP_IMAGES = [
-  { src: "/images/template-steps/make-head.png",  label: "Step 1 — Make the Head" },
-  { src: "/images/template-steps/make-leg.png",   label: "Step 2 — Make the Legs" },
-  { src: "/images/template-steps/fill-body.png",  label: "Step 3 — Fill the Body" },
-  { src: "/images/template-steps/assembly.png",   label: "Step 4 — Assembly" },
+  { src: "/images/template-steps/make-head.jpg",  label: "Step 1 — Make the Head" },
+  { src: "/images/template-steps/make-leg.jpg",   label: "Step 2 — Make the Legs" },
+  { src: "/images/template-steps/fill-body.jpg",  label: "Step 3 — Fill the Body" },
+  { src: "/images/template-steps/assembly.jpg",   label: "Step 4 — Assembly" },
 ];
 
 function resolvePlushieImage(animal: string | null, colorHex: string | null): string | null {
   if (!animal || !colorHex) return null;
   const slug = HEX_TO_COLOR_SLUG[colorHex];
   if (!slug) return null;
-  return `/images/plushies/${animal}/${animal}-${slug}.png`;
+  return `/images/plushies/${animal}/${animal}-${slug}.jpg`;
 }
 
 function resolveAccessoryImage(accessory: string | null, colorHex: string | null): string | null {
@@ -64,7 +64,7 @@ function resolveAccessoryImage(accessory: string | null, colorHex: string | null
   const slug = HEX_TO_COLOR_SLUG[colorHex];
   if (!slug) return null;
   const folder = ACCESSORY_FOLDER[accessory as keyof typeof ACCESSORY_FOLDER] ?? accessory;
-  return `/images/accessories/${folder}/${folder}-${slug}.png`;
+  return `/images/accessories/${folder}/${folder}-${slug}.jpg`;
 }
 
 const s = StyleSheet.create({

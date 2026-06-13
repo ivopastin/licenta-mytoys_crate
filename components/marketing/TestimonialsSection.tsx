@@ -11,7 +11,7 @@ const reviews = [
   {
     id: 1,
     name: "Rebecca A.",
-    image: "/images/clients/client1.png",
+    image: "/images/clients/client1.webp",
     review:
       "I designed my very first plushie — a little fox — and the PDF pattern was so clear and beginner-friendly. I finished it in a weekend and honestly cried a little when it was done. Never thought I could make something this cute from scratch!",
     rating: 5,
@@ -19,7 +19,7 @@ const reviews = [
   {
     id: 2,
     name: "Sophie M.",
-    image: "/images/clients/client2.png",
+    image: "/images/clients/client2.webp",
     review:
       "As someone who crochets regularly, I was blown away by how detailed the generated patterns are. The color customization is spot on and the stitch counts are accurate. I've already made three plushies and gifted them all. Absolutely love this app!",
     rating: 5,
@@ -27,7 +27,7 @@ const reviews = [
   {
     id: 3,
     name: "Daniel K.",
-    image: "/images/clients/client3.png",
+    image: "/images/clients/client3.webp",
     review:
       "My wife got me into crocheting and this app made it so easy to design something personal. I made a little bear for our anniversary and she loved it. The PDF was straightforward even for a beginner like me. Highly recommend it!",
     rating: 5,
@@ -35,7 +35,7 @@ const reviews = [
   {
     id: 4,
     name: "Laura & Mia T.",
-    image: "/images/clients/client4.png",
+    image: "/images/clients/client4.webp",
     review:
       "My daughter and I spent an afternoon designing her dream bunny together — she chose every color and the ears herself! The pattern arrived instantly and we crocheted it together over the week. She sleeps with it every night now.",
     rating: 5,
@@ -43,7 +43,7 @@ const reviews = [
   {
     id: 5,
     name: "James & Leo P.",
-    image: "/images/clients/client5.png",
+    image: "/images/clients/client5.webp",
     review:
       "My son wanted a dinosaur plushie, so we designed one together on the app. I had never crocheted before but the PDF pattern walked me through every step. Two weeks later, Leo had his dino. Best dad project I've ever done.",
     rating: 5,
@@ -113,7 +113,7 @@ function TestimonialsSection() {
       />
       <div className="absolute right-0 -top-20 z-1 pointer-events-none">
         <Image
-          src="/images/cat.png"
+          src="/images/cat.webp"
           alt="cat"
           width={800}
           height={800}

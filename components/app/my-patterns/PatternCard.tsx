@@ -29,9 +29,9 @@ function resolveImg(type: "plushie" | "accessory", name: string, hex: string | n
   if (!hex) return null;
   const slug = HEX_TO_COLOR_SLUG[hex];
   if (!slug) return null;
-  if (type === "plushie") return `/images/plushies/${name}/${name}-${slug}.png`;
+  if (type === "plushie") return `/images/plushies/${name}/${name}-${slug}.webp`;
   const folder = ACCESSORY_FOLDER[name as keyof typeof ACCESSORY_FOLDER] ?? name;
-  return `/images/accessories/${folder}/${folder}-${slug}.png`;
+  return `/images/accessories/${folder}/${folder}-${slug}.webp`;
 }
 
 function CardImage({

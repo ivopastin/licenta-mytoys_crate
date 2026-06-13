@@ -95,7 +95,7 @@ export default async function AppHomePage() {
                       title: item.title,
                       summary: item.summary,
                       body: item.body,
-                      image: item.image_url ?? "/images/news/new-animal.png",
+                      image: item.image_url ?? "/images/news/new-animal.webp",
                       date: item.date,
                       tag: item.tag,
                     }}

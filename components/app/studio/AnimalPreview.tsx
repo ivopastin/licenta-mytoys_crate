@@ -12,7 +12,7 @@ function plushieImagePath(animal: AnimalType, colorHex: string | null): string |
   if (!colorHex) return null;
   const slug = HEX_TO_COLOR_SLUG[colorHex];
   if (!slug) return null;
-  return `/images/plushies/${animal}/${animal}-${slug}.png`;
+  return `/images/plushies/${animal}/${animal}-${slug}.webp`;
 }
 
 function accessoryImagePath(accessory: AccessoryType, colorHex: string | null): string | null {
@@ -20,7 +20,7 @@ function accessoryImagePath(accessory: AccessoryType, colorHex: string | null): 
   const slug = HEX_TO_COLOR_SLUG[colorHex];
   if (!slug) return null;
   const folder = ACCESSORY_FOLDER[accessory];
-  return `/images/accessories/${folder}/${folder}-${slug}.png`;
+  return `/images/accessories/${folder}/${folder}-${slug}.webp`;
 }
 
 export default function AnimalPreview({ animal, color, accessory, accessoryColor }: AnimalPreviewProps) {

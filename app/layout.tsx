@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "MyToysCrate",
     images: [
       {
-        url: "https://mytoys-crate.com/screenshot-landing-page.png",
+        url: "https://mytoys-crate.com/screenshot-landing-page.webp",
         width: 1200,
         height: 630,
         alt: "MyToysCrate — custom amigurumi crochet patterns",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MyToysCrate — Turn Your Plush Toy Idea into Reality",
     description: "Design a custom amigurumi and download a professional crochet pattern PDF instantly.",
-    images: ["https://mytoys-crate.com/screenshot-landing-page.png"],
+    images: ["https://mytoys-crate.com/screenshot-landing-page.webp"],
   },
   icons: {
     icon: "/favicon.ico",

@@ -46,7 +46,7 @@ export default function HeroSection({
       </div>
       <div className="absolute right-0 -top-20 z-[1] pointer-events-none">
         <Image
-          src="/images/bear.png"
+          src="/images/bear.webp"
           alt="bear"
           width={800}
           height={800}
