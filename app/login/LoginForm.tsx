@@ -42,7 +42,8 @@ export default function LoginForm() {
   const isForgot = mode === "forgot";
   const isRegister = mode === "register";
 
-  const passwordStrength = isRegister && password ? getPasswordStrength(password) : null;
+  const passwordStrength =
+    isRegister && password ? getPasswordStrength(password) : null;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -70,7 +71,10 @@ export default function LoginForm() {
     setLoading(true);
 
     if (isLogin) {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (error) {
         setError("Invalid email or password.");
       } else {
@@ -126,7 +130,9 @@ export default function LoginForm() {
             ? `We sent a password reset link to `
             : `We sent a confirmation link to `}
           <strong>{email}</strong>.{" "}
-          {isForgot ? "Click it to reset your password." : "Click it to activate your account and get started."}
+          {isForgot
+            ? "Click it to reset your password."
+            : "Click it to activate your account and get started."}
         </p>
         <button
           type="button"
@@ -144,10 +150,18 @@ export default function LoginForm() {
       {/* Heading */}
       <div className="flex flex-col gap-1">
         <h1 className="text-[32px] font-bold text-ink leading-tight">
-          {isLogin ? "Welcome back" : isRegister ? "Create an account" : "Reset password"}
+          {isLogin
+            ? "Welcome back"
+            : isRegister
+              ? "Create an account"
+              : "Reset password"}
         </h1>
         <p className="text-[15px] text-warm font-medium">
-          {isLogin ? "Good to see you again." : isRegister ? "Let's get you started." : "We'll send you a reset link."}
+          {isLogin
+            ? "Good to see you again."
+            : isRegister
+              ? "Let's get you started."
+              : "We'll send you a reset link."}
         </p>
       </div>
 
@@ -169,7 +183,9 @@ export default function LoginForm() {
         {!isForgot && (
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between">
-              <label className="text-[13px] font-semibold text-warm">Password</label>
+              <label className="text-[13px] font-semibold text-warm">
+                Password
+              </label>
               {isLogin && (
                 <button
                   type="button"
@@ -207,11 +223,17 @@ export default function LoginForm() {
                     className={`h-full rounded-full transition-all duration-300 ${strengthConfig[passwordStrength].color} ${strengthConfig[passwordStrength].width}`}
                   />
                 </div>
-                <span className={`text-[11px] font-semibold ${
-                  passwordStrength === "strong" ? "text-green-500" :
-                  passwordStrength === "medium" ? "text-yellow-500" : "text-red-400"
-                }`}>
-                  {strengthConfig[passwordStrength].label} — use uppercase, lowercase and digits for a strong password
+                <span
+                  className={`text-[11px] font-semibold ${
+                    passwordStrength === "strong"
+                      ? "text-green-500"
+                      : passwordStrength === "medium"
+                        ? "text-yellow-500"
+                        : "text-red-400"
+                  }`}
+                >
+                  {strengthConfig[passwordStrength].label} — use uppercase,
+                  lowercase and digits for a strong password
                 </span>
               </div>
             )}
@@ -221,7 +243,9 @@ export default function LoginForm() {
         {/* Confirm Password — register only */}
         {isRegister && (
           <div className="flex flex-col gap-1">
-            <label className="text-[13px] font-semibold text-warm">Confirm Password</label>
+            <label className="text-[13px] font-semibold text-warm">
+              Confirm Password
+            </label>
             <div className="relative">
               <input
                 type={showConfirm ? "text" : "password"}
@@ -254,7 +278,13 @@ export default function LoginForm() {
           disabled={loading}
           className="w-full bg-deep text-(--color-accent) rounded-[12px] py-3 text-[15px] font-bold hover:bg-[#7a1c35] transition-all duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] active:scale-95 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
         >
-          {loading ? "Please wait…" : isLogin ? "Log in" : isRegister ? "Sign up" : "Send reset link"}
+          {loading
+            ? "Please wait…"
+            : isLogin
+              ? "Log in"
+              : isRegister
+                ? "Sign up"
+                : "Send reset link"}
         </button>
       </form>
 

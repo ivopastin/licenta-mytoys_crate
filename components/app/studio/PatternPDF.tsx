@@ -19,7 +19,11 @@ Font.register({
   fonts: [
     { src: "/fonts/Figtree-Regular.ttf", fontWeight: 400, fontStyle: "normal" },
     { src: "/fonts/Figtree-Italic.ttf", fontWeight: 400, fontStyle: "italic" },
-    { src: "/fonts/Figtree-SemiBold.ttf", fontWeight: 600, fontStyle: "normal" },
+    {
+      src: "/fonts/Figtree-SemiBold.ttf",
+      fontWeight: 600,
+      fontStyle: "normal",
+    },
     { src: "/fonts/Figtree-Bold.ttf", fontWeight: 700, fontStyle: "normal" },
   ],
 });
@@ -46,24 +50,40 @@ const PAGE_BG = "#ffffff";
 const LIGHT_BG = "#f8f6f4";
 
 const STEP_IMAGES = [
-  { src: "/images/template-steps/make-head.jpg",  label: "Step 1 — Make the Head" },
-  { src: "/images/template-steps/make-leg.jpg",   label: "Step 2 — Make the Legs" },
-  { src: "/images/template-steps/fill-body.jpg",  label: "Step 3 — Fill the Body" },
-  { src: "/images/template-steps/assembly.jpg",   label: "Step 4 — Assembly" },
+  {
+    src: "/images/template-steps/make-head.jpg",
+    label: "Step 1 — Make the Head",
+  },
+  {
+    src: "/images/template-steps/make-leg.jpg",
+    label: "Step 2 — Make the Legs",
+  },
+  {
+    src: "/images/template-steps/fill-body.jpg",
+    label: "Step 3 — Fill the Body",
+  },
+  { src: "/images/template-steps/assembly.jpg", label: "Step 4 — Assembly" },
 ];
 
-function resolvePlushieImage(animal: string | null, colorHex: string | null): string | null {
+function resolvePlushieImage(
+  animal: string | null,
+  colorHex: string | null,
+): string | null {
   if (!animal || !colorHex) return null;
   const slug = HEX_TO_COLOR_SLUG[colorHex];
   if (!slug) return null;
   return `/images/plushies/${animal}/${animal}-${slug}.jpg`;
 }
 
-function resolveAccessoryImage(accessory: string | null, colorHex: string | null): string | null {
+function resolveAccessoryImage(
+  accessory: string | null,
+  colorHex: string | null,
+): string | null {
   if (!accessory || !colorHex) return null;
   const slug = HEX_TO_COLOR_SLUG[colorHex];
   if (!slug) return null;
-  const folder = ACCESSORY_FOLDER[accessory as keyof typeof ACCESSORY_FOLDER] ?? accessory;
+  const folder =
+    ACCESSORY_FOLDER[accessory as keyof typeof ACCESSORY_FOLDER] ?? accessory;
   return `/images/accessories/${folder}/${folder}-${slug}.jpg`;
 }
 
@@ -536,7 +556,9 @@ function SkillStars({ level }: { level: string }) {
   return (
     <View style={s.starRow}>
       {[0, 1, 2].map((i) => (
-        <Text key={i} style={[s.star, { color: i < count ? GOLD : "#ddd" }]}>★</Text>
+        <Text key={i} style={[s.star, { color: i < count ? GOLD : "#ddd" }]}>
+          ★
+        </Text>
       ))}
     </View>
   );
@@ -551,7 +573,10 @@ function PageHeader({ patternName }: { patternName: string }) {
   return (
     <View style={s.pageHeader} fixed>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-        <PDFImage src="/images/logos/logo-alb-deschis.png" style={s.pageHeaderLogo} />
+        <PDFImage
+          src="/images/logos/logo-alb-deschis.png"
+          style={s.pageHeaderLogo}
+        />
         <Text style={s.pageHeaderTitle}>MyToysCrate</Text>
       </View>
       <Text style={s.pageHeaderTitle}>{patternName}</Text>
@@ -570,14 +595,22 @@ function PageFooter() {
         <Text style={s.footerSep}>·</Text>
         <Text style={s.footerText}>{SITE_URL}</Text>
       </View>
-      <Text style={s.footerPageNum} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
+      <Text
+        style={s.footerPageNum}
+        render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+      />
     </View>
   );
 }
 
-function PartSection({ part, splitRounds }: {
+function PartSection({
+  part,
+  splitRounds,
+}: {
   part: PatternData["parts"][0];
-  splitRounds: (r: PatternData["parts"][0]["rounds"]) => [PatternData["parts"][0]["rounds"], PatternData["parts"][0]["rounds"]];
+  splitRounds: (
+    r: PatternData["parts"][0]["rounds"],
+  ) => [PatternData["parts"][0]["rounds"], PatternData["parts"][0]["rounds"]];
 }) {
   const [leftRounds, rightRounds] = splitRounds(part.rounds);
   return (
@@ -593,7 +626,9 @@ function PartSection({ part, splitRounds }: {
             <View key={i} style={s.roundRow}>
               <Text style={s.roundLabel}>{r.label}:</Text>
               <Text style={s.roundInstruction}>{r.instruction}</Text>
-              {r.stitchCount !== null && <Text style={s.roundCount}>({r.stitchCount})</Text>}
+              {r.stitchCount !== null && (
+                <Text style={s.roundCount}>({r.stitchCount})</Text>
+              )}
             </View>
           ))}
         </View>
@@ -603,13 +638,17 @@ function PartSection({ part, splitRounds }: {
               <View key={i} style={s.roundRow}>
                 <Text style={s.roundLabel}>{r.label}:</Text>
                 <Text style={s.roundInstruction}>{r.instruction}</Text>
-                {r.stitchCount !== null && <Text style={s.roundCount}>({r.stitchCount})</Text>}
+                {r.stitchCount !== null && (
+                  <Text style={s.roundCount}>({r.stitchCount})</Text>
+                )}
               </View>
             ))}
           </View>
         )}
       </View>
-      {part.closingNote && <Text style={s.closingNote}>{part.closingNote}</Text>}
+      {part.closingNote && (
+        <Text style={s.closingNote}>{part.closingNote}</Text>
+      )}
     </>
   );
 }
@@ -618,9 +657,15 @@ function PatternDocument({ data }: { data: PatternData }) {
   const mainYarnHex = data.materials.yarn[0]?.hex ?? null;
   const animalImg = resolvePlushieImage(data.animal, mainYarnHex);
   // Accessory yarn is typically the last yarn entry
-  const accessoryYarnHex = data.materials.yarn.length > 1 ? data.materials.yarn[data.materials.yarn.length - 1].hex : mainYarnHex;
+  const accessoryYarnHex =
+    data.materials.yarn.length > 1
+      ? data.materials.yarn[data.materials.yarn.length - 1].hex
+      : mainYarnHex;
   const accessoryImg = data.accessoryName
-    ? resolveAccessoryImage(data.accessoryName.toLowerCase().replace(/\s+/g, "-"), accessoryYarnHex)
+    ? resolveAccessoryImage(
+        data.accessoryName.toLowerCase().replace(/\s+/g, "-"),
+        accessoryYarnHex,
+      )
     : null;
   const patternName = data.animal
     ? `${data.plushieName} the ${cap(data.animal)}`
@@ -629,7 +674,10 @@ function PatternDocument({ data }: { data: PatternData }) {
 
   function splitRounds(rounds: PatternData["parts"][0]["rounds"]) {
     const mid = Math.ceil(rounds.length / 2);
-    return [rounds.slice(0, mid), rounds.slice(mid)] as [typeof rounds, typeof rounds];
+    return [rounds.slice(0, mid), rounds.slice(mid)] as [
+      typeof rounds,
+      typeof rounds,
+    ];
   }
 
   return (
@@ -642,7 +690,10 @@ function PatternDocument({ data }: { data: PatternData }) {
             <View style={s.coverBand}>
               <View style={s.coverBandLeft}>
                 <View style={s.logoRow}>
-                  <PDFImage src="/images/logos/logo-alb-deschis.png" style={s.logoImg} />
+                  <PDFImage
+                    src="/images/logos/logo-alb-deschis.png"
+                    style={s.logoImg}
+                  />
                   <Text style={s.logoText}>MyToysCrate</Text>
                 </View>
                 <Text style={s.coverTitle}>{data.plushieName}</Text>
@@ -655,11 +706,23 @@ function PatternDocument({ data }: { data: PatternData }) {
                   <PDFImage src={animalImg} style={s.animalImage} />
                 ) : (
                   <View style={s.animalPlaceholder}>
-                    <Text style={s.animalPlaceholderText}>{cap(data.animal)}</Text>
+                    <Text style={s.animalPlaceholderText}>
+                      {cap(data.animal)}
+                    </Text>
                   </View>
                 )}
                 {accessoryImg && (
-                  <PDFImage src={accessoryImg} style={{ position: "absolute", bottom: 0, right: -10, width: 56, height: 56, objectFit: "contain" }} />
+                  <PDFImage
+                    src={accessoryImg}
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      right: -10,
+                      width: 56,
+                      height: 56,
+                      objectFit: "contain",
+                    }}
+                  />
                 )}
               </View>
             </View>
@@ -721,7 +784,10 @@ function PatternDocument({ data }: { data: PatternData }) {
           <View style={s.contentWithHeader}>
             <Text style={s.sectionHeading}>Abbreviations</Text>
             <View style={s.abbrGrid}>
-              {[data.abbreviations.slice(0, 5), data.abbreviations.slice(5)].map((half, col) => (
+              {[
+                data.abbreviations.slice(0, 5),
+                data.abbreviations.slice(5),
+              ].map((half, col) => (
                 <View key={col} style={s.abbrCol}>
                   {half.map((a) => (
                     <View key={a.abbr} style={s.abbrRow}>
@@ -786,7 +852,9 @@ function PatternDocument({ data }: { data: PatternData }) {
         <Page size="A4" style={s.page}>
           <PageHeader patternName={patternName} />
           <View style={s.contentWithHeader}>
-            <Text style={s.sectionHeading}>{data.accessoryName ?? "Accessory"}</Text>
+            <Text style={s.sectionHeading}>
+              {data.accessoryName ?? "Accessory"}
+            </Text>
             {data.accessoryParts.map((part, pi) => (
               <View key={part.name}>
                 {pi > 0 && <View style={s.partDivider} />}
@@ -830,7 +898,10 @@ function PatternDocument({ data }: { data: PatternData }) {
       {/* ── Copyright / last page ───────────────────────────────────── */}
       <Page size="A4" style={[s.page, { padding: 0 }]}>
         <View style={s.copyrightPage}>
-          <PDFImage src="/images/logos/logo-alb-deschis.png" style={s.copyrightLogo} />
+          <PDFImage
+            src="/images/logos/logo-alb-deschis.png"
+            style={s.copyrightLogo}
+          />
           <Text style={s.copyrightTitle}>MyToysCrate</Text>
           <Text style={s.copyrightSubtitle}>
             Thank you for using MyToysCrate!{"\n"}
@@ -848,7 +919,9 @@ function PatternDocument({ data }: { data: PatternData }) {
             </View>
           </View>
           <Text style={s.copyrightLegal}>
-            {COPYRIGHT}{"\n"}{PERSONAL_USE}
+            {COPYRIGHT}
+            {"\n"}
+            {PERSONAL_USE}
           </Text>
         </View>
       </Page>
@@ -857,6 +930,10 @@ function PatternDocument({ data }: { data: PatternData }) {
 }
 
 export async function downloadPatternPDF(data: PatternData, filename: string) {
+  // it returns a blob - the binary content of the file
+  //i create a temporary address for that blob with createObjectURL() then
+  //i create an invisible link with atribute download, i click it to start the downloading
+  //and in final i free the memory with revokeObjectURL()
   const blob = await pdf(<PatternDocument data={data} />).toBlob();
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -867,6 +944,10 @@ export async function downloadPatternPDF(data: PatternData, filename: string) {
 }
 
 export async function openPatternPDF(data: PatternData) {
+  // i generate the pdf as blob - binary content of file
+  //then pack the blob in a File Object with name and type
+  //then create the temporary address
+  //open in a new tab
   const blob = await pdf(<PatternDocument data={data} />).toBlob();
   const filename = data.animal
     ? `${data.plushieName}-the-${data.animal}-pattern.pdf`

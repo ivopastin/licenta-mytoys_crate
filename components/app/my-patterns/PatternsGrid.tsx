@@ -11,7 +11,7 @@ interface PatternsGridProps {
   onToggleFavourite: (patternId: string, isFavourite: boolean) => void;
 }
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 12;
 
 type ModeFilter = "all" | "favourites" | "plushie" | "accessory" | "both";
 
@@ -23,7 +23,10 @@ const MODE_TABS: { value: ModeFilter; label: string; accent?: boolean }[] = [
   { value: "both", label: "Both" },
 ];
 
-export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGridProps) {
+export default function PatternsGrid({
+  patterns,
+  onToggleFavourite,
+}: PatternsGridProps) {
   const [inputValue, setInputValue] = useState("");
   const [query, setQuery] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
@@ -39,31 +42,41 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();
     let results = q
-      ? patterns.filter((p) =>
-          p.name.toLowerCase().includes(q) ||
-          (p.animal?.toLowerCase().includes(q) ?? false)
+      ? patterns.filter(
+          (p) =>
+            p.name.toLowerCase().includes(q) ||
+            (p.animal?.toLowerCase().includes(q) ?? false),
         )
       : [...patterns];
 
     if (modeFilter === "favourites") {
       results = results.filter((p) => p.is_favourite);
     } else if (modeFilter === "plushie") {
-      results = results.filter((p) => p.animal && !p.pattern_data?.accessoryName);
+      results = results.filter(
+        (p) => p.animal && !p.pattern_data?.accessoryName,
+      );
     } else if (modeFilter === "accessory") {
-      results = results.filter((p) => !p.animal && p.pattern_data?.accessoryName);
+      results = results.filter(
+        (p) => !p.animal && p.pattern_data?.accessoryName,
+      );
     } else if (modeFilter === "both") {
-      results = results.filter((p) => p.animal && p.pattern_data?.accessoryName);
+      results = results.filter(
+        (p) => p.animal && p.pattern_data?.accessoryName,
+      );
     }
 
     results.sort((a, b) =>
-      sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+      sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name),
     );
     return results;
   }, [patterns, query, sortAsc, modeFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
-  const pageItems = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const pageItems = filtered.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE,
+  );
 
   function handleQueryChange(q: string) {
     setInputValue(q);
@@ -83,14 +96,21 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
   return (
     <div className="flex flex-col h-full">
       {/* Review dialog — portaled to body to escape overflow-hidden stacking context */}
-      {reviewOpen && createPortal(
-        <div className="fixed inset-0 z-200 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setReviewOpen(false)}>
-          <div onClick={(e) => e.stopPropagation()}>
-            <ReviewSubmissionCard patterns={patterns} onClose={() => setReviewOpen(false)} />
-          </div>
-        </div>,
-        document.body
-      )}
+      {reviewOpen &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-200 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            onClick={() => setReviewOpen(false)}
+          >
+            <div onClick={(e) => e.stopPropagation()}>
+              <ReviewSubmissionCard
+                patterns={patterns}
+                onClose={() => setReviewOpen(false)}
+              />
+            </div>
+          </div>,
+          document.body,
+        )}
 
       {/* Header */}
       <div className="shrink-0 mb-4">
@@ -103,23 +123,23 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
         {/* Mode filter tabs + review button */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex gap-1.5">
-          {MODE_TABS.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => handleModeFilter(tab.value)}
-              className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all duration-200 cursor-pointer ${
-                tab.accent
-                  ? modeFilter === tab.value
-                    ? "bg-white text-[#c9a96e]"
-                    : "bg-[#c9a96e]/60 text-white border border-[#c9a96e]/80 hover:bg-[#c9a96e]/80"
-                  : modeFilter === tab.value
-                    ? "bg-white text-deep"
-                    : "bg-white/10 text-white/60 hover:bg-white/20 hover:text-white"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+            {MODE_TABS.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => handleModeFilter(tab.value)}
+                className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all duration-200 cursor-pointer ${
+                  tab.accent
+                    ? modeFilter === tab.value
+                      ? "bg-white text-[#c9a96e]"
+                      : "bg-[#c9a96e]/60 text-white border border-[#c9a96e]/80 hover:bg-[#c9a96e]/80"
+                    : modeFilter === tab.value
+                      ? "bg-white text-deep"
+                      : "bg-white/10 text-white/60 hover:bg-white/20 hover:text-white"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
           <button
             onClick={() => setReviewOpen(true)}
@@ -131,7 +151,10 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
         </div>
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
-            <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+            <Search
+              size={13}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40"
+            />
             <input
               type="text"
               placeholder="Search by name…"
@@ -154,15 +177,23 @@ export default function PatternsGrid({ patterns, onToggleFavourite }: PatternsGr
       <div className="flex-1 min-h-0 overflow-y-auto pr-1 scrollbar-hide">
         {pageItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 gap-2 opacity-60">
-            <span className="text-[14px] font-semibold text-white">No patterns found</span>
+            <span className="text-[14px] font-semibold text-white">
+              No patterns found
+            </span>
             <span className="text-[12px] text-white/60">
-              {modeFilter !== "all" ? "Try a different filter or name" : "Try a different name"}
+              {modeFilter !== "all"
+                ? "Try a different filter or name"
+                : "Try a different name"}
             </span>
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-3">
             {pageItems.map((p) => (
-              <PatternCard key={p.id} pattern={p} onToggleFavourite={onToggleFavourite} />
+              <PatternCard
+                key={p.id}
+                pattern={p}
+                onToggleFavourite={onToggleFavourite}
+              />
             ))}
           </div>
         )}

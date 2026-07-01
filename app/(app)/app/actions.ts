@@ -22,9 +22,14 @@ export async function sendSupportEmail(formData: {
     return { success: false, error: "Subject and message are required." };
   }
 
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) {
+    return { success: false, error: "Support is temporarily unavailable." };
+  }
+
   const { error } = await resend.emails.send({
     from: "MyToys Crate <hello@mytoys-crate.com>",
-    to: "ivo.pastin@gmail.com",
+    to: adminEmail,
     replyTo: user.email!,
     subject: `[Support] ${subject}`,
     text: `New support request from ${user.email}\n\n${message}`,

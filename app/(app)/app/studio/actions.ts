@@ -17,7 +17,7 @@ type TemplateRow = {
 };
 
 export async function generatePattern(
-  config: PlushieConfig
+  config: PlushieConfig,
 ): Promise<{ patternId: string; patternData: PatternData }> {
   const supabase = await createClient();
 
@@ -40,7 +40,11 @@ export async function generatePattern(
       .from("accessory_templates")
       .select("name, parts, assembly")
       .eq("slug", config.accessory)
-      .single<{ name: string; parts: PatternPart[]; assembly: { step: string }[] }>();
+      .single<{
+        name: string;
+        parts: PatternPart[];
+        assembly: { step: string }[];
+      }>();
 
     if (accError || !accessoryTemplate) {
       throw new Error(`Accessory template not found: ${config.accessory}`);
@@ -71,7 +75,7 @@ export async function generatePattern(
     const { data: template, error: templateError } = await supabase
       .from("pattern_templates")
       .select(
-        "skill_level, finished_size_small, finished_size_medium, finished_size_large, accent_colors, parts, assembly"
+        "skill_level, finished_size_small, finished_size_medium, finished_size_large, accent_colors, parts, assembly",
       )
       .eq("animal", config.animal)
       .single<TemplateRow>();
@@ -88,7 +92,11 @@ export async function generatePattern(
         .from("accessory_templates")
         .select("name, parts, assembly")
         .eq("slug", config.accessory)
-        .single<{ name: string; parts: PatternPart[]; assembly: { step: string }[] }>();
+        .single<{
+          name: string;
+          parts: PatternPart[];
+          assembly: { step: string }[];
+        }>();
 
       if (accessoryTemplate) {
         patternData.accessoryName = accessoryTemplate.name;
@@ -121,7 +129,7 @@ export async function generatePattern(
     throw new Error("Failed to save pattern");
   }
 
-  // Invalidate the app layout so the sidebar re-fetches recent patterns
+  // invalidate the app layout so the sidebar re-fetches recent patterns
   revalidatePath("/app", "layout");
 
   return { patternId: inserted.id, patternData };

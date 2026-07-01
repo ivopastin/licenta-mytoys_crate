@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import GrainientFade from "@/components/app/GrainientFade";
 import DashboardCharts from "./DashboardCharts";
 import { Users, FileText, Star, TrendingUp, Newspaper } from "lucide-react";
@@ -35,7 +35,7 @@ function StatCard({
 }
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   const [
     { count: userCount },
@@ -72,18 +72,19 @@ export default async function DashboardPage() {
       .order("created_at", { ascending: true }),
   ]);
 
+  const ratings = (reviewsForAvg ?? []) as { stars: number | null }[];
+
   const avgRating =
-    reviewsForAvg && reviewsForAvg.length > 0
+    ratings.length > 0
       ? (
-          reviewsForAvg.reduce((sum, r) => sum + (r.stars ?? 0), 0) /
-          reviewsForAvg.length
+          ratings.reduce((sum, r) => sum + (r.stars ?? 0), 0) / ratings.length
         ).toFixed(1)
       : "—";
 
   // Star distribution
   const starDist = [5, 4, 3, 2, 1].map((s) => ({
     star: `${s}★`,
-    count: (reviewsForAvg ?? []).filter((r) => r.stars === s).length,
+    count: ratings.filter((r) => r.stars === s).length,
   }));
 
   const now = new Date();

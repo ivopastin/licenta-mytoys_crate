@@ -11,12 +11,18 @@ import { createClient } from "@/lib/supabase/client";
 export default function LoginPage() {
   const router = useRouter();
 
+  // the proxy.ts is doing the same thing on server - redirecting already logged in users to /app
+  // BUT the middleware catches the user before any HTML is sent so they never even see the login
+  // the useEffect here is not pointless because client side navigation could bypass middleware in some cases
+  //when the page renders client-side withouth a fresh server check
   useEffect(() => {
-    const supabase = createClient();
+    const supabase = createClient(); // reads the session from the browser's cookies
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) router.replace("/app");
+      // checks if there's an existing session in the cookies
+      if (session) router.replace("/app"); // if the user is already logged in
     });
-  }, [router]);
+  }, [router]); // runs once in the browser, after the page renders (when the componets mounts)
+
   return (
     <div className="h-[calc(100vh-20px)] grid grid-cols-2">
       {/* ── Left panel: blue branded area ── */}

@@ -1,108 +1,11 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
-import { Resend } from "resend";
-
-// - Route Handler (raw HTTP `GET`); Supabase redirects here after email
-// confirmation, password reset, or Google OAuth, with a `?code=...`.
-// 1. `exchangeCodeForSession(code)` - turns the one-time code into a real
-//    session and sets the auth cookies on the response.
-// 2. if it's a password recovery flow -> redirect to `/reset-password`.
-// 3. otherwise, first login only (checks `profiles.onboarding_completed`): sends a
-//    welcome email via Resend;
-// 4. redirects to `/app`.
-
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const host = request.headers.get("host") ?? "localhost:3000";
-  const protocol = host.startsWith("localhost") ? "http" : "https";
-  const origin = `${protocol}://${host}`;
-  const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/app";
-
-  if (code) {
-    const response = NextResponse.redirect(`${origin}${next}`);
-
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return request.cookies.getAll();
-          },
-          setAll(
-            cookiesToSet: {
-              name: string;
-              value: string;
-              options?: Record<string, unknown>;
-            }[],
-          ) {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(
-                name,
-                value,
-                options as Parameters<typeof response.cookies.set>[2],
-              ),
-            );
-          },
-        },
-      },
-    );
-
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-    if (error) {
-      console.error(
-        "[auth/callback] exchangeCodeForSession error:",
-        error.message,
-        error.status,
-      );
-    }
-
-    if (!error) {
-      // Password recovery flow — redirect to reset page
-      if (data.user?.recovery_sent_at) {
-        return NextResponse.redirect(`${origin}/reset-password`, {
-          headers: response.headers,
-        });
-      }
-
-      // Send welcome email only on first login (onboarding not yet completed)
-      const user = data.user;
-      if (user?.email) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("onboarding_completed, display_name")
-          .eq("id", user.id)
-          .single();
-
-        if (profile && !profile.onboarding_completed) {
-          const name =
-            profile.display_name ??
-            user.user_metadata?.full_name ??
-            user.user_metadata?.name ??
-            user.email.split("@")[0];
-
-          await resend.emails.send({
-            from: "MyToys Crate <hello@mytoys-crate.com>",
-            to: user.email,
-            subject: "Welcome to MyToysCrate! 🧶",
-            html: buildWelcomeEmail(name),
-          });
-        }
-      }
-
-      return response;
-    }
-  }
-
-  return NextResponse.redirect(`${origin}/login?error=auth`);
-}
-
-function buildWelcomeEmail(name: string): string {
-  return `<!DOCTYPE html>
+<!--
+  Welcome email — SOURCE COPY (version control only).
+  Unlike reset-password.html, this email is sent by APP CODE, not Supabase:
+  see buildWelcomeEmail() in app/auth/callback/route.ts (fired on first login).
+  This file is the editable source; if you change it, mirror the change into that
+  function. The `{{NAME}}` marker below corresponds to the JS `${name}` in the code.
+-->
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -126,7 +29,7 @@ function buildWelcomeEmail(name: string): string {
           <!-- Body -->
           <tr>
             <td style="padding:40px 40px 32px;">
-              <p style="margin:0 0 8px;font-size:24px;font-weight:700;color:#1a2e3b;">Hi ${name}! 👋</p>
+              <p style="margin:0 0 8px;font-size:24px;font-weight:700;color:#1a2e3b;">Hi {{NAME}}! 👋</p>
               <p style="margin:0 0 24px;font-size:15px;color:#5a6a75;line-height:1.6;">
                 Welcome to <strong>MyToysCrate</strong> - the place where your plushie ideas become real crochet patterns. We're so happy to have you here!
               </p>
@@ -183,5 +86,4 @@ function buildWelcomeEmail(name: string): string {
     </tr>
   </table>
 </body>
-</html>`;
-}
+</html>

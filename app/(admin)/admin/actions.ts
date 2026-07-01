@@ -3,12 +3,13 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-const ADMIN_EMAIL = "ivo.pastin@gmail.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 async function assertAdmin() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (user?.email !== ADMIN_EMAIL) throw new Error("Unauthorized");
+  // Fail safe: if ADMIN_EMAIL is unset, no user can match → access denied.
+  if (!ADMIN_EMAIL || user?.email !== ADMIN_EMAIL) throw new Error("Unauthorized");
   return supabase;
 }
 

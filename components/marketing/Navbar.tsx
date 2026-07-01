@@ -126,7 +126,8 @@ export default function Navbar() {
         </div>
       </GlassSurface>
       <div className="ml-auto flex flex-row items-center gap-3">
-        <div
+        <Link
+          href="/login"
           className="transition-all duration-900 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
           style={{
             maxWidth: pastHero ? "160px" : "0px",
@@ -136,7 +137,7 @@ export default function Navbar() {
           <Button className="whitespace-nowrap px-6 py-2.5 h-auto bg-[var(--color-accent)] text-[var(--color-warm)] text-[18px] font-bold rounded-[16px] hover:bg-[var(--color-accent)] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
             Try now
           </Button>
-        </div>
+        </Link>
         <Link href="/login">
           <Button className="px-6 py-2.5 h-auto bg-transparent border border-font-primary bg-white/30 backdrop-blur-sm text-white text-[18px] font-bold rounded-[16px] transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 active:scale-95">
             Login
